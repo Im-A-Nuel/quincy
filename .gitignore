@@ -1,0 +1,46 @@
+# Claude Code guidance — never commit
+CLAUDE.md
+**/CLAUDE.md
+.claude/
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.vercel/
+frontend/next-env.d.ts
+
+# Production
+dist/
+
+# Environment
+.env
+.env*.local
+.env.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Testing / coverage
+coverage/
+
+# Foundry
+smartcontract/out/
+smartcontract/cache/
+smartcontract/broadcast/
+smartcontract/lib/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
