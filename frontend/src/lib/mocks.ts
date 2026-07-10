@@ -82,3 +82,16 @@ export const MOCK_BOUNTIES: Bounty[] = [
 export function isMockMode(): boolean {
   return process.env.NEXT_PUBLIC_USE_MOCKS === "1";
 }
+
+/** Deterministic mock reputation derived from the mock bounties. */
+export function mockReputation(address: string) {
+  return {
+    walletAddress: address as `0x${string}`,
+    bountiesPosted: 5,
+    bountiesCompletedAsPoster: 4,
+    bountiesClaimed: 12,
+    bountiesCompletedAsHunter: 11,
+    totalEarned: "28.50",
+    totalSpent: "15.00",
+  };
+}
