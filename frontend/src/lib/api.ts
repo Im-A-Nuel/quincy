@@ -1,6 +1,6 @@
 import type { Bounty, BountyListItem, Reputation } from "./types";
 import type { SortOption } from "./constants";
-import { MOCK_BOUNTIES, isMockMode } from "./mocks";
+import { MOCK_BOUNTIES, isMockMode, mockReputation } from "./mocks";
 
 // All list/detail reads go through the indexer-backed API, never the chain
 // directly (see CLAUDE.md read/write split).
@@ -94,5 +94,6 @@ function mockBounties(query: BountiesQuery): BountiesResponse {
 }
 
 export function fetchProfile(address: string): Promise<Reputation> {
+  if (isMockMode()) return Promise.resolve(mockReputation(address));
   return get<Reputation>(`/profiles/${address}`);
 }
