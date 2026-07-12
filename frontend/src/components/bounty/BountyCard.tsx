@@ -1,26 +1,41 @@
 import Link from "next/link";
 import type { BountyListItem } from "@/lib/types";
-import { formatCusd, timeUntil, isExpired } from "@/lib/format";
+import { formatCusd, timeUntil, isExpired, shortAddress } from "@/lib/format";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { CategoryBadge } from "@/components/ui/CategoryBadge";
+import { Avatar } from "@/components/ui/Avatar";
+import { ClockIcon } from "@/components/ui/icons";
 
 export function BountyCard({ bounty }: { bounty: BountyListItem }) {
   const expired = isExpired(bounty.deadline);
   return (
-    <Link href={`/bounties/${bounty.id}`} className="card block transition hover:border-quincy-300 hover:shadow-md">
+    <Link
+      href={`/bounties/${bounty.id}`}
+      className="group block rounded-3xl border border-black/[0.04] bg-surface p-5 shadow-soft transition-all duration-200 ease-soft hover:-translate-y-0.5 hover:shadow-float"
+    >
       <div className="flex items-start justify-between gap-3">
-        <h3 className="font-semibold text-gray-900 line-clamp-2">{bounty.title}</h3>
+        <CategoryBadge category={bounty.category} />
         <StatusBadge status={bounty.status} />
       </div>
-      <div className="mt-3 flex items-center justify-between">
-        <CategoryBadge category={bounty.category} />
-        <span className="text-sm font-bold text-quincy-700">
+
+      <h3 className="mt-3 font-bold leading-snug text-gray-900 line-clamp-2">
+        {bounty.title}
+      </h3>
+
+      <div className="mt-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Avatar address={bounty.posterAddress} size="sm" />
+          <span className="text-xs text-gray-400">{shortAddress(bounty.posterAddress)}</span>
+        </div>
+        <span className="rounded-full bg-quincy-50 px-3 py-1 text-sm font-bold text-quincy-700">
           {formatCusd(bounty.rewardAmount)}
         </span>
       </div>
-      <p className="mt-2 text-xs text-gray-400">
+
+      <div className="mt-3 flex items-center gap-1.5 text-xs text-gray-400">
+        <ClockIcon className="h-4 w-4" />
         {expired ? "Deadline passed" : `Due ${timeUntil(bounty.deadline)}`}
-      </p>
+      </div>
     </Link>
   );
 }
