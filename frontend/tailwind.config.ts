@@ -8,10 +8,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // App surfaces — soft, bright, off-white.
+        // App surfaces - soft, bright, off-white.
         canvas: "#F8FAF8",
         surface: "#FFFFFF",
-        // Quincy brand palette — forest/mint, evokes Celo + trust/escrow.
+        // Quincy brand palette - forest/mint, evokes Celo + trust/escrow.
         quincy: {
           50: "#eefdf3",
           100: "#d6f9e1",
@@ -46,7 +46,7 @@ const config: Config = {
         "5xl": "2.5rem",
       },
       boxShadow: {
-        // Diffuse, low-opacity elevation — cards should feel like they float.
+        // Diffuse, low-opacity elevation - cards should feel like they float.
         soft: "0 2px 8px -2px rgba(16, 90, 57, 0.06), 0 4px 20px -4px rgba(16, 90, 57, 0.08)",
         float: "0 8px 30px -6px rgba(16, 90, 57, 0.12)",
         pill: "0 6px 16px -4px rgba(28, 179, 104, 0.35)",

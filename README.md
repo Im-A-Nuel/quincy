@@ -2,7 +2,7 @@
 
 **Escrow-backed micro-task bounty marketplace on Celo, built MiniPay-first.**
 
-Quincy lets anyone post a small task with a reward locked in a smart contract. A worker claims the task, completes it, and submits proof; when the poster approves, the contract releases the reward automatically. Funds are always held by the contract — never by Quincy — so payment is guaranteed by code, not by trust.
+Quincy lets anyone post a small task with a reward locked in a smart contract. A worker claims the task, completes it, and submits proof; when the poster approves, the contract releases the reward automatically. Funds are always held by the contract - never by Quincy - so payment is guaranteed by code, not by trust.
 
 ---
 
@@ -10,19 +10,19 @@ Quincy lets anyone post a small task with a reward locked in a smart contract. A
 
 Informal micro-task work (running errands, small research, simple design, translation) happens constantly, but usually without any payment guarantee. Posters can delay or avoid paying after work is delivered, and workers have no way to enforce payment without a trusted middleman. Quincy removes that risk by escrowing the reward on-chain **before** the work begins.
 
-- **Non-custodial** — all funds move only through the smart contract.
-- **Stable rewards** — bounties are paid in cUSD, a Celo stablecoin, so value doesn't swing between posting and payout.
-- **On-chain reputation** — every completed bounty builds a public, verifiable track record for both sides.
-- **MiniPay-first** — designed to run inside the MiniPay in-app browser with one-tap wallet connect on low-end devices.
+- **Non-custodial** - all funds move only through the smart contract.
+- **Stable rewards** - bounties are paid in cUSD, a Celo stablecoin, so value doesn't swing between posting and payout.
+- **On-chain reputation** - every completed bounty builds a public, verifiable track record for both sides.
+- **MiniPay-first** - designed to run inside the MiniPay in-app browser with one-tap wallet connect on low-end devices.
 
 ---
 
 ## How it works
 
-1. **Post & lock** — a poster creates a bounty and locks the cUSD reward in the escrow contract.
-2. **Claim & work** — a worker (hunter) claims the open bounty and completes the task off-chain.
-3. **Submit proof** — the hunter uploads proof to IPFS and submits the link on-chain.
-4. **Approve & pay** — the poster approves, and the contract releases the reward to the hunter instantly.
+1. **Post & lock** - a poster creates a bounty and locks the cUSD reward in the escrow contract.
+2. **Claim & work** - a worker (hunter) claims the open bounty and completes the task off-chain.
+3. **Submit proof** - the hunter uploads proof to IPFS and submits the link on-chain.
+4. **Approve & pay** - the poster approves, and the contract releases the reward to the hunter instantly.
 
 If a bounty is never claimed, the poster can cancel it and get a full refund. If a proof is disputed, an admin resolves it manually (a decentralized dispute mechanism is planned for later).
 
@@ -38,7 +38,7 @@ Each lifecycle step is a separate on-chain transaction, giving a clean, auditabl
 | Wallet | wagmi v2 + viem, MiniPay auto-connect |
 | Smart contract | Solidity ^0.8.24, Foundry, OpenZeppelin |
 | Indexer | Node.js + viem, mirrors contract events into Postgres |
-| Database | Postgres (Supabase) — read layer only |
+| Database | Postgres (Supabase) - read layer only |
 | Chain | Celo Mainnet (primary), Alfajores (staging) |
 | Token | cUSD |
 | Proof storage | IPFS via web3.storage |
@@ -109,12 +109,12 @@ With mocks on, the landing page, bounty list, bounty detail, and profile pages r
 
 `QuincyBounty.sol` holds all escrow logic and bounty state. Core functions:
 
-- `createBounty` — lock a cUSD reward and open a bounty
-- `claimBounty` — a hunter claims an open bounty
-- `submitProof` — the hunter submits an IPFS proof URI
-- `approveBounty` — the poster approves and the reward is released
-- `cancelBounty` — the poster refunds an unclaimed bounty
-- `disputeBounty` / `resolveDispute` — dispute flow (admin-resolved)
+- `createBounty` - lock a cUSD reward and open a bounty
+- `claimBounty` - a hunter claims an open bounty
+- `submitProof` - the hunter submits an IPFS proof URI
+- `approveBounty` - the poster approves and the reward is released
+- `cancelBounty` - the poster refunds an unclaimed bounty
+- `disputeBounty` / `resolveDispute` - dispute flow (admin-resolved)
 
 Every state-changing function emits an event; the indexer subscribes to these events as its sole write path into the database.
 

@@ -3,7 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 
-// Modern geometric sans — used for both body and bold display headings.
+// Modern geometric sans - used for both body and bold display headings.
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
@@ -12,7 +12,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Quincy — Escrow micro-task bounties on Celo",
+  title: "Quincy - Escrow micro-task bounties on Celo",
   description:
     "Post and complete micro-task bounties with cUSD rewards locked in escrow. MiniPay-first, built on Celo.",
   other: {

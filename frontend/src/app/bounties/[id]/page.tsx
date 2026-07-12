@@ -79,7 +79,7 @@ export default function BountyDetailPage() {
                 {bounty.proofUri ? (
                   <ProofLink proofUri={bounty.proofUri} />
                 ) : (
-                  <span className="text-gray-300">—</span>
+                  <span className="text-gray-300">-</span>
                 )}
               </InfoRow>
             </div>

@@ -1,4 +1,4 @@
-// Minimal ERC-20 ABI — only the pieces Quincy needs for cUSD:
+// Minimal ERC-20 ABI - only the pieces Quincy needs for cUSD:
 // checking balance/allowance and approving the bounty contract to pull funds.
 export const erc20Abi = [
   {

@@ -16,7 +16,7 @@ export function WalletSummary() {
   const balanceText =
     isConnected && balance !== undefined
       ? `${Number(fromCusdUnits(balance)).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
-      : "—";
+      : "-";
 
   return (
     <section className="overflow-hidden rounded-4xl bg-gradient-primary p-6 text-white shadow-float">

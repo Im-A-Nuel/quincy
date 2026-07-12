@@ -25,7 +25,7 @@ body {
 }
 
 @layer components {
-  /* Buttons — rounded pill, soft shadow, gradient primary. */
+  /* Buttons - rounded pill, soft shadow, gradient primary. */
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5
       text-sm font-semibold transition-all duration-200 ease-soft
@@ -41,7 +41,7 @@ body {
     @apply btn bg-quincy-50 text-quincy-700 hover:bg-quincy-100;
   }
 
-  /* Cards — large radius, diffuse shadow, floating feel. */
+  /* Cards - large radius, diffuse shadow, floating feel. */
   .card {
     @apply rounded-3xl border border-black/[0.04] bg-surface p-5 shadow-soft;
   }
@@ -49,7 +49,7 @@ body {
     @apply rounded-4xl bg-surface p-6 shadow-float;
   }
 
-  /* Chips — pill filters/tabs. */
+  /* Chips - pill filters/tabs. */
   .chip {
     @apply inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-4 py-2
       text-sm font-medium transition-colors;
