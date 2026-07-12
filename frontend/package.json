@@ -2,7 +2,7 @@
   "name": "quincy-frontend",
   "version": "0.1.0",
   "private": true,
-  "description": "Frontend for Quincy — escrow-backed micro-task bounty marketplace on Celo",
+  "description": "Frontend for Quincy - escrow-backed micro-task bounty marketplace on Celo",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
