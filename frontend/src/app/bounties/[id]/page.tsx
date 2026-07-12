@@ -2,17 +2,18 @@
 
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
+import { AppShell } from "@/components/nav/AppShell";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { CategoryBadge } from "@/components/ui/CategoryBadge";
 import { Spinner } from "@/components/ui/Spinner";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { InfoRow } from "@/components/ui/InfoRow";
+import { Avatar } from "@/components/ui/Avatar";
 import { ProofLink } from "@/components/bounty/ProofLink";
-import { AddressChip } from "@/components/bounty/AddressChip";
+import { EscrowStatus } from "@/components/bounty/EscrowStatus";
 import { BountyActions } from "@/components/bounty/BountyActions";
 import { useBounty } from "@/hooks/useBounty";
-import { formatCusd, timeUntil, isExpired } from "@/lib/format";
+import { formatCusd, timeUntil, isExpired, shortAddress } from "@/lib/format";
 import { txUrl } from "@/lib/chains";
 
 export default function BountyDetailPage() {
@@ -21,73 +22,93 @@ export default function BountyDetailPage() {
   const { data: bounty, isLoading, isError, refetch } = useBounty(id);
 
   return (
-    <>
-      <Header />
-      <main className="mx-auto max-w-2xl px-4 py-6">
-        <Link href="/bounties" className="text-sm text-quincy-700 hover:underline">
-          ← Back to bounties
-        </Link>
+    <AppShell>
+      <Link href="/bounties" className="text-sm font-semibold text-quincy-600 hover:text-quincy-700">
+        ← Back
+      </Link>
 
-        {isLoading && (
-          <div className="mt-10 flex justify-center text-quincy-600">
-            <Spinner className="h-6 w-6" />
-          </div>
-        )}
+      {isLoading && (
+        <div className="flex justify-center py-16 text-quincy-600">
+          <Spinner className="h-6 w-6" />
+        </div>
+      )}
 
-        {isError && (
-          <div className="mt-6">
-            <EmptyState icon="🔍" title="Bounty not found" hint="It may have been removed or never existed." />
-          </div>
-        )}
+      {isError && (
+        <div className="mt-6">
+          <EmptyState icon="🔍" title="Bounty not found" hint="It may have been removed or never existed." />
+        </div>
+      )}
 
-        {bounty && (
-          <article className="mt-4">
-            <div className="flex items-start justify-between gap-3">
-              <h1 className="text-2xl font-bold text-gray-900">{bounty.title}</h1>
+      {bounty && (
+        <div className="mt-3 space-y-4">
+          {/* Receipt-style summary card */}
+          <div className="card-float text-center">
+            <div className="mb-4 flex items-center justify-center gap-2">
+              <CategoryBadge category={bounty.category} />
               <StatusBadge status={bounty.status} />
             </div>
 
-            <div className="mt-2 flex items-center gap-3">
-              <CategoryBadge category={bounty.category} />
-              <span className="text-lg font-bold text-quincy-700">
-                {formatCusd(bounty.rewardAmount)}
-              </span>
+            <p className="text-sm text-gray-400">Reward</p>
+            <p className="mt-1 text-4xl font-extrabold tracking-tight text-gray-900">
+              {formatCusd(bounty.rewardAmount)}
+            </p>
+
+            <div className="mt-4 flex justify-center">
+              <EscrowStatus status={bounty.status} />
             </div>
 
-            <p className="mt-4 whitespace-pre-wrap text-gray-700">{bounty.description}</p>
-
-            <div className="card mt-6 space-y-2">
-              <AddressChip address={bounty.posterAddress} label="Poster" />
-              <AddressChip address={bounty.hunterAddress} label="Hunter" />
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Deadline</span>
-                <span className="font-medium">
-                  {isExpired(bounty.deadline) ? "Passed" : timeUntil(bounty.deadline)}
-                </span>
-              </div>
-              <div className="pt-1">
-                <ProofLink proofUri={bounty.proofUri} />
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <BountyActions bounty={bounty} onDone={() => refetch()} />
-            </div>
-
-            <div className="mt-4 flex flex-wrap gap-3 text-xs">
-              <a href={txUrl(bounty.txHashCreated)} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:underline">
-                Creation tx ↗
-              </a>
-              {bounty.txHashCompleted && (
-                <a href={txUrl(bounty.txHashCompleted)} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:underline">
-                  Completion tx ↗
-                </a>
+            <div className="mt-5 text-left">
+              <InfoRow label="Poster">
+                <Link href={`/profile/${bounty.posterAddress}`} className="flex items-center gap-2 text-quincy-700">
+                  <Avatar address={bounty.posterAddress} size="sm" />
+                  {shortAddress(bounty.posterAddress)}
+                </Link>
+              </InfoRow>
+              {bounty.hunterAddress && (
+                <InfoRow label="Hunter">
+                  <Link href={`/profile/${bounty.hunterAddress}`} className="flex items-center gap-2 text-quincy-700">
+                    <Avatar address={bounty.hunterAddress} size="sm" />
+                    {shortAddress(bounty.hunterAddress)}
+                  </Link>
+                </InfoRow>
               )}
+              <InfoRow label="Deadline">
+                {isExpired(bounty.deadline) ? "Passed" : timeUntil(bounty.deadline)}
+              </InfoRow>
+              <InfoRow label="Proof" divider={false}>
+                {bounty.proofUri ? (
+                  <ProofLink proofUri={bounty.proofUri} />
+                ) : (
+                  <span className="text-gray-300">—</span>
+                )}
+              </InfoRow>
             </div>
-          </article>
-        )}
-      </main>
-      <Footer />
-    </>
+          </div>
+
+          {/* Task brief */}
+          <div className="card">
+            <h2 className="text-base font-bold text-gray-900">{bounty.title}</h2>
+            <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-gray-600">
+              {bounty.description}
+            </p>
+          </div>
+
+          {/* Action */}
+          <BountyActions bounty={bounty} onDone={() => refetch()} />
+
+          {/* On-chain trail */}
+          <div className="flex flex-wrap justify-center gap-4 text-xs">
+            <a href={txUrl(bounty.txHashCreated)} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:underline">
+              Creation tx ↗
+            </a>
+            {bounty.txHashCompleted && (
+              <a href={txUrl(bounty.txHashCompleted)} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:underline">
+                Completion tx ↗
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+    </AppShell>
   );
 }
