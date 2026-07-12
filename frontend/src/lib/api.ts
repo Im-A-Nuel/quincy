@@ -38,6 +38,8 @@ export interface BountiesQuery {
   category?: string;
   sort?: SortOption;
   page?: number;
+  /** Restrict to bounties this wallet is involved in (as poster or hunter). */
+  involves?: string;
 }
 
 export interface BountiesResponse {
@@ -53,6 +55,7 @@ export function fetchBounties(query: BountiesQuery = {}): Promise<BountiesRespon
   if (query.category) params.set("category", query.category);
   if (query.sort) params.set("sort", query.sort);
   if (query.page) params.set("page", String(query.page));
+  if (query.involves) params.set("involves", query.involves);
   const qs = params.toString();
   return get<BountiesResponse>(`/bounties${qs ? `?${qs}` : ""}`);
 }
@@ -73,6 +76,14 @@ function mockBounties(query: BountiesQuery): BountiesResponse {
   let rows = [...MOCK_BOUNTIES];
   if (query.status) rows = rows.filter((b) => b.status === query.status);
   if (query.category) rows = rows.filter((b) => b.category === query.category);
+  if (query.involves) {
+    const who = query.involves.toLowerCase();
+    rows = rows.filter(
+      (b) =>
+        b.posterAddress.toLowerCase() === who ||
+        b.hunterAddress?.toLowerCase() === who,
+    );
+  }
   if (query.sort === "reward_desc") {
     rows.sort((a, b) => Number(b.rewardAmount) - Number(a.rewardAmount));
   } else {
