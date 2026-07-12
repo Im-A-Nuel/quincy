@@ -1,0 +1,25 @@
+import Link from "next/link";
+import { CATEGORIES } from "@/lib/constants";
+import { IconTile } from "@/components/ui/IconTile";
+
+const TINTS = ["green", "blue", "purple", "pink", "orange", "yellow", "mint"] as const;
+
+/** Swipeable row of category shortcuts into the filtered explore page. */
+export function CategoryRow() {
+  return (
+    <div className="-mx-4 flex gap-3 overflow-x-auto px-4 no-scrollbar md:mx-0 md:px-0">
+      {CATEGORIES.map((c, i) => (
+        <Link
+          key={c.value}
+          href={`/bounties?category=${c.value}`}
+          className="flex w-20 shrink-0 flex-col items-center gap-2"
+        >
+          <IconTile tint={TINTS[i % TINTS.length]} size="lg">
+            <span>{c.emoji}</span>
+          </IconTile>
+          <span className="text-center text-xs font-medium text-gray-600">{c.label}</span>
+        </Link>
+      ))}
+    </div>
+  );
+}
