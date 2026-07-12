@@ -1,15 +1,16 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
+import { AppShell } from "@/components/nav/AppShell";
 import { Spinner } from "@/components/ui/Spinner";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { StatCard } from "@/components/profile/StatCard";
 import { SuccessRate } from "@/components/profile/SuccessRate";
+import { ProfileHeader } from "@/components/profile/ProfileHeader";
+import { Achievements } from "@/components/profile/Achievements";
 import { useProfile } from "@/hooks/useProfile";
-import { shortAddress, formatCusd } from "@/lib/format";
-import { addressUrl } from "@/lib/chains";
+import { formatCusd } from "@/lib/format";
 
 export default function ProfilePage() {
   const params = useParams<{ address: string }>();
@@ -17,55 +18,47 @@ export default function ProfilePage() {
   const { data, isLoading, isError } = useProfile(address);
 
   return (
-    <>
-      <Header />
-      <main className="mx-auto max-w-2xl px-4 py-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl font-bold text-gray-900">{shortAddress(address)}</h1>
-          <a
-            href={addressUrl(address)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-gray-400 hover:underline"
-          >
-            View on explorer ↗
-          </a>
+    <AppShell>
+      {isLoading && (
+        <div className="flex justify-center py-16 text-quincy-600">
+          <Spinner className="h-6 w-6" />
         </div>
+      )}
 
-        {isLoading && (
-          <div className="mt-10 flex justify-center text-quincy-600">
-            <Spinner className="h-6 w-6" />
+      {isError && (
+        <EmptyState icon="👤" title="No activity yet" hint="This wallet hasn't posted or claimed any bounties." />
+      )}
+
+      {data && (
+        <div className="space-y-6">
+          <ProfileHeader address={address} completed={data.bountiesCompletedAsHunter} />
+
+          <div className="grid grid-cols-2 gap-3">
+            <StatCard label="Total earned" value={formatCusd(data.totalEarned)} />
+            <StatCard label="Total spent" value={formatCusd(data.totalSpent)} />
           </div>
-        )}
 
-        {isError && (
-          <div className="mt-6">
-            <EmptyState icon="👤" title="No activity yet" hint="This wallet hasn't posted or claimed any bounties." />
-          </div>
-        )}
+          <SuccessRate
+            completed={data.bountiesCompletedAsHunter}
+            total={data.bountiesClaimed}
+          />
 
-        {data && (
-          <div className="mt-6 space-y-4">
+          <section>
+            <SectionHeader title="Activity" />
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               <StatCard label="Posted" value={data.bountiesPosted} />
-              <StatCard label="Completed as poster" value={data.bountiesCompletedAsPoster} />
+              <StatCard label="Done as poster" value={data.bountiesCompletedAsPoster} />
               <StatCard label="Claimed" value={data.bountiesClaimed} />
-              <StatCard label="Completed as hunter" value={data.bountiesCompletedAsHunter} />
+              <StatCard label="Done as hunter" value={data.bountiesCompletedAsHunter} />
             </div>
+          </section>
 
-            <SuccessRate
-              completed={data.bountiesCompletedAsHunter}
-              total={data.bountiesClaimed}
-            />
-
-            <div className="grid grid-cols-2 gap-3">
-              <StatCard label="Total earned" value={formatCusd(data.totalEarned)} />
-              <StatCard label="Total spent" value={formatCusd(data.totalSpent)} />
-            </div>
-          </div>
-        )}
-      </main>
-      <Footer />
-    </>
+          <section>
+            <SectionHeader title="Achievements" />
+            <Achievements rep={data} />
+          </section>
+        </div>
+      )}
+    </AppShell>
   );
 }
