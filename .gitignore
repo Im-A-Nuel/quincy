@@ -14,6 +14,7 @@ frontend/out/
 frontend/build/
 frontend/.vercel/
 frontend/next-env.d.ts
+frontend/*.tsbuildinfo
 
 # Production
 dist/
