@@ -10,6 +10,7 @@ import { Spinner } from "@/components/ui/Spinner";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ProofLink } from "@/components/bounty/ProofLink";
 import { AddressChip } from "@/components/bounty/AddressChip";
+import { BountyActions } from "@/components/bounty/BountyActions";
 import { useBounty } from "@/hooks/useBounty";
 import { formatCusd, timeUntil, isExpired } from "@/lib/format";
 import { txUrl } from "@/lib/chains";
@@ -17,7 +18,7 @@ import { txUrl } from "@/lib/chains";
 export default function BountyDetailPage() {
   const params = useParams<{ id: string }>();
   const id = Number(params.id);
-  const { data: bounty, isLoading, isError } = useBounty(id);
+  const { data: bounty, isLoading, isError, refetch } = useBounty(id);
 
   return (
     <>
@@ -67,6 +68,10 @@ export default function BountyDetailPage() {
               <div className="pt-1">
                 <ProofLink proofUri={bounty.proofUri} />
               </div>
+            </div>
+
+            <div className="mt-6">
+              <BountyActions bounty={bounty} onDone={() => refetch()} />
             </div>
 
             <div className="mt-4 flex flex-wrap gap-3 text-xs">
