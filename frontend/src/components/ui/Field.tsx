@@ -30,6 +30,6 @@ export function Field({
 }
 
 const inputBase =
-  "w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-quincy-500 focus:ring-1 focus:ring-quincy-500";
+  "w-full rounded-2xl border border-black/[0.06] bg-soft-gray/60 px-4 py-3 text-sm outline-none transition-colors placeholder:text-gray-400 focus:border-quincy-300 focus:bg-white focus:ring-2 focus:ring-quincy-100";
 
 export const inputClass = inputBase;
