@@ -2,7 +2,7 @@
 
 /** Shorten a wallet address: 0x1234…abcd */
 export function shortAddress(addr?: string | null): string {
-  if (!addr) return "—";
+  if (!addr) return "-";
   return `${addr.slice(0, 6)}…${addr.slice(-4)}`;
 }
 

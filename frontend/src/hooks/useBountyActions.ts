@@ -6,8 +6,8 @@ import { quincyAddress } from "@/lib/chains";
 
 /**
  * Write hooks for each bounty lifecycle step. Each action is its own on-chain
- * transaction (create, claim, submit, approve, cancel, dispute) — never
- * batched — matching the contract's one-tx-per-step design.
+ * transaction (create, claim, submit, approve, cancel, dispute) - never
+ * batched - matching the contract's one-tx-per-step design.
  */
 function useBountyWrite() {
   const { writeContractAsync, ...rest } = useWriteContract();

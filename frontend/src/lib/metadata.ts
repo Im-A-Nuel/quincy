@@ -31,7 +31,7 @@ export function decodeMetadata(raw: string): BountyMetadata {
       };
     }
   } catch {
-    /* not JSON — treat as plain description */
+    /* not JSON - treat as plain description */
   }
   return { title: "Untitled bounty", category: "other", description: raw };
 }

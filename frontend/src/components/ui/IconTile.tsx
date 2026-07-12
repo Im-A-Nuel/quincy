@@ -19,7 +19,7 @@ const SIZE = {
   lg: "h-16 w-16 rounded-3xl text-3xl",
 };
 
-/** Colorful squircle icon container, tinted softly — the reference's app-icon look. */
+/** Colorful squircle icon container, tinted softly - the reference's app-icon look. */
 export function IconTile({
   tint = "green",
   size = "md",
