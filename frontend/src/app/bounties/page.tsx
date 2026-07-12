@@ -1,68 +1,91 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
+import { useSearchParams } from "next/navigation";
+import { AppShell } from "@/components/nav/AppShell";
 import { BountyCard } from "@/components/bounty/BountyCard";
 import { BountyListSkeleton } from "@/components/bounty/BountyListSkeleton";
-import { BountyFilters, type FilterState } from "@/components/bounty/BountyFilters";
+import { CategoryChips } from "@/components/bounty/CategoryChips";
+import { SortChips } from "@/components/bounty/SortChips";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { useBounties } from "@/hooks/useBounties";
+import type { BountyCategory } from "@/lib/types";
+import type { SortOption } from "@/lib/constants";
 
-export default function BountiesPage() {
-  const [filters, setFilters] = useState<FilterState>({ category: "", sort: "newest" });
+function ExploreContent() {
+  const params = useSearchParams();
+  const initialCategory = (params.get("category") ?? "") as BountyCategory | "";
+
+  const [category, setCategory] = useState<BountyCategory | "">(initialCategory);
+  const [sort, setSort] = useState<SortOption>("newest");
+
   const { data, isLoading, isError, refetch } = useBounties({
     status: "open",
-    category: filters.category || undefined,
-    sort: filters.sort,
+    category: category || undefined,
+    sort,
   });
 
   return (
-    <>
-      <Header />
-      <main className="mx-auto max-w-3xl px-4 py-6">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <h1 className="text-xl font-bold text-gray-900">Open bounties</h1>
-          <BountyFilters value={filters} onChange={setFilters} />
+    <div className="space-y-5">
+      <div>
+        <h1 className="text-2xl font-extrabold text-gray-900">Explore bounties</h1>
+        <p className="mt-1 text-sm text-gray-500">Find a task and start earning cUSD.</p>
+      </div>
+
+      <CategoryChips value={category} onChange={setCategory} />
+
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-gray-400">
+          {data ? `${data.total} open` : " "}
+        </span>
+        <SortChips value={sort} onChange={setSort} />
+      </div>
+
+      {isLoading && <BountyListSkeleton />}
+
+      {isError && (
+        <EmptyState
+          icon="⚠️"
+          title="Couldn't load bounties"
+          hint="The indexer may be syncing. Try again in a moment."
+          action={
+            <button className="btn-primary" onClick={() => refetch()}>
+              Retry
+            </button>
+          }
+        />
+      )}
+
+      {data && data.bounties.length === 0 && (
+        <EmptyState
+          title="No bounties here"
+          hint="Try another category, or post the first one."
+          action={
+            <Link href="/create" className="btn-primary">
+              Post a bounty
+            </Link>
+          }
+        />
+      )}
+
+      {data && data.bounties.length > 0 && (
+        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {data.bounties.map((b) => (
+            <BountyCard key={b.id} bounty={b} />
+          ))}
         </div>
+      )}
+    </div>
+  );
+}
 
-        {isLoading && <BountyListSkeleton />}
-
-        {isError && (
-          <EmptyState
-            icon="⚠️"
-            title="Couldn't load bounties"
-            hint="The indexer may be syncing. Try again in a moment."
-            action={
-              <button className="btn-primary" onClick={() => refetch()}>
-                Retry
-              </button>
-            }
-          />
-        )}
-
-        {data && data.bounties.length === 0 && (
-          <EmptyState
-            title="No open bounties yet"
-            hint="Be the first to post one."
-            action={
-              <Link href="/create" className="btn-primary">
-                Post a bounty
-              </Link>
-            }
-          />
-        )}
-
-        {data && data.bounties.length > 0 && (
-          <div className="grid gap-3 sm:grid-cols-2">
-            {data.bounties.map((b) => (
-              <BountyCard key={b.id} bounty={b} />
-            ))}
-          </div>
-        )}
-      </main>
-      <Footer />
-    </>
+export default function BountiesPage() {
+  return (
+    <AppShell maxWidth="max-w-5xl">
+      <Suspense fallback={<BountyListSkeleton />}>
+        <ExploreContent />
+      </Suspense>
+    </AppShell>
   );
 }
