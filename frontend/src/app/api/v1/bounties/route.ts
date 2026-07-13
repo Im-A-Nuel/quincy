@@ -15,6 +15,7 @@ export async function GET(req: NextRequest) {
   const status = params.get("status");
   const category = params.get("category");
   const involves = params.get("involves");
+  const q = params.get("q");
   const sort = SORTS[params.get("sort") ?? "newest"] ?? SORTS.newest;
   const page = Math.max(1, Number(params.get("page") ?? "1"));
 
@@ -30,6 +31,10 @@ export async function GET(req: NextRequest) {
   if (involves) {
     args.push(involves.toLowerCase());
     where.push(`(poster_address = $${args.length} OR hunter_address = $${args.length})`);
+  }
+  if (q) {
+    args.push(`%${q}%`);
+    where.push(`title ILIKE $${args.length}`);
   }
   const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
 
