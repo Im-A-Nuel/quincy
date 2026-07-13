@@ -165,6 +165,47 @@ contract QuincyBounty is ReentrancyGuard {
         cUSD.safeTransfer(b.poster, b.reward);
     }
 
+    /// @notice Open a dispute. Either party may call it while the bounty is
+    ///         in progress or awaiting review.
+    function disputeBounty(uint256 bountyId) external {
+        Bounty storage b = _bounties[bountyId];
+        if (msg.sender != b.poster && msg.sender != b.hunter) revert NotParty();
+        if (b.status != Status.InProgress && b.status != Status.PendingReview) {
+            revert InvalidStatus();
+        }
+
+        b.status = Status.Disputed;
+
+        emit BountyDisputed(bountyId);
+    }
+
+    /// @notice Resolve a dispute, paying the hunter or refunding the poster.
+    ///         Admin-only for MVP; follows checks-effects-interactions.
+    function resolveDispute(uint256 bountyId, bool payHunter)
+        external
+        onlyAdmin
+        nonReentrant
+    {
+        Bounty storage b = _bounties[bountyId];
+        if (b.status != Status.Disputed) revert InvalidStatus();
+
+        address recipient;
+        if (payHunter) {
+            b.status = Status.Completed;
+            _reputations[b.poster].bountiesCompletedAsPoster++;
+            _reputations[b.hunter].bountiesCompletedAsHunter++;
+            _reputations[b.hunter].totalEarned += b.reward;
+            _reputations[b.poster].totalSpent += b.reward;
+            recipient = b.hunter;
+        } else {
+            b.status = Status.Cancelled;
+            recipient = b.poster;
+        }
+
+        emit DisputeResolved(bountyId, payHunter);
+        cUSD.safeTransfer(recipient, b.reward);
+    }
+
     /// @notice Read the full bounty struct.
     function getBounty(uint256 bountyId) external view returns (Bounty memory) {
         return _bounties[bountyId];
