@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AppShell } from "@/components/nav/AppShell";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { CategoryBadge } from "@/components/ui/CategoryBadge";
-import { Spinner } from "@/components/ui/Spinner";
+import { BountyDetailSkeleton } from "@/components/bounty/BountyDetailSkeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { SearchArt } from "@/components/illustrations/spot";
 import { InfoRow } from "@/components/ui/InfoRow";
@@ -30,11 +30,7 @@ export default function BountyDetailPage() {
         ← Back
       </Link>
 
-      {isLoading && (
-        <div className="flex justify-center py-16 text-quincy-600">
-          <Spinner className="h-6 w-6" />
-        </div>
-      )}
+      {isLoading && <BountyDetailSkeleton />}
 
       {isError && (
         <div className="mt-6">
