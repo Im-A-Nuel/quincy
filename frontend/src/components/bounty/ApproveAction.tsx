@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { TxButton } from "@/components/ui/TxButton";
 import { useApproveBounty, useDisputeBounty } from "@/hooks/useBountyActions";
+import { useToast } from "@/components/toast/ToastContext";
 
 /**
  * Shown to the poster while a bounty is in PendingReview: approve to release
@@ -11,18 +12,22 @@ import { useApproveBounty, useDisputeBounty } from "@/hooks/useBountyActions";
 export function ApproveAction({ bountyId, onDone }: { bountyId: number; onDone?: () => void }) {
   const { approveBounty } = useApproveBounty();
   const { disputeBounty } = useDisputeBounty();
+  const toast = useToast();
   const [pending, setPending] = useState<"approve" | "dispute" | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   async function act(kind: "approve" | "dispute") {
-    setError(null);
     setPending(kind);
     try {
-      if (kind === "approve") await approveBounty(bountyId);
-      else await disputeBounty(bountyId);
+      if (kind === "approve") {
+        await approveBounty(bountyId);
+        toast.success("Approved - reward released to hunter");
+      } else {
+        await disputeBounty(bountyId);
+        toast.info("Dispute opened - an admin will review");
+      }
       onDone?.();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Transaction failed");
+      toast.error(e instanceof Error ? e.message : "Transaction failed");
     } finally {
       setPending(null);
     }
@@ -45,7 +50,6 @@ export function ApproveAction({ bountyId, onDone }: { bountyId: number; onDone?:
       >
         {pending === "dispute" ? "Opening dispute…" : "Reject / dispute"}
       </button>
-      {error && <p className="text-sm text-red-600">{error}</p>}
     </div>
   );
 }

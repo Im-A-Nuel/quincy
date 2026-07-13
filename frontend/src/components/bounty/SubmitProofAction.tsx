@@ -4,6 +4,7 @@ import { useState } from "react";
 import { TxButton } from "@/components/ui/TxButton";
 import { Field, inputClass } from "@/components/ui/Field";
 import { useSubmitProof } from "@/hooks/useBountyActions";
+import { useToast } from "@/components/toast/ToastContext";
 
 /**
  * Shown to the hunter while a bounty is InProgress. Accepts a proof link or
@@ -12,6 +13,7 @@ import { useSubmitProof } from "@/hooks/useBountyActions";
  */
 export function SubmitProofAction({ bountyId, onDone }: { bountyId: number; onDone?: () => void }) {
   const { submitProof } = useSubmitProof();
+  const toast = useToast();
   const [uri, setUri] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -26,9 +28,10 @@ export function SubmitProofAction({ bountyId, onDone }: { bountyId: number; onDo
     setPending(true);
     try {
       await submitProof(bountyId, uri.trim());
+      toast.success("Proof submitted for review");
       onDone?.();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Submit failed");
+      toast.error(e instanceof Error ? e.message : "Submit failed");
     } finally {
       setPending(false);
     }

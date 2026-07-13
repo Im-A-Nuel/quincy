@@ -6,6 +6,8 @@ import { CreateBountyForm } from "@/components/bounty/CreateBountyForm";
 import { CreateResult } from "@/components/bounty/CreateResult";
 import { useCreateBountyFlow } from "@/hooks/useCreateBountyFlow";
 import { LockIcon } from "@/components/ui/icons";
+import { useToast } from "@/components/toast/ToastContext";
+import { useEffect } from "react";
 
 const STEP_LABEL: Record<string, string> = {
   approving: "Approving cUSD…",
@@ -15,6 +17,13 @@ const STEP_LABEL: Record<string, string> = {
 export default function CreatePage() {
   const { run, step, error, txHash } = useCreateBountyFlow();
   const busy = step === "approving" || step === "creating";
+  const toast = useToast();
+
+  useEffect(() => {
+    if (step === "error" && error) toast.error(error);
+    if (step === "done") toast.success("Bounty posted - reward locked in escrow");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
 
   return (
     <AppShell maxWidth="max-w-xl">
