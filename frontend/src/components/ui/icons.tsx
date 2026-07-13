@@ -95,3 +95,17 @@ export const ArrowRightIcon = (p: IconProps) => (
     <path d="M5 12h14M13 6l6 6-6 6" />
   </Base>
 );
+
+export const TrophyIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="M7 4h10v5a5 5 0 01-10 0V4z" />
+    <path d="M7 6H4v1a3 3 0 003 3M17 6h3v1a3 3 0 01-3 3M9 20h6M12 14v6" />
+  </Base>
+);
+
+export const CoinIcon = (p: IconProps) => (
+  <Base {...p}>
+    <circle cx="12" cy="12" r="8" />
+    <path d="M12 8v8M9.5 9.5h3.5a1.75 1.75 0 010 3.5H10a1.75 1.75 0 000 3.5h4" />
+  </Base>
+);
