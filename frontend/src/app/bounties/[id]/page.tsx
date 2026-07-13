@@ -7,6 +7,7 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { CategoryBadge } from "@/components/ui/CategoryBadge";
 import { Spinner } from "@/components/ui/Spinner";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { SearchArt } from "@/components/illustrations/spot";
 import { InfoRow } from "@/components/ui/InfoRow";
 import { Avatar } from "@/components/ui/Avatar";
 import { ProofLink } from "@/components/bounty/ProofLink";
@@ -35,7 +36,7 @@ export default function BountyDetailPage() {
 
       {isError && (
         <div className="mt-6">
-          <EmptyState icon="🔍" title="Bounty not found" hint="It may have been removed or never existed." />
+          <EmptyState art={<SearchArt />} title="Bounty not found" hint="It may have been removed or never existed." />
         </div>
       )}
 

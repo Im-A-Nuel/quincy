@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { AppShell } from "@/components/nav/AppShell";
 import { Spinner } from "@/components/ui/Spinner";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { WalletArt } from "@/components/illustrations/spot";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { StatCard } from "@/components/profile/StatCard";
 import { SuccessRate } from "@/components/profile/SuccessRate";
@@ -26,7 +27,7 @@ export default function ProfilePage() {
       )}
 
       {isError && (
-        <EmptyState icon="👤" title="No activity yet" hint="This wallet hasn't posted or claimed any bounties." />
+        <EmptyState art={<WalletArt />} title="No activity yet" hint="This wallet hasn't posted or claimed any bounties." />
       )}
 
       {data && (
