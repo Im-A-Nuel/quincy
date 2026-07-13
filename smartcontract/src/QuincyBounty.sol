@@ -43,9 +43,9 @@ contract QuincyBounty is ReentrancyGuard {
     /// @notice The cUSD token used for all rewards.
     IERC20 public immutable cUSD;
     /// @notice Address allowed to resolve disputes (single EOA for MVP).
-    address public admin;
+    address public immutable admin;
     /// @notice Minimum reward, to avoid dust-value spam bounties.
-    uint256 public minReward;
+    uint256 public immutable minReward;
     /// @notice Id assigned to the next created bounty.
     uint256 public nextBountyId = 1;
 
