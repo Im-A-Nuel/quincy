@@ -1,12 +1,13 @@
 import type { ReactNode } from "react";
 
-type Tint = "green" | "mint" | "blue" | "purple" | "pink" | "orange" | "yellow" | "gray";
+type Tint = "green" | "mint" | "blue" | "purple" | "indigo" | "pink" | "orange" | "yellow" | "gray";
 
 const TINT: Record<Tint, string> = {
-  green: "bg-soft-green text-quincy-600",
+  green: "bg-soft-green text-emerald-600",
   mint: "bg-soft-mint text-teal-600",
   blue: "bg-soft-blue text-blue-600",
   purple: "bg-soft-purple text-purple-600",
+  indigo: "bg-soft-indigo text-quincy-600",
   pink: "bg-soft-pink text-pink-600",
   orange: "bg-soft-orange text-orange-600",
   yellow: "bg-soft-yellow text-amber-600",
