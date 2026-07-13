@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { AppShell } from "@/components/nav/AppShell";
-import { Spinner } from "@/components/ui/Spinner";
+import { ProfileSkeleton } from "@/components/profile/ProfileSkeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { WalletArt } from "@/components/illustrations/spot";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -21,11 +21,7 @@ export default function ProfilePage() {
 
   return (
     <AppShell>
-      {isLoading && (
-        <div className="flex justify-center py-16 text-quincy-600">
-          <Spinner className="h-6 w-6" />
-        </div>
-      )}
+      {isLoading && <ProfileSkeleton />}
 
       {isError && (
         <EmptyState art={<WalletArt />} title="No activity yet" hint="This wallet hasn't posted or claimed any bounties." />
