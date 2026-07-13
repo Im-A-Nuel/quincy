@@ -8,7 +8,7 @@ function required(name: string): string {
 
 export const env = {
   databaseUrl: required("DATABASE_URL"),
-  celoRpc: process.env.CELO_RPC ?? "https://forno.celo.org",
+  celoRpc: process.env.CELO_RPC_URL ?? process.env.CELO_RPC ?? "https://forno.celo.org",
   quincyAddress: required("QUINCY_ADDRESS") as `0x${string}`,
   startBlock: BigInt(process.env.START_BLOCK ?? "0"),
   pollIntervalMs: Number(process.env.POLL_INTERVAL_MS ?? "15000"),
