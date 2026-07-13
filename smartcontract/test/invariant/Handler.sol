@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Test} from "forge-std/Test.sol";
-import {QuincyBounty} from "../../src/QuincyBounty.sol";
-import {MockERC20} from "../mocks/MockERC20.sol";
+import { Test } from "forge-std/Test.sol";
+import { QuincyBounty } from "../../src/QuincyBounty.sol";
+import { MockERC20 } from "../mocks/MockERC20.sol";
 
 /// @notice Drives random lifecycle actions against QuincyBounty for the
 ///         escrow-balance invariant. Tracks every created bounty id.

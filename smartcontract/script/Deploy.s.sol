@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Script, console2} from "forge-std/Script.sol";
-import {QuincyBounty} from "../src/QuincyBounty.sol";
+import { Script, console2 } from "forge-std/Script.sol";
+import { QuincyBounty } from "../src/QuincyBounty.sol";
 
 /// @notice Deploys QuincyBounty with the correct cUSD address for the target
 ///         Celo network. Run with `--rpc-url celo|alfajores --broadcast`.
