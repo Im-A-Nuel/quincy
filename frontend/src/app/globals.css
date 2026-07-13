@@ -5,6 +5,14 @@
 :root {
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     sans-serif;
+  --canvas: #fafbff;
+  --surface: #ffffff;
+}
+
+.dark {
+  --canvas: #0b0e16;
+  --surface: #151a26;
+  color-scheme: dark;
 }
 
 html {
@@ -15,6 +23,26 @@ body {
   @apply bg-canvas text-gray-900 antialiased;
   font-feature-settings: "ss01", "cv01";
 }
+
+/* Dark theme: remap the common gray/white/border utilities so components that
+   use fixed Tailwind grays flip without per-component edits. Brand (quincy-*)
+   and soft accent tints intentionally stay as-is. */
+.dark body {
+  @apply text-gray-100;
+}
+.dark .text-gray-900 { color: #f3f4f6; }
+.dark .text-gray-800 { color: #e5e7eb; }
+.dark .text-gray-700 { color: #d1d5db; }
+.dark .text-gray-600 { color: #a9b1c1; }
+.dark .text-gray-500 { color: #8b93a3; }
+.dark .text-gray-400 { color: #6b7280; }
+.dark .bg-white { background-color: var(--surface); }
+.dark .bg-white\/50,
+.dark .bg-white\/60 { background-color: rgba(21, 26, 38, 0.6); }
+.dark .bg-white\/80,
+.dark .bg-white\/90 { background-color: rgba(17, 21, 31, 0.85); }
+.dark .border-gray-200,
+.dark .border-gray-300 { border-color: rgba(255, 255, 255, 0.09); }
 
 @layer base {
   h1,
