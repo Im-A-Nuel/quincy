@@ -123,6 +123,48 @@ contract QuincyBounty is ReentrancyGuard {
         emit BountyClaimed(bountyId, msg.sender);
     }
 
+    /// @notice Submit a proof URI for a claimed bounty. Only the hunter.
+    function submitProof(uint256 bountyId, string calldata proofURI) external {
+        Bounty storage b = _bounties[bountyId];
+        if (msg.sender != b.hunter) revert NotHunter();
+        if (b.status != Status.InProgress) revert InvalidStatus();
+
+        b.proofURI = proofURI;
+        b.status = Status.PendingReview;
+
+        emit ProofSubmitted(bountyId, proofURI);
+    }
+
+    /// @notice Approve the submitted proof and release the reward to the hunter.
+    ///         Only the poster; follows checks-effects-interactions.
+    function approveBounty(uint256 bountyId) external nonReentrant {
+        Bounty storage b = _bounties[bountyId];
+        if (msg.sender != b.poster) revert NotPoster();
+        if (b.status != Status.PendingReview) revert InvalidStatus();
+
+        b.status = Status.Completed;
+        _reputations[b.poster].bountiesCompletedAsPoster++;
+        _reputations[b.hunter].bountiesCompletedAsHunter++;
+        _reputations[b.hunter].totalEarned += b.reward;
+        _reputations[b.poster].totalSpent += b.reward;
+
+        emit BountyApproved(bountyId, b.hunter, b.reward);
+        cUSD.safeTransfer(b.hunter, b.reward);
+    }
+
+    /// @notice Cancel an unclaimed bounty and refund the poster in full.
+    ///         Only the poster, only while Open.
+    function cancelBounty(uint256 bountyId) external nonReentrant {
+        Bounty storage b = _bounties[bountyId];
+        if (msg.sender != b.poster) revert NotPoster();
+        if (b.status != Status.Open) revert InvalidStatus();
+
+        b.status = Status.Cancelled;
+
+        emit BountyCancelled(bountyId);
+        cUSD.safeTransfer(b.poster, b.reward);
+    }
+
     /// @notice Read the full bounty struct.
     function getBounty(uint256 bountyId) external view returns (Bounty memory) {
         return _bounties[bountyId];
