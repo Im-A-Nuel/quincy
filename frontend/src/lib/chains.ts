@@ -12,10 +12,10 @@ export const CUSD_ADDRESS: Record<"celo" | "alfajores", `0x${string}`> = {
   alfajores: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
 };
 
-/** Deployed QuincyBounty address per network (from env). */
+/** Deployed QuincyBounty address per network. Env overrides the default. */
 export const QUINCY_ADDRESS: Record<"celo" | "alfajores", `0x${string}`> = {
   celo: (process.env.NEXT_PUBLIC_QUINCY_ADDRESS_CELO ??
-    "0x0000000000000000000000000000000000000000") as `0x${string}`,
+    "0x4a81cf92d285a9b92fecb1ea187cd2466e048b21") as `0x${string}`,
   alfajores: (process.env.NEXT_PUBLIC_QUINCY_ADDRESS_ALFAJORES ??
     "0x0000000000000000000000000000000000000000") as `0x${string}`,
 };
