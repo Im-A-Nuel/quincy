@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./src/app/**/*.{ts,tsx}",
     "./src/components/**/*.{ts,tsx}",
@@ -8,9 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // App surfaces - soft, bright, near-white with a cool tint.
-        canvas: "#FAFBFF",
-        surface: "#FFFFFF",
+        // App surfaces - CSS vars so light/dark flip everywhere at once.
+        canvas: "var(--canvas)",
+        surface: "var(--surface)",
         // Quincy brand palette - indigo/violet, modern web3 consumer feel.
         quincy: {
           50: "#eef2ff",
