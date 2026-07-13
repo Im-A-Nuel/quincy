@@ -19,7 +19,7 @@ export function AppShell({
     <div className="min-h-screen bg-canvas">
       <TopNav />
       <ThemeToggle className="fixed right-4 top-4 z-40 md:hidden" />
-      <main className={`mx-auto w-full ${maxWidth} px-4 pb-28 pt-4 md:px-6 md:pb-12 md:pt-8`}>
+      <main className={`mx-auto w-full ${maxWidth} animate-fade-up px-4 pb-28 pt-4 md:px-6 md:pb-12 md:pt-8`}>
         {children}
         <Footer />
       </main>
