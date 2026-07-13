@@ -4,6 +4,7 @@ import { useAccount } from "wagmi";
 import type { ReactNode } from "react";
 import { WalletButton } from "./WalletButton";
 import { EmptyState } from "./ui/EmptyState";
+import { WalletArt } from "./illustrations/spot";
 
 /** Renders children only when a wallet is connected; otherwise prompts connect. */
 export function ConnectGate({
@@ -17,7 +18,7 @@ export function ConnectGate({
   if (isConnected) return <>{children}</>;
   return (
     <EmptyState
-      icon="👛"
+      art={<WalletArt />}
       title="Wallet not connected"
       hint={message}
       action={<WalletButton />}

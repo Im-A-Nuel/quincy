@@ -9,6 +9,7 @@ import { BountyListSkeleton } from "@/components/bounty/BountyListSkeleton";
 import { CategoryChips } from "@/components/bounty/CategoryChips";
 import { SortChips } from "@/components/bounty/SortChips";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { EmptyBoxArt, ErrorArt } from "@/components/illustrations/spot";
 import { useBounties } from "@/hooks/useBounties";
 import type { BountyCategory } from "@/lib/types";
 import type { SortOption } from "@/lib/constants";
@@ -46,7 +47,7 @@ function ExploreContent() {
 
       {isError && (
         <EmptyState
-          icon="⚠️"
+          art={<ErrorArt />}
           title="Couldn't load bounties"
           hint="The indexer may be syncing. Try again in a moment."
           action={
@@ -59,6 +60,7 @@ function ExploreContent() {
 
       {data && data.bounties.length === 0 && (
         <EmptyState
+          art={<EmptyBoxArt />}
           title="No bounties here"
           hint="Try another category, or post the first one."
           action={

@@ -10,6 +10,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { BountyCard } from "@/components/bounty/BountyCard";
 import { BountyListSkeleton } from "@/components/bounty/BountyListSkeleton";
 import { useBounties } from "@/hooks/useBounties";
+import { EmptyBoxArt } from "@/components/illustrations/spot";
 
 const TABS = [
   { key: "open", label: "Open" },
@@ -42,7 +43,7 @@ function MyList({ address }: { address: string }) {
           </div>
         ) : (
           <EmptyState
-            icon="🗂️"
+            art={<EmptyBoxArt />}
             title="Nothing here yet"
             hint="Bounties you post or claim will show up in these tabs."
             action={
