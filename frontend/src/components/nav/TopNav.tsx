@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { NAV_ITEMS, isActive } from "./navItems";
 import { WalletButton } from "@/components/WalletButton";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { ExploreIcon } from "@/components/ui/icons";
 
 /** Desktop top navigation: logo, primary links, search, wallet, and a Create CTA. */
@@ -54,6 +55,7 @@ export function TopNav() {
         </form>
 
         <div className="ml-auto flex items-center gap-3 lg:ml-3">
+          <ThemeToggle />
           <WalletButton />
           <Link href="/create" className="btn-primary">
             Post a bounty
