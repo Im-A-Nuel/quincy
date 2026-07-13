@@ -6,6 +6,7 @@ import { BountyCard } from "@/components/bounty/BountyCard";
 import { BountyListSkeleton } from "@/components/bounty/BountyListSkeleton";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { EmptyBoxArt } from "@/components/illustrations/spot";
 
 /** Top open bounties by reward for the home page. */
 export function FeaturedBounties() {
@@ -19,6 +20,7 @@ export function FeaturedBounties() {
         <BountyListSkeleton count={2} />
       ) : featured.length === 0 ? (
         <EmptyState
+          art={<EmptyBoxArt />}
           title="No open bounties yet"
           hint="Post the first one and get it in front of hunters."
           action={

@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { txUrl } from "@/lib/chains";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { SuccessArt } from "@/components/illustrations/spot";
 
 /** Success panel shown after a bounty is created on-chain. */
 export function CreateResult({ txHash }: { txHash: `0x${string}` }) {
   return (
     <EmptyState
-      icon="🎉"
+      art={<SuccessArt />}
       title="Bounty posted!"
       hint="Your reward is now locked in escrow. Hunters can claim it right away."
       action={
