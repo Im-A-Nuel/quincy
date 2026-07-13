@@ -12,6 +12,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://quincy-celo.vercel.app"),
   title: "Quincy - Escrow micro-task bounties on Celo",
   description:
     "Post and complete micro-task bounties with cUSD rewards locked in escrow. MiniPay-first, built on Celo.",
