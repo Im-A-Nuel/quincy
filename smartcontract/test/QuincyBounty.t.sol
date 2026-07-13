@@ -207,8 +207,8 @@ contract QuincyBountyTest is Test {
     }
 
     function test_ResolveDispute_RefundPoster() public {
-        uint256 id = _create();
         uint256 balBefore = cusd.balanceOf(poster);
+        uint256 id = _create();
         _claimAndSubmit(id);
         vm.prank(hunter);
         quincy.disputeBounty(id);
