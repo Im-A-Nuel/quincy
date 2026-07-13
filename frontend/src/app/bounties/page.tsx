@@ -77,7 +77,7 @@ function ExploreContent() {
       )}
 
       {data && data.bounties.length > 0 && (
-        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <div className="stagger grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {data.bounties.map((b) => (
             <BountyCard key={b.id} bounty={b} />
           ))}

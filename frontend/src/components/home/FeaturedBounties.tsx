@@ -30,7 +30,7 @@ export function FeaturedBounties() {
           }
         />
       ) : (
-        <div className="grid gap-3 md:grid-cols-2">
+        <div className="stagger grid gap-3 md:grid-cols-2">
           {featured.map((b) => (
             <BountyCard key={b.id} bounty={b} />
           ))}
