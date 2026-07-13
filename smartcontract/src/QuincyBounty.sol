@@ -84,6 +84,45 @@ contract QuincyBounty is ReentrancyGuard {
         minReward = minReward_;
     }
 
+    /// @notice Create a bounty and lock its reward in escrow. Requires the
+    ///         caller to have approved this contract for `reward` cUSD first.
+    function createBounty(string calldata description, uint256 reward, uint256 deadline)
+        external
+        nonReentrant
+        returns (uint256 bountyId)
+    {
+        if (reward < minReward) revert RewardTooLow();
+        if (deadline <= block.timestamp) revert DeadlineInPast();
+
+        bountyId = nextBountyId++;
+        _bounties[bountyId] = Bounty({
+            poster: msg.sender,
+            hunter: address(0),
+            reward: reward,
+            deadline: deadline,
+            status: Status.Open,
+            description: description,
+            proofURI: ""
+        });
+        _reputations[msg.sender].bountiesPosted++;
+
+        emit BountyCreated(bountyId, msg.sender, reward, deadline);
+        cUSD.safeTransferFrom(msg.sender, address(this), reward);
+    }
+
+    /// @notice Claim an open bounty as the hunter. First claim wins.
+    function claimBounty(uint256 bountyId) external {
+        Bounty storage b = _bounties[bountyId];
+        if (b.status != Status.Open) revert InvalidStatus();
+        if (b.poster == msg.sender) revert PosterCannotClaim();
+
+        b.hunter = msg.sender;
+        b.status = Status.InProgress;
+        _reputations[msg.sender].bountiesClaimed++;
+
+        emit BountyClaimed(bountyId, msg.sender);
+    }
+
     /// @notice Read the full bounty struct.
     function getBounty(uint256 bountyId) external view returns (Bounty memory) {
         return _bounties[bountyId];
