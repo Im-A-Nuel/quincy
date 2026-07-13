@@ -12,6 +12,7 @@ import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { Achievements } from "@/components/profile/Achievements";
 import { useProfile } from "@/hooks/useProfile";
 import { formatCusd } from "@/lib/format";
+import { CoinIcon, TrophyIcon, TasksIcon, CheckIcon, LockIcon } from "@/components/ui/icons";
 
 export default function ProfilePage() {
   const params = useParams<{ address: string }>();
@@ -35,8 +36,8 @@ export default function ProfilePage() {
           <ProfileHeader address={address} completed={data.bountiesCompletedAsHunter} />
 
           <div className="grid grid-cols-2 gap-3">
-            <StatCard label="Total earned" value={formatCusd(data.totalEarned)} />
-            <StatCard label="Total spent" value={formatCusd(data.totalSpent)} />
+            <StatCard label="Total earned" value={formatCusd(data.totalEarned)} icon={<CoinIcon className="h-5 w-5" />} />
+            <StatCard label="Total spent" value={formatCusd(data.totalSpent)} icon={<CoinIcon className="h-5 w-5" />} />
           </div>
 
           <SuccessRate
@@ -47,10 +48,10 @@ export default function ProfilePage() {
           <section>
             <SectionHeader title="Activity" />
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <StatCard label="Posted" value={data.bountiesPosted} />
-              <StatCard label="Done as poster" value={data.bountiesCompletedAsPoster} />
-              <StatCard label="Claimed" value={data.bountiesClaimed} />
-              <StatCard label="Done as hunter" value={data.bountiesCompletedAsHunter} />
+              <StatCard label="Posted" value={data.bountiesPosted} icon={<LockIcon className="h-5 w-5" />} />
+              <StatCard label="Done as poster" value={data.bountiesCompletedAsPoster} icon={<CheckIcon className="h-5 w-5" />} />
+              <StatCard label="Claimed" value={data.bountiesClaimed} icon={<TasksIcon className="h-5 w-5" />} />
+              <StatCard label="Done as hunter" value={data.bountiesCompletedAsHunter} icon={<TrophyIcon className="h-5 w-5" />} />
             </div>
           </section>
 
