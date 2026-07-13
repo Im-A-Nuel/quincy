@@ -6,6 +6,7 @@ import { useCusdBalance } from "@/hooks/useCusd";
 import { fromCusdUnits } from "@/lib/units";
 import { shortAddress } from "@/lib/format";
 import { WalletButton } from "@/components/WalletButton";
+import { CopyButton } from "@/components/ui/CopyButton";
 import { PlusIcon, ExploreIcon, WalletIcon } from "@/components/ui/icons";
 
 /** Gradient hero card summarizing the connected wallet + quick actions. */
@@ -23,7 +24,13 @@ export function WalletSummary() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 text-sm font-medium text-white/80">
           <WalletIcon className="h-5 w-5" />
-          {isConnected ? shortAddress(address) : "Not connected"}
+          {isConnected && address ? (
+            <CopyButton text={address} label="Address copied" className="text-white/80 hover:text-white">
+              {shortAddress(address)}
+            </CopyButton>
+          ) : (
+            "Not connected"
+          )}
         </div>
         {!isConnected && <WalletButton />}
       </div>

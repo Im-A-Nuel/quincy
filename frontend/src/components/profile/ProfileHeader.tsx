@@ -1,6 +1,7 @@
 import { Avatar } from "@/components/ui/Avatar";
 import { shortAddress } from "@/lib/format";
 import { addressUrl } from "@/lib/chains";
+import { CopyButton } from "@/components/ui/CopyButton";
 
 /** Gradient profile header card with avatar and wallet identity. */
 export function ProfileHeader({
@@ -15,7 +16,13 @@ export function ProfileHeader({
       <div className="flex justify-center">
         <Avatar address={address} size="lg" />
       </div>
-      <h1 className="mt-3 text-lg font-bold">{shortAddress(address)}</h1>
+      <CopyButton
+        text={address}
+        label="Address copied"
+        className="mt-3 justify-center text-lg font-bold text-white hover:text-white/80"
+      >
+        {shortAddress(address)}
+      </CopyButton>
       <p className="text-sm text-white/70">
         {completed} bounties completed
       </p>
