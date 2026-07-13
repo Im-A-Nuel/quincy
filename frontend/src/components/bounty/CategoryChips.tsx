@@ -3,6 +3,7 @@
 import { CATEGORIES } from "@/lib/constants";
 import type { BountyCategory } from "@/lib/types";
 import { Chip } from "@/components/ui/Chip";
+import { CATEGORY_ICON } from "@/components/ui/categoryIcons";
 
 /** Swipeable category filter chips (including an "All" reset). */
 export function CategoryChips({
@@ -17,12 +18,15 @@ export function CategoryChips({
       <Chip active={value === ""} onClick={() => onChange("")}>
         All
       </Chip>
-      {CATEGORIES.map((c) => (
-        <Chip key={c.value} active={value === c.value} onClick={() => onChange(c.value)}>
-          <span aria-hidden>{c.emoji}</span>
-          {c.label}
-        </Chip>
-      ))}
+      {CATEGORIES.map((c) => {
+        const Icon = CATEGORY_ICON[c.value];
+        return (
+          <Chip key={c.value} active={value === c.value} onClick={() => onChange(c.value)}>
+            <Icon className="h-4 w-4" />
+            {c.label}
+          </Chip>
+        );
+      })}
     </div>
   );
 }

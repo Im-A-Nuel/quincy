@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/constants";
 import { IconTile } from "@/components/ui/IconTile";
+import { CATEGORY_ICON } from "@/components/ui/categoryIcons";
 
-const TINTS = ["green", "blue", "purple", "pink", "orange", "yellow", "mint"] as const;
+const TINTS = ["indigo", "blue", "purple", "pink", "orange", "yellow", "mint"] as const;
 
 /** Swipeable row of category shortcuts into the filtered explore page. */
 export function CategoryRow() {
@@ -15,7 +16,10 @@ export function CategoryRow() {
           className="flex w-20 shrink-0 flex-col items-center gap-2"
         >
           <IconTile tint={TINTS[i % TINTS.length]} size="lg">
-            <span>{c.emoji}</span>
+            {(() => {
+              const Icon = CATEGORY_ICON[c.value];
+              return <Icon className="h-7 w-7" />;
+            })()}
           </IconTile>
           <span className="text-center text-xs font-medium text-gray-600">{c.label}</span>
         </Link>
