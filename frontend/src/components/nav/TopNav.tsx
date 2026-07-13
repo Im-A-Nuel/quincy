@@ -14,9 +14,7 @@ export function TopNav() {
     <header className="sticky top-0 z-30 hidden border-b border-black/[0.04] bg-white/80 backdrop-blur-lg md:block">
       <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-3">
         <Link href="/" className="flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-primary text-lg text-white shadow-pill">
-            🪙
-          </span>
+          <img src="/icon-quincy.png" alt="Quincy" className="h-9 w-9 rounded-2xl shadow-soft" />
           <span className="text-lg font-extrabold tracking-tight text-quincy-700">Quincy</span>
         </Link>
 
