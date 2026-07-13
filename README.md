@@ -122,9 +122,18 @@ See `docs/` for the full architecture, requirements, database schema, and contra
 
 ---
 
+## Deployed contract
+
+`QuincyBounty` is live on **Celo Mainnet**:
+
+- Address: [`0x4a81cf92d285a9b92fecb1ea187cd2466e048b21`](https://celoscan.io/address/0x4a81cf92d285a9b92fecb1ea187cd2466e048b21)
+- Deploy tx: `0xa7937dde4a2707dd0469874a4c07a408ad9650ec64265e53b4ac79dce2f8d82b`
+
+See `docs/DEPLOYMENTS.md` for full deployment details.
+
 ## Status
 
-Quincy is under active development. The frontend read experience (browse, detail, profile) is in place; on-chain write flows, the contract deployment, and the indexer are being built out. Deployed contract addresses will be published here once available.
+Quincy is under active development. The frontend read experience (browse, detail, profile) is in place and the escrow contract is deployed on Celo Mainnet; the event indexer is being built out next.
 
 ---
 
