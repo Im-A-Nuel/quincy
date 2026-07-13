@@ -8,6 +8,7 @@ import { BountyCard } from "@/components/bounty/BountyCard";
 import { BountyListSkeleton } from "@/components/bounty/BountyListSkeleton";
 import { CategoryChips } from "@/components/bounty/CategoryChips";
 import { SortChips } from "@/components/bounty/SortChips";
+import { SearchBar } from "@/components/bounty/SearchBar";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { EmptyBoxArt, ErrorArt } from "@/components/illustrations/spot";
 import { useBounties } from "@/hooks/useBounties";
@@ -20,11 +21,13 @@ function ExploreContent() {
 
   const [category, setCategory] = useState<BountyCategory | "">(initialCategory);
   const [sort, setSort] = useState<SortOption>("newest");
+  const [q, setQ] = useState(params.get("q") ?? "");
 
   const { data, isLoading, isError, refetch } = useBounties({
     status: "open",
     category: category || undefined,
     sort,
+    q: q || undefined,
   });
 
   return (
@@ -33,6 +36,8 @@ function ExploreContent() {
         <h1 className="text-2xl font-extrabold text-gray-900">Explore bounties</h1>
         <p className="mt-1 text-sm text-gray-500">Find a task and start earning cUSD.</p>
       </div>
+
+      <SearchBar value={q} onChange={setQ} />
 
       <CategoryChips value={category} onChange={setCategory} />
 
