@@ -172,4 +172,62 @@ contract QuincyBountyTest is Test {
         vm.expectRevert(QuincyBounty.InvalidStatus.selector);
         quincy.cancelBounty(id);
     }
+
+    function test_DisputeBounty_ByHunter() public {
+        uint256 id = _create();
+        _claimAndSubmit(id);
+
+        vm.prank(hunter);
+        quincy.disputeBounty(id);
+
+        assertEq(uint8(quincy.getBounty(id).status), uint8(QuincyBounty.Status.Disputed));
+    }
+
+    function test_DisputeBounty_RevertsForOutsider() public {
+        uint256 id = _create();
+        _claimAndSubmit(id);
+
+        vm.prank(address(0xBEEF));
+        vm.expectRevert(QuincyBounty.NotParty.selector);
+        quincy.disputeBounty(id);
+    }
+
+    function test_ResolveDispute_PayHunter() public {
+        uint256 id = _create();
+        _claimAndSubmit(id);
+        vm.prank(poster);
+        quincy.disputeBounty(id);
+
+        vm.prank(admin);
+        quincy.resolveDispute(id, true);
+
+        assertEq(cusd.balanceOf(hunter), REWARD);
+        assertEq(uint8(quincy.getBounty(id).status), uint8(QuincyBounty.Status.Completed));
+        assertEq(quincy.getReputation(hunter).bountiesCompletedAsHunter, 1);
+    }
+
+    function test_ResolveDispute_RefundPoster() public {
+        uint256 id = _create();
+        uint256 balBefore = cusd.balanceOf(poster);
+        _claimAndSubmit(id);
+        vm.prank(hunter);
+        quincy.disputeBounty(id);
+
+        vm.prank(admin);
+        quincy.resolveDispute(id, false);
+
+        assertEq(cusd.balanceOf(poster), balBefore);
+        assertEq(uint8(quincy.getBounty(id).status), uint8(QuincyBounty.Status.Cancelled));
+    }
+
+    function test_ResolveDispute_RevertsForNonAdmin() public {
+        uint256 id = _create();
+        _claimAndSubmit(id);
+        vm.prank(poster);
+        quincy.disputeBounty(id);
+
+        vm.prank(poster);
+        vm.expectRevert(QuincyBounty.NotAdmin.selector);
+        quincy.resolveDispute(id, true);
+    }
 }
