@@ -1,14 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import { NAV_ITEMS, isActive } from "./navItems";
 import { WalletButton } from "@/components/WalletButton";
+import { ExploreIcon } from "@/components/ui/icons";
 
-/** Desktop top navigation: logo, primary links, wallet, and a Create CTA. */
+/** Desktop top navigation: logo, primary links, search, wallet, and a Create CTA. */
 export function TopNav() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [q, setQ] = useState("");
   const links = NAV_ITEMS.filter((i) => !i.primary);
+
+  const submitSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.push(q.trim() ? `/bounties?q=${encodeURIComponent(q.trim())}` : "/bounties");
+  };
 
   return (
     <header className="sticky top-0 z-30 hidden border-b border-black/[0.04] bg-white/80 backdrop-blur-lg md:block">
@@ -34,7 +43,17 @@ export function TopNav() {
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-3">
+        <form onSubmit={submitSearch} className="relative ml-auto hidden lg:block">
+          <ExploreIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search…"
+            className="w-52 rounded-full border border-black/[0.06] bg-canvas py-2 pl-9 pr-3 text-sm outline-none focus:border-quincy-300 focus:ring-2 focus:ring-quincy-100"
+          />
+        </form>
+
+        <div className="ml-auto flex items-center gap-3 lg:ml-3">
           <WalletButton />
           <Link href="/create" className="btn-primary">
             Post a bounty
