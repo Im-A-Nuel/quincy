@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Test} from "forge-std/Test.sol";
-import {QuincyBounty} from "../src/QuincyBounty.sol";
-import {MockERC20} from "./mocks/MockERC20.sol";
+import { Test } from "forge-std/Test.sol";
+import { QuincyBounty } from "../src/QuincyBounty.sol";
+import { MockERC20 } from "./mocks/MockERC20.sol";
 
 contract QuincyBountyTest is Test {
     QuincyBounty internal quincy;
@@ -228,6 +228,48 @@ contract QuincyBountyTest is Test {
 
         vm.prank(poster);
         vm.expectRevert(QuincyBounty.NotAdmin.selector);
+        quincy.resolveDispute(id, true);
+    }
+
+    function test_Constructor_RevertsOnZeroCusd() public {
+        vm.expectRevert(QuincyBounty.ZeroAddress.selector);
+        new QuincyBounty(address(0), admin, MIN_REWARD);
+    }
+
+    function test_Constructor_RevertsOnZeroAdmin() public {
+        vm.expectRevert(QuincyBounty.ZeroAddress.selector);
+        new QuincyBounty(address(cusd), address(0), MIN_REWARD);
+    }
+
+    function test_SubmitProof_RevertsWhenNotInProgress() public {
+        // Hunter already submitted once; status is PendingReview, not InProgress.
+        uint256 id = _create();
+        _claimAndSubmit(id);
+
+        vm.prank(hunter);
+        vm.expectRevert(QuincyBounty.InvalidStatus.selector);
+        quincy.submitProof(id, "ipfs://again");
+    }
+
+    function test_CancelBounty_RevertsForNonPoster() public {
+        uint256 id = _create();
+        vm.prank(hunter);
+        vm.expectRevert(QuincyBounty.NotPoster.selector);
+        quincy.cancelBounty(id);
+    }
+
+    function test_DisputeBounty_RevertsWhenOpen() public {
+        uint256 id = _create();
+        vm.prank(poster);
+        vm.expectRevert(QuincyBounty.InvalidStatus.selector);
+        quincy.disputeBounty(id);
+    }
+
+    function test_ResolveDispute_RevertsWhenNotDisputed() public {
+        uint256 id = _create();
+        _claimAndSubmit(id);
+        vm.prank(admin);
+        vm.expectRevert(QuincyBounty.InvalidStatus.selector);
         quincy.resolveDispute(id, true);
     }
 }

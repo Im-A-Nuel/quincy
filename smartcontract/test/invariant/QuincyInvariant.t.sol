@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Test} from "forge-std/Test.sol";
-import {QuincyBounty} from "../../src/QuincyBounty.sol";
-import {MockERC20} from "../mocks/MockERC20.sol";
-import {Handler} from "./Handler.sol";
+import { Test } from "forge-std/Test.sol";
+import { QuincyBounty } from "../../src/QuincyBounty.sol";
+import { MockERC20 } from "../mocks/MockERC20.sol";
+import { Handler } from "./Handler.sol";
 
 /// @notice The contract's cUSD balance must always equal the sum of rewards of
 ///         bounties still holding escrow (Open / InProgress / PendingReview /
@@ -30,8 +30,7 @@ contract QuincyInvariantTest is Test {
             uint256 id = handler.ids(i);
             QuincyBounty.Bounty memory b = quincy.getBounty(id);
             if (
-                b.status == QuincyBounty.Status.Open
-                    || b.status == QuincyBounty.Status.InProgress
+                b.status == QuincyBounty.Status.Open || b.status == QuincyBounty.Status.InProgress
                     || b.status == QuincyBounty.Status.PendingReview
                     || b.status == QuincyBounty.Status.Disputed
             ) {

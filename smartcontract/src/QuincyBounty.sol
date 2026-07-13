@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /// @title QuincyBounty
 /// @notice Escrow contract for micro-task bounties paid in cUSD. The contract
@@ -181,11 +181,7 @@ contract QuincyBounty is ReentrancyGuard {
 
     /// @notice Resolve a dispute, paying the hunter or refunding the poster.
     ///         Admin-only for MVP; follows checks-effects-interactions.
-    function resolveDispute(uint256 bountyId, bool payHunter)
-        external
-        onlyAdmin
-        nonReentrant
-    {
+    function resolveDispute(uint256 bountyId, bool payHunter) external onlyAdmin nonReentrant {
         Bounty storage b = _bounties[bountyId];
         if (b.status != Status.Disputed) revert InvalidStatus();
 
