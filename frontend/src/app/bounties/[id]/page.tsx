@@ -13,6 +13,8 @@ import { Avatar } from "@/components/ui/Avatar";
 import { ProofLink } from "@/components/bounty/ProofLink";
 import { EscrowStatus } from "@/components/bounty/EscrowStatus";
 import { BountyActions } from "@/components/bounty/BountyActions";
+import { ShareButton } from "@/components/bounty/ShareButton";
+import { BountyStatus } from "@/lib/types";
 import { useBounty } from "@/hooks/useBounty";
 import { formatCusd, timeUntil, isExpired, shortAddress } from "@/lib/format";
 import { txUrl } from "@/lib/chains";
@@ -96,6 +98,9 @@ export default function BountyDetailPage() {
 
           {/* Action */}
           <BountyActions bounty={bounty} onDone={() => refetch()} />
+
+          {/* Share once completed */}
+          {bounty.status === BountyStatus.Completed && <ShareButton bounty={bounty} />}
 
           {/* On-chain trail */}
           <div className="flex flex-wrap justify-center gap-4 text-xs">
