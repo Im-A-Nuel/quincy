@@ -34,6 +34,19 @@ forge script script/Deploy.s.sol --rpc-url alfajores --broadcast
 
 `forge test` must pass before any deploy.
 
+## Static analysis
+
+Run [Slither](https://github.com/crytic/slither) (config in `slither.config.json`):
+
+```bash
+pip install slither-analyzer
+slither .
+```
+
+Known informational finding: `createBounty` compares against `block.timestamp` for
+the deadline. This is intentional and safe - deadlines are day-scale, so the few
+seconds a validator could nudge the timestamp are irrelevant.
+
 ## Layout
 
 ```
