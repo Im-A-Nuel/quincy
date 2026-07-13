@@ -126,18 +126,28 @@ export async function processRange(fromBlock: bigint, toBlock: bigint): Promise<
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-/** Main loop: catch up from the checkpoint, then poll the chain head. */
+// Stay a few blocks behind the head: forno is load-balanced and a lagging node
+// will reject getLogs for a block it hasn't seen yet ("block is out of range").
+const CONFIRMATIONS = 5n;
+
+/** Main loop: catch up from the checkpoint, then poll the chain head. Errors on
+ *  a single range are logged and retried on the next poll rather than crashing. */
 export async function run(): Promise<void> {
   let cursor = (await getCheckpoint()) ?? env.startBlock;
   console.log(`Indexer starting from block ${cursor}`);
 
   for (;;) {
-    const head = await publicClient.getBlockNumber();
-    while (cursor < head) {
-      const to = cursor + env.blockRange > head ? head : cursor + env.blockRange;
-      await processRange(cursor + 1n, to);
-      cursor = to;
-      await setCheckpoint(cursor);
+    try {
+      const rawHead = await publicClient.getBlockNumber();
+      const head = rawHead > CONFIRMATIONS ? rawHead - CONFIRMATIONS : 0n;
+      while (cursor < head) {
+        const to = cursor + env.blockRange > head ? head : cursor + env.blockRange;
+        await processRange(cursor + 1n, to);
+        cursor = to;
+        await setCheckpoint(cursor);
+      }
+    } catch (err) {
+      console.error(`Poll error (cursor ${cursor}), retrying:`, (err as Error).message);
     }
     await sleep(env.pollIntervalMs);
   }
