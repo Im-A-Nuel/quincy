@@ -21,6 +21,15 @@ const EMPTY: BountyFormValues = {
   deadline: "",
 };
 
+const DEADLINE_PRESETS = [3, 7, 14, 30];
+
+/** yyyy-mm-dd for `days` from now, in local time. */
+function dateInDays(days: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toLocaleDateString("en-CA"); // en-CA formats as yyyy-mm-dd
+}
+
 /**
  * Controlled create-bounty form. Validates on submit and calls `onSubmit` with
  * clean values; the parent handles the approve + createBounty transactions.
@@ -131,6 +140,26 @@ export function CreateBountyForm({
             value={values.deadline}
             onChange={(e) => set("deadline", e.target.value)}
           />
+          <div className="mt-1.5 flex gap-1.5">
+            {DEADLINE_PRESETS.map((d) => {
+              const value = dateInDays(d);
+              const active = values.deadline === value;
+              return (
+                <button
+                  key={d}
+                  type="button"
+                  onClick={() => set("deadline", value)}
+                  className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${
+                    active
+                      ? "bg-quincy-600 text-white"
+                      : "bg-quincy-50 text-quincy-700 hover:bg-quincy-100"
+                  }`}
+                >
+                  {d}d
+                </button>
+              );
+            })}
+          </div>
         </Field>
       </div>
 
