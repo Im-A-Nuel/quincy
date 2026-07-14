@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useAccount } from "wagmi";
 import { CATEGORIES, MIN_REWARD_CUSD } from "@/lib/constants";
 import { Field, inputClass } from "@/components/ui/Field";
+import { useCusdBalance } from "@/hooks/useCusd";
+import { fromCusdUnits } from "@/lib/units";
 import {
   validateBounty,
   hasErrors,
@@ -33,6 +36,10 @@ export function CreateBountyForm({
 }) {
   const [values, setValues] = useState<BountyFormValues>(EMPTY);
   const [errors, setErrors] = useState<BountyFormErrors>({});
+
+  const { isConnected } = useAccount();
+  const { data: balance } = useCusdBalance();
+  const balanceNum = balance !== undefined ? Number(fromCusdUnits(balance)) : null;
 
   const set = <K extends keyof BountyFormValues>(key: K, val: BountyFormValues[K]) =>
     setValues((v) => ({ ...v, [key]: val }));
@@ -100,6 +107,20 @@ export function CreateBountyForm({
             onChange={(e) => set("reward", e.target.value)}
             placeholder="2.50"
           />
+          {isConnected && balanceNum !== null && (
+            <div className="mt-1 flex items-center justify-between text-xs">
+              <span className="text-gray-400">
+                Balance: {balanceNum.toLocaleString(undefined, { maximumFractionDigits: 2 })} cUSD
+              </span>
+              <button
+                type="button"
+                onClick={() => set("reward", String(Math.floor(balanceNum * 100) / 100))}
+                className="font-semibold text-quincy-600 hover:text-quincy-700"
+              >
+                Max
+              </button>
+            </div>
+          )}
         </Field>
 
         <Field label="Deadline" htmlFor="deadline" error={errors.deadline}>
