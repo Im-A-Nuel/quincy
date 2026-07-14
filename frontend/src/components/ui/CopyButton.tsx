@@ -28,7 +28,7 @@ export function CopyButton({
   return (
     <button
       onClick={copy}
-      aria-label="Copy"
+      title={`Copy ${text}`}
       className={`inline-flex items-center gap-1.5 ${className}`}
     >
       {children}
