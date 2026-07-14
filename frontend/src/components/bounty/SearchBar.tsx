@@ -30,6 +30,7 @@ export function SearchBar({
         value={local}
         onChange={(e) => setLocal(e.target.value)}
         placeholder={placeholder}
+        aria-label={placeholder}
         className="w-full rounded-full border border-black/[0.06] bg-white py-3 pl-11 pr-4 text-sm shadow-soft outline-none transition-colors placeholder:text-gray-400 focus:border-quincy-300 focus:ring-2 focus:ring-quincy-100"
       />
     </div>
