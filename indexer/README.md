@@ -28,9 +28,30 @@ npm start               # begin indexing
 
 | Variable | Description |
 |---|---|
-| `DATABASE_URL` | Postgres connection string (Supabase) |
-| `CELO_RPC` | Celo RPC endpoint |
+| `DATABASE_URL` | Postgres connection string (Neon/Supabase) |
+| `CELO_RPC_URL` | Celo RPC endpoint |
 | `QUINCY_ADDRESS` | Deployed contract address |
 | `START_BLOCK` | Block to index from (contract deploy block) |
 | `POLL_INTERVAL_MS` | Delay between polls |
 | `BLOCK_RANGE` | Max blocks per `getLogs` call |
+
+## Deploy (24/7 worker)
+
+The indexer is a long-running process, not a serverless function. Run it as a
+background worker.
+
+**Render** (blueprint included): push to GitHub, then on render.com choose
+New > Blueprint and select this repo. `render.yaml` provisions a Docker worker;
+set `DATABASE_URL` in the dashboard (other vars are pre-filled).
+
+**Docker** (any host):
+
+```bash
+cd indexer
+docker build -t quincy-indexer .
+docker run -e DATABASE_URL=... -e CELO_RPC_URL=https://forno.celo.org \
+  -e QUINCY_ADDRESS=0x4a81cf92d285a9b92fecb1ea187cd2466e048b21 \
+  -e START_BLOCK=72020154 quincy-indexer
+```
+
+Run `npm run migrate` once against the database before first start.
