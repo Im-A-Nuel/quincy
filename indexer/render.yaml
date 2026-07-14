@@ -1,0 +1,23 @@
+# Render blueprint for the Quincy indexer (background worker).
+# Deploy: push to GitHub, then New > Blueprint on render.com and pick this repo.
+services:
+  - type: worker
+    name: quincy-indexer
+    runtime: docker
+    dockerfilePath: ./indexer/Dockerfile
+    dockerContext: ./indexer
+    plan: starter
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: CELO_RPC_URL
+        value: https://forno.celo.org
+      - key: QUINCY_ADDRESS
+        value: "0x4a81cf92d285a9b92fecb1ea187cd2466e048b21"
+      - key: START_BLOCK
+        value: "72020154"
+      - key: POLL_INTERVAL_MS
+        value: "15000"
+      - key: BLOCK_RANGE
+        value: "2000"
