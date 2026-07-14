@@ -9,7 +9,10 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-black/[0.04] bg-white/90 backdrop-blur-lg md:hidden">
+    <nav
+      aria-label="Primary"
+      className="fixed inset-x-0 bottom-0 z-30 border-t border-black/[0.04] bg-white/90 backdrop-blur-lg md:hidden"
+    >
       <ul className="mx-auto flex max-w-md items-center justify-around px-2 pb-[env(safe-area-inset-bottom)] pt-2">
         {NAV_ITEMS.map((item) => {
           const active = isActive(pathname, item.href);
@@ -33,6 +36,7 @@ export function BottomNav() {
             <li key={item.key}>
               <Link
                 href={item.href}
+                aria-current={active ? "page" : undefined}
                 className={`flex w-16 flex-col items-center gap-1 py-1 text-[11px] font-medium transition-colors ${
                   active ? "text-quincy-600" : "text-gray-400"
                 }`}

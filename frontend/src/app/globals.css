@@ -24,6 +24,13 @@ body {
   font-feature-settings: "ss01", "cv01";
 }
 
+/* Visible keyboard-focus ring app-wide; mouse/touch users don't see it. */
+:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 /* Dark theme: remap the common gray/white/border utilities so components that
    use fixed Tailwind grays flip without per-component edits. Brand (quincy-*)
    and soft accent tints intentionally stay as-is. */
