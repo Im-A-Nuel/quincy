@@ -85,7 +85,7 @@ body {
       transition-shadow duration-300 ease-soft;
   }
   .card-float {
-    @apply rounded-4xl bg-surface p-6 shadow-float;
+    @apply rounded-4xl bg-surface p-6 shadow-float animate-scale-in;
   }
 
   /* Chips - pill filters/tabs. */
