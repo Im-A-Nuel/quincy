@@ -11,14 +11,14 @@ export function BountyCard({ bounty }: { bounty: BountyListItem }) {
   return (
     <Link
       href={`/bounties/${bounty.id}`}
-      className="group block rounded-3xl border border-black/[0.04] bg-surface p-5 shadow-soft transition-all duration-200 ease-soft hover:-translate-y-0.5 hover:shadow-float"
+      className="group block rounded-3xl border border-black/[0.04] bg-surface p-5 shadow-soft transition-all duration-200 ease-soft hover:-translate-y-0.5 hover:shadow-float active:scale-[0.98] active:duration-100 active:ease-snappy"
     >
       <div className="flex items-start justify-between gap-3">
         <CategoryBadge category={bounty.category} />
         <StatusBadge status={bounty.status} />
       </div>
 
-      <h3 className="mt-3 font-bold leading-snug text-gray-900 line-clamp-2">
+      <h3 className="mt-3 font-bold leading-snug text-gray-900 line-clamp-2 transition-colors duration-200 group-hover:text-quincy-700">
         {bounty.title}
       </h3>
 
