@@ -22,8 +22,13 @@ export function TxButton({
       disabled={pending || disabled}
       {...props}
     >
-      {pending && <Spinner className="h-4 w-4" />}
-      {pending ? pendingLabel : children}
+      <span
+        key={pending ? "pending" : "idle"}
+        className="inline-flex animate-fade-in items-center gap-2"
+      >
+        {pending && <Spinner className="h-4 w-4" />}
+        {pending ? pendingLabel : children}
+      </span>
     </button>
   );
 }
