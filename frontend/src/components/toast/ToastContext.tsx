@@ -8,12 +8,17 @@ export interface Toast {
   id: number;
   variant: ToastVariant;
   message: string;
+  /** True while the exit animation plays; Toaster removes it once done. */
+  leaving?: boolean;
 }
 
 interface ToastApi {
   toasts: Toast[];
   push: (variant: ToastVariant, message: string) => void;
+  /** Start the exit animation (click-to-dismiss, or the auto-dismiss timer). */
   dismiss: (id: number) => void;
+  /** Hard-remove once the exit animation finishes playing. */
+  remove: (id: number) => void;
 }
 
 const ToastCtx = createContext<ToastApi | null>(null);
@@ -23,9 +28,15 @@ let counter = 0;
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const dismiss = useCallback((id: number) => {
+  const remove = useCallback((id: number) => {
     setToasts((list) => list.filter((t) => t.id !== id));
   }, []);
+
+  const dismiss = useCallback((id: number) => {
+    setToasts((list) => list.map((t) => (t.id === id ? { ...t, leaving: true } : t)));
+    // Safety net in case onAnimationEnd doesn't fire (e.g. animation disabled).
+    setTimeout(() => remove(id), 260);
+  }, [remove]);
 
   const push = useCallback(
     (variant: ToastVariant, message: string) => {
@@ -36,7 +47,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     [dismiss],
   );
 
-  const value = useMemo(() => ({ toasts, push, dismiss }), [toasts, push, dismiss]);
+  const value = useMemo(() => ({ toasts, push, dismiss, remove }), [toasts, push, dismiss, remove]);
   return <ToastCtx.Provider value={value}>{children}</ToastCtx.Provider>;
 }
 
