@@ -12,7 +12,7 @@ export function ProfileHeader({
   completed: number;
 }) {
   return (
-    <section className="overflow-hidden rounded-4xl bg-gradient-primary p-6 text-center text-white shadow-float">
+    <section className="animate-scale-in overflow-hidden rounded-4xl bg-gradient-primary p-6 text-center text-white shadow-float">
       <div className="flex justify-center">
         <Avatar address={address} size="lg" />
       </div>
