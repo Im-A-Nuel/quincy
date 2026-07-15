@@ -23,7 +23,7 @@ export function WalletSummary() {
       : "-";
 
   return (
-    <section className="overflow-hidden rounded-4xl bg-gradient-primary p-6 text-white shadow-float">
+    <section className="animate-scale-in overflow-hidden rounded-4xl bg-gradient-primary p-6 text-white shadow-float">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 text-sm font-medium text-white/80">
           <WalletIcon className="h-5 w-5" />
