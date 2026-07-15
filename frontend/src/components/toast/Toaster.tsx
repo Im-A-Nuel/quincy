@@ -11,7 +11,7 @@ const STYLE: Record<ToastVariant, { ring: string; icon: string; dot: string }> =
 
 /** Renders the active toast stack, above the mobile bottom nav. */
 export function Toaster() {
-  const { toasts, dismiss } = useToastState();
+  const { toasts, dismiss, remove } = useToastState();
 
   return (
     <div
@@ -25,8 +25,11 @@ export function Toaster() {
           <button
             key={t.id}
             onClick={() => dismiss(t.id)}
+            onAnimationEnd={() => t.leaving && remove(t.id)}
             aria-label={`Dismiss: ${t.message}`}
-            className={`pointer-events-auto flex w-full max-w-sm items-center gap-3 rounded-2xl border ${s.ring} bg-surface px-4 py-3 text-left shadow-float animate-fade-up`}
+            className={`pointer-events-auto flex w-full max-w-sm items-center gap-3 overflow-hidden rounded-2xl border ${s.ring} bg-surface px-4 py-3 text-left shadow-float ${
+              t.leaving ? "animate-toast-out" : "animate-toast-in"
+            }`}
           >
             <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${s.dot} text-white`}>
               <CheckIcon className="h-4 w-4" />
