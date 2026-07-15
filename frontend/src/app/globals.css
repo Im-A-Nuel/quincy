@@ -60,17 +60,20 @@ body {
 }
 
 @layer components {
-  /* Buttons - rounded pill, soft shadow, gradient primary. */
+  /* Buttons - rounded pill, soft shadow, gradient primary. Spring-in on press,
+     soft ease on hover/release for a premium tactile feel. */
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5
       text-sm font-semibold transition-all duration-200 ease-soft
-      active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50;
+      hover:-translate-y-px active:translate-y-0 active:scale-[0.96]
+      active:duration-100 active:ease-snappy
+      disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0;
   }
   .btn-primary {
-    @apply btn bg-gradient-primary text-white shadow-pill hover:brightness-105;
+    @apply btn bg-gradient-primary text-white shadow-pill hover:shadow-lg hover:brightness-105;
   }
   .btn-ghost {
-    @apply btn bg-white text-quincy-700 shadow-soft hover:bg-quincy-50;
+    @apply btn bg-white text-quincy-700 shadow-soft hover:bg-quincy-50 hover:shadow-md;
   }
   .btn-soft {
     @apply btn bg-quincy-50 text-quincy-700 hover:bg-quincy-100;
@@ -78,7 +81,8 @@ body {
 
   /* Cards - large radius, diffuse shadow, floating feel. */
   .card {
-    @apply rounded-3xl border border-black/[0.04] bg-surface p-5 shadow-soft;
+    @apply rounded-3xl border border-black/[0.04] bg-surface p-5 shadow-soft
+      transition-shadow duration-300 ease-soft;
   }
   .card-float {
     @apply rounded-4xl bg-surface p-6 shadow-float;
@@ -87,13 +91,14 @@ body {
   /* Chips - pill filters/tabs. */
   .chip {
     @apply inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-4 py-2
-      text-sm font-medium transition-colors;
+      text-sm font-medium transition-all duration-200 ease-soft
+      active:scale-95;
   }
   .chip-active {
-    @apply chip bg-gray-900 text-white;
+    @apply chip bg-gray-900 text-white shadow-md;
   }
   .chip-inactive {
-    @apply chip bg-white text-gray-600 shadow-soft hover:bg-gray-50;
+    @apply chip bg-white text-gray-600 shadow-soft hover:-translate-y-px hover:bg-gray-50 hover:shadow-md;
   }
 }
 
@@ -119,10 +124,34 @@ body {
   .stagger > *:nth-child(6) { animation-delay: 0.22s; }
   .stagger > *:nth-child(n + 7) { animation-delay: 0.26s; }
 
+  /* Shimmering skeleton placeholder - reads as "loading" rather than "broken". */
+  .skeleton {
+    @apply relative overflow-hidden bg-gray-200/70;
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.5) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.8s ease-in-out infinite;
+  }
+  .dark .skeleton {
+    background-color: rgba(255, 255, 255, 0.06);
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      transparent 100%
+    );
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .stagger > *,
-    .animate-fade-up {
-      animation: none !important;
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
   }
 }
