@@ -8,15 +8,18 @@ import { shortAddress } from "@/lib/format";
 import { WalletButton } from "@/components/WalletButton";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { PlusIcon, ExploreIcon, WalletIcon } from "@/components/ui/icons";
+import { useCountUp } from "@/hooks/useCountUp";
 
 /** Gradient hero card summarizing the connected wallet + quick actions. */
 export function WalletSummary() {
   const { address, isConnected } = useAccount();
   const { data: balance } = useCusdBalance();
 
+  const balanceNum = isConnected && balance !== undefined ? Number(fromCusdUnits(balance)) : 0;
+  const animatedBalance = useCountUp(balanceNum);
   const balanceText =
     isConnected && balance !== undefined
-      ? `${Number(fromCusdUnits(balance)).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
+      ? animatedBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })
       : "-";
 
   return (
