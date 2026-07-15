@@ -21,7 +21,7 @@ export function TopNav() {
   };
 
   return (
-    <header className="sticky top-0 z-30 hidden border-b border-black/[0.04] bg-white/80 backdrop-blur-lg md:block">
+    <header className="glass sticky top-0 z-30 hidden border-b border-black/[0.04] md:block">
       <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-3">
         <Link href="/" className="flex items-center gap-2 transition-transform duration-200 ease-soft hover:scale-[1.03] active:scale-95">
           <img src="/icon-quincy.png" alt="Quincy" className="h-9 w-9 rounded-2xl shadow-soft" />
