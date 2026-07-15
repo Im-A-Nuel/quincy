@@ -24,17 +24,24 @@ const SIZE = {
 export function IconTile({
   tint = "green",
   size = "md",
+  interactive = false,
   className = "",
   children,
 }: {
   tint?: Tint;
   size?: keyof typeof SIZE;
+  /** Adds hover-lift + press-scale, for tiles that sit inside a link/button. */
+  interactive?: boolean;
   className?: string;
   children: ReactNode;
 }) {
   return (
     <div
-      className={`inline-flex shrink-0 items-center justify-center ${TINT[tint]} ${SIZE[size]} ${className}`}
+      className={`inline-flex shrink-0 items-center justify-center ${TINT[tint]} ${SIZE[size]} ${
+        interactive
+          ? "transition-all duration-200 ease-soft group-hover:-translate-y-1 group-hover:shadow-md group-active:scale-90 group-active:duration-100 group-active:ease-snappy"
+          : ""
+      } ${className}`}
     >
       {children}
     </div>
