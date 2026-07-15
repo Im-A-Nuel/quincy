@@ -59,16 +59,46 @@ const config: Config = {
         "gradient-canvas": "linear-gradient(180deg, #fafbff 0%, #eef2ff 100%)",
       },
       transitionTimingFunction: {
+        // Decelerate-only: default motion curve for entrances/hovers.
         soft: "cubic-bezier(0.22, 1, 0.36, 1)",
+        // Slight overshoot: premium "spring" feel for taps and toggles.
+        spring: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+        // Sharp in, soft out: exits and dismissals.
+        snappy: "cubic-bezier(0.4, 0, 0.2, 1)",
       },
       keyframes: {
         "fade-up": {
           "0%": { opacity: "0", transform: "translateY(8px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        "scale-in": {
+          "0%": { opacity: "0", transform: "scale(0.96)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+        "toast-in": {
+          "0%": { opacity: "0", transform: "translateY(12px) scale(0.96)" },
+          "100%": { opacity: "1", transform: "translateY(0) scale(1)" },
+        },
+        "toast-out": {
+          "0%": { opacity: "1", transform: "translateY(0) scale(1)", maxHeight: "80px" },
+          "100%": { opacity: "0", transform: "translateY(-6px) scale(0.96)", maxHeight: "0" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
       },
       animation: {
-        "fade-up": "fade-up 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+        "fade-up": "fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards",
+        "fade-in": "fade-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) backwards",
+        "scale-in": "scale-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) backwards",
+        "toast-in": "toast-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards",
+        "toast-out": "toast-out 0.22s cubic-bezier(0.4, 0, 0.2, 1) forwards",
+        shimmer: "shimmer 1.8s ease-in-out infinite",
       },
     },
   },
