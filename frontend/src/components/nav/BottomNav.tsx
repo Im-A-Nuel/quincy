@@ -24,7 +24,7 @@ export function BottomNav() {
                 <Link
                   href={item.href}
                   aria-label={item.label}
-                  className="-mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-primary text-white shadow-pill transition-transform active:scale-95"
+                  className="-mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-primary text-white shadow-pill transition-transform duration-200 ease-spring hover:scale-105 active:scale-90"
                 >
                   <Icon className="h-6 w-6" />
                 </Link>
@@ -37,11 +37,11 @@ export function BottomNav() {
               <Link
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className={`flex w-16 flex-col items-center gap-1 py-1 text-[11px] font-medium transition-colors ${
+                className={`flex w-16 flex-col items-center gap-1 py-1 text-[11px] font-medium transition-colors duration-200 ease-soft active:scale-90 ${
                   active ? "text-quincy-600" : "text-gray-400"
                 }`}
               >
-                <Icon className="h-6 w-6" />
+                <Icon className={`h-6 w-6 transition-transform duration-200 ease-spring ${active ? "scale-110" : "scale-100"}`} />
                 {item.label}
               </Link>
             </li>
