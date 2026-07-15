@@ -3,7 +3,14 @@
 import { useEffect, useState } from "react";
 
 /** Light/dark toggle. Persists to localStorage and flips the `dark` class. */
-export function ThemeToggle({ className = "" }: { className?: string }) {
+export function ThemeToggle({
+  className = "",
+  glass = false,
+}: {
+  className?: string;
+  /** Use the frosted-glass treatment instead of a solid surface (for buttons floating directly over page content). */
+  glass?: boolean;
+}) {
   const [dark, setDark] = useState(false);
 
   useEffect(() => {
@@ -25,7 +32,9 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     <button
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className={`flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white text-gray-600 shadow-soft transition-all duration-200 ease-soft hover:-translate-y-px hover:text-quincy-600 hover:shadow-md active:scale-90 ${className}`}
+      className={`flex h-10 w-10 items-center justify-center overflow-hidden rounded-full text-gray-600 shadow-soft transition-all duration-200 ease-soft hover:-translate-y-px hover:text-quincy-600 hover:shadow-md active:scale-90 ${
+        glass ? "glass" : "bg-white"
+      } ${className}`}
     >
       <span
         key={dark ? "moon" : "sun"}
