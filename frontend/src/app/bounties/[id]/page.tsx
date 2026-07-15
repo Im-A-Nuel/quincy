@@ -58,14 +58,14 @@ export default function BountyDetailPage() {
 
             <div className="mt-5 text-left">
               <InfoRow label="Poster">
-                <Link href={`/profile/${bounty.posterAddress}`} className="flex items-center gap-2 text-quincy-700">
+                <Link href={`/profile/${bounty.posterAddress}`} className="group flex items-center gap-2 text-quincy-700 transition-colors hover:text-quincy-800">
                   <Avatar address={bounty.posterAddress} size="sm" />
                   {shortAddress(bounty.posterAddress)}
                 </Link>
               </InfoRow>
               {bounty.hunterAddress && (
                 <InfoRow label="Hunter">
-                  <Link href={`/profile/${bounty.hunterAddress}`} className="flex items-center gap-2 text-quincy-700">
+                  <Link href={`/profile/${bounty.hunterAddress}`} className="group flex items-center gap-2 text-quincy-700 transition-colors hover:text-quincy-800">
                     <Avatar address={bounty.hunterAddress} size="sm" />
                     {shortAddress(bounty.hunterAddress)}
                   </Link>

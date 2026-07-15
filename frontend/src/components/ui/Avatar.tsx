@@ -22,7 +22,7 @@ export function Avatar({
   const initial = address ? address.slice(2, 3).toUpperCase() : "?";
   return (
     <div
-      className={`inline-flex items-center justify-center rounded-full font-semibold text-white ${SIZE[size]} ${
+      className={`inline-flex items-center justify-center rounded-full font-semibold text-white transition-transform duration-200 ease-soft group-hover:scale-105 ${SIZE[size]} ${
         ring ? "ring-2 ring-white shadow-soft" : ""
       }`}
       style={{ background: address ? gradientFor(address) : "#c9d1cc" }}
