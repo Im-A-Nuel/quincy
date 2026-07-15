@@ -11,7 +11,7 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Primary"
-      className="fixed inset-x-0 bottom-0 z-30 border-t border-black/[0.04] bg-white/90 backdrop-blur-lg md:hidden"
+      className="glass fixed inset-x-0 bottom-0 z-30 border-t border-black/[0.04] md:hidden"
     >
       <ul className="mx-auto flex max-w-md items-center justify-around px-2 pb-[env(safe-area-inset-bottom)] pt-2">
         {NAV_ITEMS.map((item) => {
