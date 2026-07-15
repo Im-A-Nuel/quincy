@@ -13,15 +13,17 @@ export function CategoryRow() {
         <Link
           key={c.value}
           href={`/bounties?category=${c.value}`}
-          className="flex w-20 shrink-0 flex-col items-center gap-2"
+          className="group flex w-20 shrink-0 flex-col items-center gap-2"
         >
-          <IconTile tint={TINTS[i % TINTS.length]} size="lg">
+          <IconTile tint={TINTS[i % TINTS.length]} size="lg" interactive>
             {(() => {
               const Icon = CATEGORY_ICON[c.value];
               return <Icon className="h-7 w-7" />;
             })()}
           </IconTile>
-          <span className="text-center text-xs font-medium text-gray-600">{c.label}</span>
+          <span className="text-center text-xs font-medium text-gray-600 transition-colors duration-200 group-hover:text-quincy-600">
+            {c.label}
+          </span>
         </Link>
       ))}
     </div>
