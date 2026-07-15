@@ -91,6 +91,10 @@ const config: Config = {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0) rotate(0deg)" },
+          "50%": { transform: "translateY(-14px) rotate(-1deg)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards",
@@ -99,6 +103,8 @@ const config: Config = {
         "toast-in": "toast-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards",
         "toast-out": "toast-out 0.22s cubic-bezier(0.4, 0, 0.2, 1) forwards",
         shimmer: "shimmer 1.8s ease-in-out infinite",
+        // Slow idle bob for hero illustrations - a subtle sign of life, not a distraction.
+        float: "float 6s ease-in-out infinite",
       },
     },
   },
