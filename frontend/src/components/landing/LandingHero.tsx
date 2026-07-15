@@ -1,6 +1,5 @@
 "use client";
 
-import { HeroArt } from "@/components/illustrations/HeroArt";
 import { WalletButton } from "@/components/WalletButton";
 import Link from "next/link";
 
@@ -29,7 +28,13 @@ export function LandingHero() {
       </div>
 
       <div className="order-1 md:order-2">
-        <HeroArt className="mx-auto w-full max-w-sm" />
+        <img
+          src="/hero-illustration.webp"
+          alt="An escrow vault locked with a glowing padlock, surrounded by floating cUSD coins"
+          width={760}
+          height={628}
+          className="mx-auto w-full max-w-sm animate-float [animation-delay:-2s]"
+        />
       </div>
     </section>
   );
