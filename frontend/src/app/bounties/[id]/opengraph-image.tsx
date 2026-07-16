@@ -20,11 +20,28 @@ async function loadBounty(id: number) {
   }
 }
 
+/** ArrayBuffer -> base64 data URI (avoids relying on Node's Buffer being
+ *  available; works whether this route ends up edge or node). */
+function toDataUri(buf: ArrayBuffer, mime: string): string {
+  const bytes = new Uint8Array(buf);
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  return `data:${mime};base64,${btoa(binary)}`;
+}
+
 export default async function BountyOg({ params }: { params: { id: string } }) {
   const bounty = await loadBounty(Number(params.id));
   const title = bounty?.title ?? "A bounty on Quincy";
   const reward = bounty ? formatCusd(String(bounty.reward_amount)) : "";
   const status = (bounty?.status ?? "").replace("_", " ");
+  const isCompleted = bounty?.status === "completed";
+
+  const background = isCompleted
+    ? toDataUri(
+        await fetch(new URL("./completed-bg.jpg", import.meta.url)).then((r) => r.arrayBuffer()),
+        "image/jpeg",
+      )
+    : null;
 
   return new ImageResponse(
     (
@@ -35,7 +52,8 @@ export default async function BountyOg({ params }: { params: { id: string } }) {
           display: "flex",
           flexDirection: "column",
           padding: "72px",
-          background: "#0b0e16",
+          background: background ? `url(${background})` : "#0b0e16",
+          backgroundSize: "cover",
           color: "white",
           fontFamily: "sans-serif",
         }}
@@ -59,7 +77,21 @@ export default async function BountyOg({ params }: { params: { id: string } }) {
           <div style={{ fontSize: 34, fontWeight: 800 }}>Quincy</div>
         </div>
 
-        <div style={{ marginTop: "auto", fontSize: 56, fontWeight: 800, lineHeight: 1.15 }}>
+        {isCompleted && (
+          <div style={{ marginTop: "auto", display: "flex", fontSize: 30, fontWeight: 800, color: "#c7d2fe" }}>
+            🎉 Bounty completed
+          </div>
+        )}
+
+        <div
+          style={{
+            marginTop: isCompleted ? 12 : "auto",
+            display: "flex",
+            fontSize: 56,
+            fontWeight: 800,
+            lineHeight: 1.15,
+          }}
+        >
           {title}
         </div>
 
@@ -67,6 +99,7 @@ export default async function BountyOg({ params }: { params: { id: string } }) {
           {reward && (
             <div
               style={{
+                display: "flex",
                 fontSize: 40,
                 fontWeight: 800,
                 color: "#a5b4fc",
@@ -78,6 +111,7 @@ export default async function BountyOg({ params }: { params: { id: string } }) {
           {status && (
             <div
               style={{
+                display: "flex",
                 fontSize: 26,
                 padding: "8px 22px",
                 borderRadius: 999,
