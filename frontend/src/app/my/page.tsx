@@ -25,10 +25,10 @@ function MyList({ address }: { address: string }) {
 
   return (
     <>
-      <div ref={containerRef} className="relative mt-4 flex gap-2 overflow-x-auto no-scrollbar">
+      <div ref={containerRef} className="segmented-track mt-4">
         {rect && (
           <div
-            className="absolute inset-y-0 my-auto h-9 rounded-full bg-gray-900 shadow-md transition-all duration-300 ease-spring"
+            className="absolute inset-y-0 my-auto h-9 rounded-full bg-gradient-primary shadow-md transition-all duration-300 ease-spring"
             style={{ left: rect.left, width: rect.width }}
           />
         )}

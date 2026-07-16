@@ -88,6 +88,13 @@ body {
     @apply rounded-4xl bg-surface p-6 shadow-float animate-scale-in;
   }
 
+  /* Segmented control track - houses a sliding-indicator chip group (fixed,
+     non-scrolling sets like sort or tabs). Scrollable chip rows (many items,
+     e.g. categories) skip this and rely on the sliding highlight alone. */
+  .segmented-track {
+    @apply relative inline-flex gap-1 rounded-full bg-white p-1 shadow-soft;
+  }
+
 }
 
 @layer utilities {
