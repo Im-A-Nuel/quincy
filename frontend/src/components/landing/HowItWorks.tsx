@@ -1,12 +1,10 @@
-import { IconTile } from "@/components/ui/IconTile";
-import { LockIcon, TasksIcon, ArrowRightIcon, CheckIcon } from "@/components/ui/icons";
 import { Reveal } from "@/components/ui/Reveal";
 
 const STEPS = [
-  { tint: "indigo" as const, Icon: LockIcon, title: "Post & lock", body: "Create a bounty; the cUSD reward is locked in escrow." },
-  { tint: "blue" as const, Icon: TasksIcon, title: "Claim & work", body: "A hunter claims the task and completes it off-chain." },
-  { tint: "purple" as const, Icon: ArrowRightIcon, title: "Submit proof", body: "The hunter submits proof of completion on-chain." },
-  { tint: "green" as const, Icon: CheckIcon, title: "Approve & pay", body: "You approve; the reward is released instantly." },
+  { art: "/step-post-lock.webp", title: "Post & lock", body: "Create a bounty; the cUSD reward is locked in escrow." },
+  { art: "/step-claim-work.webp", title: "Claim & work", body: "A hunter claims the task and completes it off-chain." },
+  { art: "/step-submit-proof.webp", title: "Submit proof", body: "The hunter submits proof of completion on-chain." },
+  { art: "/step-approve-pay.webp", title: "Approve & pay", body: "You approve; the reward is released instantly." },
 ];
 
 export function HowItWorks() {
@@ -21,11 +19,9 @@ export function HowItWorks() {
           <Reveal key={s.title} delayMs={i * 100}>
             <div className="card text-center">
               <div className="flex justify-center">
-                <IconTile tint={s.tint} size="md">
-                  <s.Icon className="h-6 w-6" />
-                </IconTile>
+                <img src={s.art} alt="" width={96} height={96} className="h-24 w-24" />
               </div>
-              <p className="mt-3 text-xs font-bold text-quincy-500">STEP {i + 1}</p>
+              <p className="mt-2 text-xs font-bold text-quincy-500">STEP {i + 1}</p>
               <p className="mt-1 font-bold text-gray-900">{s.title}</p>
               <p className="mt-1 text-sm text-gray-500">{s.body}</p>
             </div>
