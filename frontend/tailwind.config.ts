@@ -54,7 +54,14 @@ const config: Config = {
         pill: "0 6px 16px -4px rgba(79, 70, 229, 0.4)",
       },
       backgroundImage: {
-        "gradient-primary": "linear-gradient(135deg, #4f46e5 0%, #6366f1 100%)",
+        // Layered mesh gradient - soft radial blooms (light violet top-left,
+        // deeper indigo glow bottom-right) over the linear base, instead of a
+        // flat two-stop fill. Used everywhere gradient-primary is (hero cards,
+        // buttons, FAB), so the richer look cascades app-wide.
+        "gradient-primary":
+          "radial-gradient(130% 150% at 12% 8%, rgba(199, 210, 254, 0.55) 0%, rgba(199, 210, 254, 0) 55%), " +
+          "radial-gradient(130% 150% at 88% 92%, rgba(67, 56, 202, 0.5) 0%, rgba(67, 56, 202, 0) 55%), " +
+          "linear-gradient(135deg, #4f46e5 0%, #6366f1 100%)",
         "gradient-mint": "linear-gradient(135deg, #818cf8 0%, #4f46e5 100%)",
         "gradient-canvas": "linear-gradient(180deg, #fafbff 0%, #eef2ff 100%)",
       },
