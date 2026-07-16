@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useAccount } from "wagmi";
 import { AppShell } from "@/components/nav/AppShell";
 import { ConnectGate } from "@/components/ConnectGate";
-import { Chip } from "@/components/ui/Chip";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { useSlidingIndicator } from "@/hooks/useSlidingIndicator";
 import { BountyCard } from "@/components/bounty/BountyCard";
 import { BountyListSkeleton } from "@/components/bounty/BountyListSkeleton";
 import { useBounties } from "@/hooks/useBounties";
@@ -21,15 +21,33 @@ const TABS = [
 function MyList({ address }: { address: string }) {
   const [tab, setTab] = useState<(typeof TABS)[number]["key"]>("open");
   const { data, isLoading } = useBounties({ involves: address, status: tab });
+  const { containerRef, setItemRef, rect } = useSlidingIndicator(tab);
 
   return (
     <>
-      <div className="mt-4 flex gap-2 overflow-x-auto no-scrollbar">
-        {TABS.map((t) => (
-          <Chip key={t.key} active={tab === t.key} onClick={() => setTab(t.key)}>
-            {t.label}
-          </Chip>
-        ))}
+      <div ref={containerRef} className="relative mt-4 flex gap-2 overflow-x-auto no-scrollbar">
+        {rect && (
+          <div
+            className="absolute inset-y-0 my-auto h-9 rounded-full bg-gray-900 shadow-md transition-all duration-300 ease-spring"
+            style={{ left: rect.left, width: rect.width }}
+          />
+        )}
+        {TABS.map((t) => {
+          const active = tab === t.key;
+          return (
+            <button
+              key={t.key}
+              ref={setItemRef(t.key)}
+              type="button"
+              onClick={() => setTab(t.key)}
+              className={`relative z-10 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                active ? "text-white" : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              {t.label}
+            </button>
+          );
+        })}
       </div>
 
       <div className="mt-6">
