@@ -1,6 +1,7 @@
 "use client";
 
 import { WalletButton } from "@/components/WalletButton";
+import { TiltWrapper } from "@/components/ui/TiltWrapper";
 import Link from "next/link";
 
 export function LandingHero() {
@@ -20,7 +21,9 @@ export function LandingHero() {
           approval. Guaranteed by code, not trust.
         </p>
         <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row md:items-start md:justify-start">
-          <WalletButton />
+          <TiltWrapper className="rounded-full">
+            <WalletButton />
+          </TiltWrapper>
           <Link href="/bounties" className="btn-ghost">
             Explore bounties
           </Link>
