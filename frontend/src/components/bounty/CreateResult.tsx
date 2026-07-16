@@ -1,10 +1,18 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
 import { txUrl } from "@/lib/chains";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { SuccessArt } from "@/components/illustrations/spot";
+import { fireConfetti } from "@/lib/confetti";
 
 /** Success panel shown after a bounty is created on-chain. */
 export function CreateResult({ txHash }: { txHash: `0x${string}` }) {
+  useEffect(() => {
+    fireConfetti();
+  }, []);
+
   return (
     <EmptyState
       art={<SuccessArt />}
