@@ -14,10 +14,10 @@ export function SortChips({
   const { containerRef, setItemRef, rect } = useSlidingIndicator(value);
 
   return (
-    <div ref={containerRef} className="relative flex gap-2">
+    <div ref={containerRef} className="segmented-track">
       {rect && (
         <div
-          className="absolute inset-y-0 my-auto h-9 rounded-full bg-gray-900 shadow-md transition-all duration-300 ease-spring"
+          className="absolute inset-y-0 my-auto h-9 rounded-full bg-gradient-primary shadow-md transition-all duration-300 ease-spring"
           style={{ left: rect.left, width: rect.width }}
         />
       )}
