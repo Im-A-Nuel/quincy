@@ -2,6 +2,7 @@
 
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { Spinner } from "./Spinner";
+import { usePendingTitle } from "@/hooks/usePendingTitle";
 
 /** Primary button that shows a spinner and label swap while a tx is pending. */
 export function TxButton({
@@ -16,6 +17,8 @@ export function TxButton({
   pendingLabel?: string;
   children: ReactNode;
 }) {
+  usePendingTitle(Boolean(pending), pendingLabel);
+
   return (
     <button
       className={`btn-primary ${className}`}
