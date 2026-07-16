@@ -7,6 +7,7 @@ import { NAV_ITEMS, isActive } from "./navItems";
 import { WalletButton } from "@/components/WalletButton";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ExploreIcon } from "@/components/ui/icons";
+import { useScrolled } from "@/hooks/useScrolled";
 
 /** Desktop top navigation: logo, primary links, search, wallet, and a Create CTA. */
 export function TopNav() {
@@ -14,6 +15,7 @@ export function TopNav() {
   const router = useRouter();
   const [q, setQ] = useState("");
   const links = NAV_ITEMS.filter((i) => !i.primary);
+  const scrolled = useScrolled(24);
 
   const submitSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,11 +23,31 @@ export function TopNav() {
   };
 
   return (
-    <header className="glass sticky top-0 z-30 hidden border-b border-black/[0.04] md:block">
-      <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-3">
+    <header
+      className={`glass sticky top-0 z-30 hidden border-b border-black/[0.04] transition-shadow duration-300 ease-soft md:block ${
+        scrolled ? "shadow-soft" : ""
+      }`}
+    >
+      <div
+        className={`mx-auto flex max-w-6xl items-center gap-6 px-6 transition-[padding] duration-300 ease-soft ${
+          scrolled ? "py-2" : "py-3"
+        }`}
+      >
         <Link href="/" className="flex items-center gap-2 transition-transform duration-200 ease-soft hover:scale-[1.03] active:scale-95">
-          <img src="/icon-quincy.png" alt="Quincy" className="h-9 w-9 rounded-2xl shadow-soft" />
-          <span className="text-lg font-extrabold tracking-tight text-quincy-700">Quincy</span>
+          <img
+            src="/icon-quincy.png"
+            alt="Quincy"
+            className={`rounded-2xl shadow-soft transition-all duration-300 ease-soft ${
+              scrolled ? "h-7 w-7" : "h-9 w-9"
+            }`}
+          />
+          <span
+            className={`font-extrabold tracking-tight text-quincy-700 transition-all duration-300 ease-soft ${
+              scrolled ? "text-base" : "text-lg"
+            }`}
+          >
+            Quincy
+          </span>
         </Link>
 
         <nav aria-label="Primary" className="flex items-center gap-1">
