@@ -4,6 +4,7 @@ import { useState } from "react";
 import { TxButton } from "@/components/ui/TxButton";
 import { useApproveBounty, useDisputeBounty } from "@/hooks/useBountyActions";
 import { useToast } from "@/components/toast/ToastContext";
+import { fireConfetti } from "@/lib/confetti";
 
 /**
  * Shown to the poster while a bounty is in PendingReview: approve to release
@@ -21,6 +22,7 @@ export function ApproveAction({ bountyId, onDone }: { bountyId: number; onDone?:
       if (kind === "approve") {
         await approveBounty(bountyId);
         toast.success("Approved - reward released to hunter");
+        fireConfetti();
       } else {
         await disputeBounty(bountyId);
         toast.info("Dispute opened - an admin will review");
