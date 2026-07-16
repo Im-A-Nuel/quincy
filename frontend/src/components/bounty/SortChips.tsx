@@ -1,9 +1,9 @@
 "use client";
 
 import { SORT_OPTIONS, type SortOption } from "@/lib/constants";
-import { Chip } from "@/components/ui/Chip";
+import { useSlidingIndicator } from "@/hooks/useSlidingIndicator";
 
-/** Compact sort selector rendered as pill chips. */
+/** Compact sort selector with a sliding background pill. */
 export function SortChips({
   value,
   onChange,
@@ -11,13 +11,32 @@ export function SortChips({
   value: SortOption;
   onChange: (next: SortOption) => void;
 }) {
+  const { containerRef, setItemRef, rect } = useSlidingIndicator(value);
+
   return (
-    <div className="flex gap-2">
-      {SORT_OPTIONS.map((s) => (
-        <Chip key={s.value} active={value === s.value} onClick={() => onChange(s.value)}>
-          {s.label}
-        </Chip>
-      ))}
+    <div ref={containerRef} className="relative flex gap-2">
+      {rect && (
+        <div
+          className="absolute inset-y-0 my-auto h-9 rounded-full bg-gray-900 shadow-md transition-all duration-300 ease-spring"
+          style={{ left: rect.left, width: rect.width }}
+        />
+      )}
+      {SORT_OPTIONS.map((s) => {
+        const active = value === s.value;
+        return (
+          <button
+            key={s.value}
+            ref={setItemRef(s.value)}
+            type="button"
+            onClick={() => onChange(s.value)}
+            className={`relative z-10 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+              active ? "text-white" : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            {s.label}
+          </button>
+        );
+      })}
     </div>
   );
 }
