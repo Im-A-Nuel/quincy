@@ -21,3 +21,8 @@
 * [Events](smart-contract/events.md)
 * [Testing](smart-contract/testing.md)
 * [Deployment](smart-contract/deployment.md)
+
+## Frontend
+
+* [Overview](frontend/overview.md)
+* [Project Structure](frontend/project-structure.md)
