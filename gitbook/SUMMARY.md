@@ -45,3 +45,5 @@
 ## Reference
 
 * [Security](security.md)
+* [Project Status](status.md)
+* [FAQ](faq.md)
