@@ -19,3 +19,5 @@
 * [Overview](smart-contract/overview.md)
 * [Functions](smart-contract/functions.md)
 * [Events](smart-contract/events.md)
+* [Testing](smart-contract/testing.md)
+* [Deployment](smart-contract/deployment.md)
