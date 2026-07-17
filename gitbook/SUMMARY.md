@@ -13,3 +13,9 @@
 * [Overview](architecture/overview.md)
 * [Tech Stack](architecture/tech-stack.md)
 * [Design Decisions](architecture/design-decisions.md)
+
+## Smart Contract
+
+* [Overview](smart-contract/overview.md)
+* [Functions](smart-contract/functions.md)
+* [Events](smart-contract/events.md)
