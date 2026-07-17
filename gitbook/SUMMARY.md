@@ -32,3 +32,8 @@
 
 * [Overview](indexer/overview.md)
 * [Deployment](indexer/deployment.md)
+
+## API Reference
+
+* [Bounties](api-reference/bounties.md)
+* [Profiles](api-reference/profiles.md)
