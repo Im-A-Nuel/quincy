@@ -37,3 +37,7 @@
 
 * [Bounties](api-reference/bounties.md)
 * [Profiles](api-reference/profiles.md)
+
+## Guides
+
+* [Lifecycle Walkthrough](guides/lifecycle-walkthrough.md)
