@@ -27,3 +27,8 @@
 * [Overview](frontend/overview.md)
 * [Project Structure](frontend/project-structure.md)
 * [Design System](frontend/design-system.md)
+
+## Indexer
+
+* [Overview](indexer/overview.md)
+* [Deployment](indexer/deployment.md)
