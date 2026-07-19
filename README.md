@@ -126,8 +126,9 @@ See `docs/` for the full architecture, requirements, database schema, and contra
 
 `QuincyBounty` is live on **Celo Mainnet**:
 
-- Address: [`0x4a81cf92d285a9b92fecb1ea187cd2466e048b21`](https://celoscan.io/address/0x4a81cf92d285a9b92fecb1ea187cd2466e048b21)
-- Deploy tx: `0xa7937dde4a2707dd0469874a4c07a408ad9650ec64265e53b4ac79dce2f8d82b`
+- Address: [`0x9af5fbb05054a4d072def7bb73978c48dfe6d3d5`](https://celoscan.io/address/0x9af5fbb05054a4d072def7bb73978c48dfe6d3d5)
+- Deploy tx: `0x8c9478c5a5ce9563d037530a24c3cc7db2fa0de0034686254a4ff2b001ebb1fd`
+- Reward tokens: cUSD and native CELO (see `docs/DEPLOYMENTS.md`)
 
 See `docs/DEPLOYMENTS.md` for full deployment details.
 
