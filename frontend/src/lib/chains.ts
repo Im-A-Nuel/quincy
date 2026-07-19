@@ -14,7 +14,7 @@ export const CUSD_ADDRESS: Record<"celo" | "alfajores", `0x${string}`> = {
 
 /** Canonical native-CELO (ERC20-wrapped) token address per network. */
 export const CELO_ADDRESS: Record<"celo" | "alfajores", `0x${string}`> = {
-  celo: "0x471EcE3750Da237f93B8E339c536989b8978A438",
+  celo: "0x471EcE3750Da237f93B8E339c536989b8978a438",
   // Not currently deployed on Alfajores - see docs/DEPLOYMENTS.md.
   alfajores: "0x0000000000000000000000000000000000000000",
 };
