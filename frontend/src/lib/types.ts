@@ -38,7 +38,8 @@ export interface Bounty {
   title: string;
   description: string;
   category: BountyCategory;
-  rewardAmount: string; // cUSD, decimal string
+  rewardToken: `0x${string}`; // cUSD or CELO contract address
+  rewardAmount: string; // decimal string, in whichever token rewardToken points to
   status: BountyStatus;
   proofUri: string | null;
   deadline: string; // ISO timestamp
@@ -51,16 +52,26 @@ export interface Bounty {
 /** Compact bounty shape used in list views. */
 export type BountyListItem = Pick<
   Bounty,
-  "id" | "title" | "category" | "rewardAmount" | "status" | "posterAddress" | "deadline"
+  | "id"
+  | "title"
+  | "category"
+  | "rewardToken"
+  | "rewardAmount"
+  | "status"
+  | "posterAddress"
+  | "deadline"
 >;
 
-/** On-chain reputation counters for a wallet. */
+/** On-chain reputation counters for a wallet, split per reward token since
+ *  cUSD and CELO don't share a common USD value to sum. */
 export interface Reputation {
   walletAddress: `0x${string}`;
   bountiesPosted: number;
   bountiesCompletedAsPoster: number;
   bountiesClaimed: number;
   bountiesCompletedAsHunter: number;
-  totalEarned: string; // cUSD decimal string
-  totalSpent: string; // cUSD decimal string
+  totalEarnedCusd: string;
+  totalSpentCusd: string;
+  totalEarnedCelo: string;
+  totalSpentCelo: string;
 }

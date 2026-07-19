@@ -7,11 +7,19 @@ export const quincyBountyAbi = [
     name: "createBounty",
     stateMutability: "nonpayable",
     inputs: [
+      { name: "token", type: "address" },
       { name: "description", type: "string" },
       { name: "reward", type: "uint256" },
       { name: "deadline", type: "uint256" },
     ],
     outputs: [{ name: "bountyId", type: "uint256" }],
+  },
+  {
+    type: "function",
+    name: "isAllowedToken",
+    stateMutability: "view",
+    inputs: [{ name: "token", type: "address" }],
+    outputs: [{ name: "", type: "bool" }],
   },
   {
     type: "function",
@@ -68,6 +76,7 @@ export const quincyBountyAbi = [
     inputs: [
       { name: "bountyId", type: "uint256", indexed: true },
       { name: "poster", type: "address", indexed: true },
+      { name: "token", type: "address", indexed: true },
       { name: "reward", type: "uint256", indexed: false },
       { name: "deadline", type: "uint256", indexed: false },
     ],
