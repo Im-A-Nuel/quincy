@@ -6,10 +6,12 @@ import { QuincyBounty } from "../../src/QuincyBounty.sol";
 import { MockERC20 } from "../mocks/MockERC20.sol";
 
 /// @notice Drives random lifecycle actions against QuincyBounty for the
-///         escrow-balance invariant. Tracks every created bounty id.
+///         escrow-balance invariant. Randomly picks cUSD or CELO per bounty.
+///         Tracks every created bounty id.
 contract Handler is Test {
     QuincyBounty public quincy;
     MockERC20 public cusd;
+    MockERC20 public celo;
     address public admin;
 
     uint256[] public ids;
@@ -17,24 +19,29 @@ contract Handler is Test {
     address internal poster = address(0xB0B);
     address internal hunter = address(0xCAFE);
 
-    constructor(QuincyBounty _quincy, MockERC20 _cusd, address _admin) {
+    constructor(QuincyBounty _quincy, MockERC20 _cusd, MockERC20 _celo, address _admin) {
         quincy = _quincy;
         cusd = _cusd;
+        celo = _celo;
         admin = _admin;
 
         cusd.mint(poster, 1_000_000 ether);
-        vm.prank(poster);
+        celo.mint(poster, 1_000_000 ether);
+        vm.startPrank(poster);
         cusd.approve(address(quincy), type(uint256).max);
+        celo.approve(address(quincy), type(uint256).max);
+        vm.stopPrank();
     }
 
     function idCount() external view returns (uint256) {
         return ids.length;
     }
 
-    function create(uint256 rewardSeed) external {
+    function create(uint256 rewardSeed, bool useCelo) external {
         uint256 reward = bound(rewardSeed, 0.5 ether, 100 ether);
+        address token = useCelo ? address(celo) : address(cusd);
         vm.prank(poster);
-        uint256 id = quincy.createBounty("task", reward, block.timestamp + 7 days);
+        uint256 id = quincy.createBounty(token, "task", reward, block.timestamp + 7 days);
         ids.push(id);
     }
 

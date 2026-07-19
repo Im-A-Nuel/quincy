@@ -3,9 +3,9 @@ pragma solidity ^0.8.24;
 
 import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-/// @notice Minimal mintable ERC-20 standing in for cUSD in tests.
+/// @notice Minimal mintable ERC-20 standing in for cUSD or CELO in tests.
 contract MockERC20 is ERC20 {
-    constructor() ERC20("Mock cUSD", "cUSD") { }
+    constructor(string memory name_, string memory symbol_) ERC20(name_, symbol_) { }
 
     function mint(address to, uint256 amount) external {
         _mint(to, amount);
