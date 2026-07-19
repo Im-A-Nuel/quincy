@@ -2,7 +2,7 @@
 
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import { erc20Abi } from "@/lib/abi/erc20";
-import { quincyAddress } from "@/lib/chains";
+import { quincyAddress, activeChain } from "@/lib/chains";
 import { maxUint256 } from "viem";
 
 /** Read the connected wallet's balance of an arbitrary ERC-20 token. */
@@ -42,6 +42,9 @@ export function useApproveToken() {
       address: token,
       functionName: "approve",
       args: [quincyAddress, amount ?? maxUint256],
+      // Forces the wallet onto Celo instead of sending on whatever network
+      // it's already active on - see useBountyActions.ts for the same fix.
+      chainId: activeChain.id,
     });
 
   return { approve, ...rest };
