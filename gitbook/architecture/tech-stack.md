@@ -9,7 +9,7 @@
 | Indexer | Node.js + viem | Polls contract logs, rebuilds rows from direct contract reads. |
 | Database | Postgres (Neon) | Indexed read layer only, never a source of truth. |
 | Chain | Celo Mainnet (primary), Alfajores (staging, currently unreachable via public RPC) | |
-| Token | cUSD only | See [Design Decisions](design-decisions.md#cusd-only-no-multi-token-support). |
+| Token | cUSD or CELO, picked per bounty | See [Design Decisions](design-decisions.md#cusd--celo-only-no-arbitrary-erc-20-support). |
 | Proof storage | IPFS via Pinata | Hunters upload client-side through `/api/upload`; only the CID goes on-chain. |
 | Hosting | Vercel (frontend + API routes), Render (indexer worker) | |
 

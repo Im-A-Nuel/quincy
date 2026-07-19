@@ -42,6 +42,6 @@ If the indexer's Postgres mirror and the contract's actual state ever disagree, 
 
 ## Why this shape
 
-* [Smart Contract](../smart-contract/overview.md) design decisions (single contract, no proxy, cUSD-only, one-tx-per-step)
+* [Smart Contract](../smart-contract/overview.md) design decisions (single contract, no proxy, cUSD + CELO reward tokens, one-tx-per-step)
 * [Tech Stack](tech-stack.md) — what runs where and why
 * [Design Decisions](design-decisions.md) — the tradeoffs behind the non-obvious choices

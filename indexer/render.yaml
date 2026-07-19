@@ -14,9 +14,9 @@ services:
       - key: CELO_RPC_URL
         value: https://forno.celo.org
       - key: QUINCY_ADDRESS
-        value: "0x4a81cf92d285a9b92fecb1ea187cd2466e048b21"
+        value: "0x9af5fbb05054a4d072def7bb73978c48dfe6d3d5"
       - key: START_BLOCK
-        value: "72020154"
+        value: "72544655"
       - key: POLL_INTERVAL_MS
         value: "15000"
       - key: BLOCK_RANGE

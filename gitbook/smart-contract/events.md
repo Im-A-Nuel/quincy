@@ -4,7 +4,7 @@ Every state-changing function emits exactly one event. The [indexer](../indexer/
 
 | Event | Emitted by | Fields |
 |---|---|---|
-| `BountyCreated` | `createBounty` | `bountyId` (indexed), `poster` (indexed), `reward`, `deadline` |
+| `BountyCreated` | `createBounty` | `bountyId` (indexed), `poster` (indexed), `token` (indexed), `reward`, `deadline` |
 | `BountyClaimed` | `claimBounty` | `bountyId` (indexed), `hunter` (indexed) |
 | `ProofSubmitted` | `submitProof` | `bountyId` (indexed), `proofURI` |
 | `BountyApproved` | `approveBounty` | `bountyId` (indexed), `hunter` (indexed), `reward` |

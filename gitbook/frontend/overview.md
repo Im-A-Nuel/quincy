@@ -21,7 +21,7 @@ Every page can render from static sample data instead of the live API, controlle
 | `/` | Marketing landing (disconnected) or personalized dashboard (connected) |
 | `/bounties` | Browse/search/filter open bounties |
 | `/bounties/[id]` | Bounty detail, styled as an escrow receipt, with the contextual action for the connected wallet's role |
-| `/create` | Post a bounty (approve cUSD → createBounty) |
+| `/create` | Post a bounty (pick cUSD or CELO, approve → createBounty) |
 | `/my` | The connected wallet's bounties, grouped by status |
 | `/profile/[address]` | Public reputation page for any wallet |
 | `/account` | Redirects to the connected wallet's own profile |

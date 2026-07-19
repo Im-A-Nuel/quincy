@@ -5,14 +5,15 @@
 ### `createBounty`
 
 ```solidity
-function createBounty(string calldata description, uint256 reward, uint256 deadline)
+function createBounty(address token, string calldata description, uint256 reward, uint256 deadline)
     external
     nonReentrant
     returns (uint256 bountyId)
 ```
 
-Locks `reward` cUSD in escrow and opens a bounty. Caller must have called `approve` on the cUSD contract for at least `reward` first — `createBounty` pulls funds via `transferFrom`.
+Locks `reward` of `token` in escrow and opens a bounty. `token` must be either the cUSD or the CELO contract address (see `isAllowedToken`). Caller must have called `approve` on that token's contract for at least `reward` first — `createBounty` pulls funds via `transferFrom`.
 
+* Reverts `TokenNotAllowed` if `token` is neither cUSD nor CELO.
 * Reverts `RewardTooLow` if `reward < minReward`.
 * Reverts `DeadlineInPast` if `deadline <= block.timestamp`.
 * Emits `BountyCreated`.
@@ -99,6 +100,14 @@ function getBounty(uint256 bountyId) external view returns (Bounty memory)
 
 Returns the full `Bounty` struct, including a zeroed one for an id that was never created.
 
+### `isAllowedToken`
+
+```solidity
+function isAllowedToken(address token) public view returns (bool)
+```
+
+Returns `true` only for the cUSD and CELO addresses fixed at deploy time. Used internally by `createBounty`; also handy for the frontend to validate a token before building a transaction.
+
 ### `getReputation`
 
 ```solidity
@@ -111,7 +120,8 @@ Returns a wallet's on-chain reputation counters (zeroed if the wallet has no act
 
 | Error | Thrown when |
 |---|---|
-| `ZeroAddress()` | Constructor called with a zero cUSD or admin address |
+| `ZeroAddress()` | Constructor called with a zero cUSD, CELO, or admin address |
+| `TokenNotAllowed()` | `createBounty` called with a token that isn't cUSD or CELO |
 | `RewardTooLow()` | `createBounty` reward is below `minReward` |
 | `DeadlineInPast()` | `createBounty` deadline is not in the future |
 | `InvalidStatus()` | Action attempted from a status that doesn't allow it |

@@ -28,5 +28,5 @@ Informal micro-task work — running errands, small research, simple design, tra
 | Resource | Link |
 |---|---|
 | Live app | [quincy-celo.vercel.app](https://quincy-celo.vercel.app) |
-| Deployed contract (Celo Mainnet) | [`0x4a81cf92d285a9b92fecb1ea187cd2466e048b21`](https://celoscan.io/address/0x4a81cf92d285a9b92fecb1ea187cd2466e048b21) |
+| Deployed contract (Celo Mainnet) | [`0x9af5fbb05054a4d072def7bb73978c48dfe6d3d5`](https://celoscan.io/address/0x9af5fbb05054a4d072def7bb73978c48dfe6d3d5) |
 | Source code | [GitHub](https://github.com/Im-A-Nuel/quincy) |
