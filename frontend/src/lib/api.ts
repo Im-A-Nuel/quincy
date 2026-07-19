@@ -97,15 +97,18 @@ function mockBounties(query: BountiesQuery): BountiesResponse {
     rows.sort((a, b) => b.id - a.id);
   }
   return {
-    bounties: rows.map(({ id, title, category, rewardAmount, status, posterAddress, deadline }) => ({
-      id,
-      title,
-      category,
-      rewardAmount,
-      status,
-      posterAddress,
-      deadline,
-    })),
+    bounties: rows.map(
+      ({ id, title, category, rewardToken, rewardAmount, status, posterAddress, deadline }) => ({
+        id,
+        title,
+        category,
+        rewardToken,
+        rewardAmount,
+        status,
+        posterAddress,
+        deadline,
+      }),
+    ),
     page: query.page ?? 1,
     total: rows.length,
   };

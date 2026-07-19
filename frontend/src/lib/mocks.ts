@@ -1,5 +1,6 @@
 import type { Bounty } from "./types";
 import { BountyStatus } from "./types";
+import { cusdAddress, celoTokenAddress } from "./chains";
 
 // Sample data so the UI is demonstrable before the indexer API is live.
 // Enabled when NEXT_PUBLIC_USE_MOCKS=1. Never used in production reads.
@@ -17,6 +18,7 @@ export const MOCK_BOUNTIES: Bounty[] = [
     description:
       "Need a clean, natural translation of a single marketing flyer from English to Swahili. Deliver as a text file.",
     category: "translation",
+    rewardToken: cusdAddress,
     rewardAmount: "2.50",
     status: BountyStatus.Open,
     proofUri: null,
@@ -34,6 +36,7 @@ export const MOCK_BOUNTIES: Bounty[] = [
     description:
       "Small local coffee stall needs a minimalist logo. One concept, PNG + SVG. Brown/cream palette.",
     category: "design",
+    rewardToken: celoTokenAddress,
     rewardAmount: "8.00",
     status: BountyStatus.InProgress,
     proofUri: null,
@@ -51,6 +54,7 @@ export const MOCK_BOUNTIES: Bounty[] = [
     description:
       "Compile a short spreadsheet of 10 suppliers with contact, MOQ, and price range.",
     category: "research",
+    rewardToken: cusdAddress,
     rewardAmount: "5.00",
     status: BountyStatus.PendingReview,
     proofUri: "ipfs://bafybeigdyrexampleexampleexampleexampleexampleexample",
@@ -67,6 +71,7 @@ export const MOCK_BOUNTIES: Bounty[] = [
     title: "Pick up and deliver a parcel across town",
     description: "Small parcel pickup from Point A and drop at Point B, same day.",
     category: "errand",
+    rewardToken: cusdAddress,
     rewardAmount: "1.50",
     status: BountyStatus.Completed,
     proofUri: "ipfs://bafybeihandoffphotoexampleexampleexampleexampleexample",
@@ -91,7 +96,9 @@ export function mockReputation(address: string) {
     bountiesCompletedAsPoster: 4,
     bountiesClaimed: 12,
     bountiesCompletedAsHunter: 11,
-    totalEarned: "28.50",
-    totalSpent: "15.00",
+    totalEarnedCusd: "20.50",
+    totalSpentCusd: "10.00",
+    totalEarnedCelo: "8.00",
+    totalSpentCelo: "5.00",
   };
 }

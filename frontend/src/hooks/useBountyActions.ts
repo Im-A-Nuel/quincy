@@ -23,8 +23,12 @@ function useBountyWrite() {
 
 export function useCreateBounty() {
   const { call, ...rest } = useBountyWrite();
-  const createBounty = (description: string, reward: bigint, deadline: bigint) =>
-    call("createBounty", [description, reward, deadline]);
+  const createBounty = (
+    token: `0x${string}`,
+    description: string,
+    reward: bigint,
+    deadline: bigint,
+  ) => call("createBounty", [token, description, reward, deadline]);
   return { createBounty, ...rest };
 }
 
