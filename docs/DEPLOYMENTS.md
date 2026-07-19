@@ -12,7 +12,7 @@ On-chain addresses for `QuincyBounty.sol`.
 | Gas used | 1,420,320 |
 | Deployer / admin | `0x22227781CCf9d1F547574E7Dec05FE56De6A0B25` |
 | cUSD token | `0x765DE816845861e75A25fCA122bb6898B8B1282a` |
-| CELO token | `0x471EcE3750Da237f93B8E339c536989b8978A438` |
+| CELO token | `0x471EcE3750Da237f93B8E339c536989b8978a438` |
 | Min reward | 0.5 (raw units, either token) |
 | Deployed | 2026-07-19 |
 | Explorer | https://celoscan.io/address/0x9af5fbb05054a4d072def7bb73978c48dfe6d3d5 |
