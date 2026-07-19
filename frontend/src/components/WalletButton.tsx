@@ -7,7 +7,7 @@ import { injected } from "wagmi/connectors";
 import { shortAddress } from "@/lib/format";
 import { Avatar } from "@/components/ui/Avatar";
 import { CopyButton } from "@/components/ui/CopyButton";
-import { fromCusdUnits } from "@/lib/units";
+import { fromTokenUnits } from "@/lib/units";
 import { useCusdBalance } from "@/hooks/useCusd";
 
 /**
@@ -77,7 +77,7 @@ export function WalletButton() {
               </CopyButton>
               <p className="mt-0.5 text-xs text-gray-400">
                 {balance !== undefined
-                  ? `${Number(fromCusdUnits(balance)).toLocaleString(undefined, { maximumFractionDigits: 2 })} cUSD`
+                  ? `${Number(fromTokenUnits(balance)).toLocaleString(undefined, { maximumFractionDigits: 2 })} cUSD`
                   : "…"}
               </p>
             </div>
