@@ -5,6 +5,7 @@ export function mapBountyListItem(row: Record<string, unknown>) {
     id: Number(row.id),
     title: row.title as string,
     category: row.category as string,
+    rewardToken: row.reward_token as string,
     rewardAmount: String(row.reward_amount),
     status: row.status as string,
     posterAddress: row.poster_address as string,
@@ -20,6 +21,7 @@ export function mapBounty(row: Record<string, unknown>) {
     title: row.title as string,
     description: row.description as string,
     category: row.category as string,
+    rewardToken: row.reward_token as string,
     rewardAmount: String(row.reward_amount),
     status: row.status as string,
     proofUri: (row.proof_uri as string) ?? null,
@@ -39,8 +41,10 @@ export function mapReputation(row: Record<string, unknown> | undefined, address:
       bountiesCompletedAsPoster: 0,
       bountiesClaimed: 0,
       bountiesCompletedAsHunter: 0,
-      totalEarned: "0",
-      totalSpent: "0",
+      totalEarnedCusd: "0",
+      totalSpentCusd: "0",
+      totalEarnedCelo: "0",
+      totalSpentCelo: "0",
     };
   }
   return {
@@ -49,7 +53,9 @@ export function mapReputation(row: Record<string, unknown> | undefined, address:
     bountiesCompletedAsPoster: Number(row.bounties_completed_as_poster),
     bountiesClaimed: Number(row.bounties_claimed),
     bountiesCompletedAsHunter: Number(row.bounties_completed_as_hunter),
-    totalEarned: String(row.total_earned),
-    totalSpent: String(row.total_spent),
+    totalEarnedCusd: String(row.total_earned_cusd),
+    totalSpentCusd: String(row.total_spent_cusd),
+    totalEarnedCelo: String(row.total_earned_celo),
+    totalSpentCelo: String(row.total_spent_celo),
   };
 }
