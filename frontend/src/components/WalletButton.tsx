@@ -8,7 +8,8 @@ import { shortAddress } from "@/lib/format";
 import { Avatar } from "@/components/ui/Avatar";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { fromTokenUnits } from "@/lib/units";
-import { useCusdBalance } from "@/hooks/useCusd";
+import { useTokenBalance } from "@/hooks/useToken";
+import { cusdAddress, celoTokenAddress } from "@/lib/chains";
 
 /**
  * Connect button; once connected, opens a dropdown (balance, copy address,
@@ -20,7 +21,8 @@ export function WalletButton() {
   const { address, isConnected } = useAccount();
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
-  const { data: balance } = useCusdBalance();
+  const { data: cusdBalance } = useTokenBalance(cusdAddress);
+  const { data: celoBalance } = useTokenBalance(celoTokenAddress);
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -76,8 +78,12 @@ export function WalletButton() {
                 {shortAddress(address)}
               </CopyButton>
               <p className="mt-0.5 text-xs text-gray-400">
-                {balance !== undefined
-                  ? `${Number(fromTokenUnits(balance)).toLocaleString(undefined, { maximumFractionDigits: 2 })} cUSD`
+                {cusdBalance !== undefined
+                  ? `${Number(fromTokenUnits(cusdBalance)).toLocaleString(undefined, { maximumFractionDigits: 2 })} cUSD`
+                  : "…"}
+                {" · "}
+                {celoBalance !== undefined
+                  ? `${Number(fromTokenUnits(celoBalance)).toLocaleString(undefined, { maximumFractionDigits: 2 })} CELO`
                   : "…"}
               </p>
             </div>

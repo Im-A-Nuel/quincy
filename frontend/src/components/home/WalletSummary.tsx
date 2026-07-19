@@ -2,24 +2,32 @@
 
 import Link from "next/link";
 import { useAccount } from "wagmi";
-import { useCusdBalance } from "@/hooks/useCusd";
+import { useTokenBalance } from "@/hooks/useToken";
 import { fromTokenUnits } from "@/lib/units";
+import { cusdAddress, celoTokenAddress } from "@/lib/chains";
 import { shortAddress } from "@/lib/format";
 import { WalletButton } from "@/components/WalletButton";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { PlusIcon, ExploreIcon, WalletIcon } from "@/components/ui/icons";
 import { useCountUp } from "@/hooks/useCountUp";
 
+function formatBalance(value?: bigint): string {
+  return value !== undefined
+    ? Number(fromTokenUnits(value)).toLocaleString(undefined, { maximumFractionDigits: 2 })
+    : "-";
+}
+
 /** Gradient hero card summarizing the connected wallet + quick actions. */
 export function WalletSummary() {
   const { address, isConnected } = useAccount();
-  const { data: balance } = useCusdBalance();
+  const { data: cusdBalance } = useTokenBalance(cusdAddress);
+  const { data: celoBalance } = useTokenBalance(celoTokenAddress);
 
-  const balanceNum = isConnected && balance !== undefined ? Number(fromTokenUnits(balance)) : 0;
-  const animatedBalance = useCountUp(balanceNum);
-  const balanceText =
-    isConnected && balance !== undefined
-      ? animatedBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })
+  const cusdNum = isConnected && cusdBalance !== undefined ? Number(fromTokenUnits(cusdBalance)) : 0;
+  const animatedCusd = useCountUp(cusdNum);
+  const cusdText =
+    isConnected && cusdBalance !== undefined
+      ? animatedCusd.toLocaleString(undefined, { maximumFractionDigits: 2 })
       : "-";
 
   return (
@@ -41,7 +49,10 @@ export function WalletSummary() {
       <div className="mt-5">
         <p className="text-sm text-white/70">cUSD balance</p>
         <p className="mt-1 text-4xl font-extrabold tracking-tight">
-          {balanceText} <span className="text-xl font-bold text-white/80">cUSD</span>
+          {cusdText} <span className="text-xl font-bold text-white/80">cUSD</span>
+        </p>
+        <p className="mt-1 text-sm font-semibold text-white/80">
+          {isConnected ? formatBalance(celoBalance) : "-"} CELO
         </p>
       </div>
 
