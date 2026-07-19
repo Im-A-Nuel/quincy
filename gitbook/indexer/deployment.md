@@ -4,12 +4,16 @@ The standalone indexer (`indexer/`) is a **long-running worker**, not a serverle
 
 ## Vercel Cron (recommended - free, no extra host)
 
-`frontend/src/app/api/cron/sync/route.ts` is a serverless port of the same sync logic (`processRange`/`syncBounty`/`syncReputation`), refactored to run once per invocation instead of looping. `frontend/vercel.json` schedules it daily via [Vercel Cron Jobs](https://vercel.com/docs/cron-jobs) - no separate worker to host, it deploys as part of the normal frontend deploy.
+The sync logic (`processRange`/`syncBounty`/`syncReputation`, ported to run once per invocation instead of looping) lives in `frontend/src/lib/server/sync.ts` and is exposed through two routes:
+
+* **`/api/cron/sync`** - protected. Requires `Authorization: Bearer <CRON_SECRET>` whenever a `CRON_SECRET` env var is set in the Vercel project; Vercel's own cron invoker sends that header automatically. This is the one `frontend/vercel.json` schedules.
+* **`/api/sync-now`** - unauthenticated. Meant to be called from the browser, not a scheduler - see below.
+
+`frontend/vercel.json` schedules `/api/cron/sync` daily via [Vercel Cron Jobs](https://vercel.com/docs/cron-jobs) - no separate worker to host, it deploys as part of the normal frontend deploy.
 
 * **Cron frequency is capped by plan.** Vercel's Hobby (free) tier only allows a cron job to fire once per day - a shorter schedule (e.g. every 5 min) fails deployment outright. `frontend/vercel.json` uses `0 3 * * *` to stay within that limit; bump it to something like `*/5 * * * *` if the project is on Pro.
-* To keep data fresh despite the once-daily cron on Hobby, every write hook in `frontend/src/hooks/useBountyActions.ts` also fires a best-effort nudge (`frontend/src/lib/triggerSync.ts`) at the same route a few seconds after its own transaction, so the acting user sees their own change without waiting for the cron. This is fire-and-forget and does not cover changes made by other users/wallets - the daily cron is the only thing guaranteed to catch those.
-* Each run processes at most ~3000 new blocks (`MAX_BLOCK_RANGE` in `sync.ts`) to stay inside the serverless function's execution limit; a large catch-up gap resolves itself over a few ticks instead of one call.
-* Optionally set a `CRON_SECRET` env var in the Vercel project - the route then requires `Authorization: Bearer <CRON_SECRET>`, which Vercel's own cron invoker sends automatically when that env var is present. Note this also blocks the client-side nudge above (it can't know the secret), leaving the daily cron as the only sync path until the next write from a session that predates the secret.
+* To keep data fresh despite the once-daily cron on Hobby, every write hook in `frontend/src/hooks/useBountyActions.ts` also fires a best-effort nudge (`frontend/src/lib/triggerSync.ts`) at `/api/sync-now` a few seconds after its own transaction, so the acting user sees their own change without waiting for the cron. `/api/sync-now` has no secret check on purpose - the browser can't know a server secret - which is safe here since the route can only touch the indexed read-copy, never funds; worst case of it being publicly callable is a redundant, idempotent sync. This nudge is fire-and-forget and only covers the acting wallet's own writes - the daily cron is the only thing guaranteed to catch changes made by other users.
+* Each run (either route) processes at most ~3000 new blocks (`MAX_BLOCK_RANGE` in `sync.ts`) to stay inside the serverless function's execution limit; a large catch-up gap resolves itself over a few ticks instead of one call.
 * Trade-off vs. the standalone worker: without the write-triggered nudge, data could lag up to a day; with it, the acting user's own changes appear within seconds, other users' changes lag up to a day on Hobby.
 
 Use the standalone worker instead if you need faster propagation or you're already paying for an always-on host:
