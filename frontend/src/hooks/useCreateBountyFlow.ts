@@ -2,23 +2,33 @@
 
 import { useState } from "react";
 import { useAccount } from "wagmi";
-import { useApproveCusd, useCusdAllowance } from "./useCusd";
+import { useTokenAllowance, useApproveToken } from "./useToken";
 import { useCreateBounty } from "./useBountyActions";
 import { encodeMetadata } from "@/lib/metadata";
-import { toCusdUnits, toUnixSeconds } from "@/lib/units";
+import { toTokenUnits, toUnixSeconds } from "@/lib/units";
+import { cusdAddress, celoTokenAddress } from "@/lib/chains";
 import type { BountyFormValues } from "@/lib/validateBounty";
 import type { BountyCategory } from "@/lib/types";
 
 export type CreateStep = "idle" | "approving" | "creating" | "done" | "error";
 
+function resolveTokenAddress(token: BountyFormValues["token"]): `0x${string}` {
+  return token === "celo" ? celoTokenAddress : cusdAddress;
+}
+
 /**
- * Orchestrates the two-transaction create flow: approve cUSD allowance if it's
- * short, then createBounty. Kept as separate on-chain txs by design.
+ * Orchestrates the two-transaction create flow: approve the chosen reward
+ * token's allowance if it's short, then createBounty. Kept as separate
+ * on-chain txs by design.
  */
 export function useCreateBountyFlow() {
   const { isConnected } = useAccount();
-  const { data: allowance } = useCusdAllowance();
-  const { approve } = useApproveCusd();
+
+  // Hooks can't be called conditionally per-token, so allowance is read for
+  // both tokens up front and the right one is picked at submit time.
+  const { data: cusdAllowance } = useTokenAllowance(cusdAddress);
+  const { data: celoAllowance } = useTokenAllowance(celoTokenAddress);
+  const { approve } = useApproveToken();
   const { createBounty } = useCreateBounty();
 
   const [step, setStep] = useState<CreateStep>("idle");
@@ -33,21 +43,23 @@ export function useCreateBountyFlow() {
       return;
     }
 
-    const reward = toCusdUnits(values.reward);
+    const token = resolveTokenAddress(values.token);
+    const reward = toTokenUnits(values.reward);
     const deadline = toUnixSeconds(values.deadline);
     const description = encodeMetadata({
       title: values.title.trim(),
       category: values.category as BountyCategory,
       description: values.description.trim(),
     });
+    const allowance = token === celoTokenAddress ? celoAllowance : cusdAllowance;
 
     try {
       if ((allowance ?? 0n) < reward) {
         setStep("approving");
-        await approve(); // unlimited allowance to avoid re-approving later
+        await approve(token); // unlimited allowance to avoid re-approving later
       }
       setStep("creating");
-      const hash = await createBounty(description, reward, deadline);
+      const hash = await createBounty(token, description, reward, deadline);
       setTxHash(hash);
       setStep("done");
     } catch (e) {
