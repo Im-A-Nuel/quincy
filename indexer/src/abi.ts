@@ -13,6 +13,7 @@ export const quincyAbi = [
         components: [
           { name: "poster", type: "address" },
           { name: "hunter", type: "address" },
+          { name: "token", type: "address" },
           { name: "reward", type: "uint256" },
           { name: "deadline", type: "uint256" },
           { name: "status", type: "uint8" },
@@ -36,8 +37,10 @@ export const quincyAbi = [
           { name: "bountiesCompletedAsPoster", type: "uint64" },
           { name: "bountiesClaimed", type: "uint64" },
           { name: "bountiesCompletedAsHunter", type: "uint64" },
-          { name: "totalEarned", type: "uint256" },
-          { name: "totalSpent", type: "uint256" },
+          { name: "totalEarnedCUSD", type: "uint256" },
+          { name: "totalSpentCUSD", type: "uint256" },
+          { name: "totalEarnedCELO", type: "uint256" },
+          { name: "totalSpentCELO", type: "uint256" },
         ],
       },
     ],
@@ -48,6 +51,7 @@ export const quincyAbi = [
     inputs: [
       { name: "bountyId", type: "uint256", indexed: true },
       { name: "poster", type: "address", indexed: true },
+      { name: "token", type: "address", indexed: true },
       { name: "reward", type: "uint256", indexed: false },
       { name: "deadline", type: "uint256", indexed: false },
     ],

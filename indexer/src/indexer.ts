@@ -10,7 +10,8 @@ import {
   upsertReputation,
 } from "./db.js";
 
-const CUSD_DECIMALS = 18;
+// Both reward tokens (cUSD and CELO) use 18 decimals on Celo.
+const TOKEN_DECIMALS = 18;
 
 interface Touched {
   txCreated?: string;
@@ -33,7 +34,8 @@ async function syncBounty(id: bigint, meta: Touched): Promise<void> {
     title: decoded.title,
     description: decoded.description,
     category: decoded.category,
-    rewardAmount: formatUnits(b.reward, CUSD_DECIMALS),
+    rewardToken: b.token.toLowerCase(),
+    rewardAmount: formatUnits(b.reward, TOKEN_DECIMALS),
     status: statusFromIndex(b.status),
     proofUri: b.proofURI || null,
     deadline: new Date(Number(b.deadline) * 1000),
@@ -52,8 +54,10 @@ async function syncReputation(address: string): Promise<void> {
     bountiesCompletedAsPoster: Number(r.bountiesCompletedAsPoster),
     bountiesClaimed: Number(r.bountiesClaimed),
     bountiesCompletedAsHunter: Number(r.bountiesCompletedAsHunter),
-    totalEarned: formatUnits(r.totalEarned, CUSD_DECIMALS),
-    totalSpent: formatUnits(r.totalSpent, CUSD_DECIMALS),
+    totalEarnedCusd: formatUnits(r.totalEarnedCUSD, TOKEN_DECIMALS),
+    totalSpentCusd: formatUnits(r.totalSpentCUSD, TOKEN_DECIMALS),
+    totalEarnedCelo: formatUnits(r.totalEarnedCELO, TOKEN_DECIMALS),
+    totalSpentCelo: formatUnits(r.totalSpentCELO, TOKEN_DECIMALS),
   });
 }
 

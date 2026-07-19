@@ -25,6 +25,7 @@ export interface BountyRow {
   title: string;
   description: string;
   category: string;
+  rewardToken: string;
   rewardAmount: string;
   status: string;
   proofUri: string | null;
@@ -40,14 +41,15 @@ export async function upsertBounty(b: BountyRow): Promise<void> {
   await pool.query(
     `INSERT INTO bounties (
         id, poster_address, hunter_address, title, description, category,
-        reward_amount, status, proof_uri, deadline, created_at, updated_at,
-        tx_hash_created, tx_hash_completed
-     ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11, NOW(), $12,$13)
+        reward_token, reward_amount, status, proof_uri, deadline, created_at,
+        updated_at, tx_hash_created, tx_hash_completed
+     ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, NOW(), $13,$14)
      ON CONFLICT (id) DO UPDATE SET
         hunter_address = EXCLUDED.hunter_address,
         title = EXCLUDED.title,
         description = EXCLUDED.description,
         category = EXCLUDED.category,
+        reward_token = EXCLUDED.reward_token,
         reward_amount = EXCLUDED.reward_amount,
         status = EXCLUDED.status,
         proof_uri = EXCLUDED.proof_uri,
@@ -61,6 +63,7 @@ export async function upsertBounty(b: BountyRow): Promise<void> {
       b.title,
       b.description,
       b.category,
+      b.rewardToken,
       b.rewardAmount,
       b.status,
       b.proofUri,
@@ -78,31 +81,38 @@ export interface ReputationRow {
   bountiesCompletedAsPoster: number;
   bountiesClaimed: number;
   bountiesCompletedAsHunter: number;
-  totalEarned: string;
-  totalSpent: string;
+  totalEarnedCusd: string;
+  totalSpentCusd: string;
+  totalEarnedCelo: string;
+  totalSpentCelo: string;
 }
 
 export async function upsertReputation(r: ReputationRow): Promise<void> {
   await pool.query(
     `INSERT INTO reputations (
         wallet_address, bounties_posted, bounties_completed_as_poster,
-        bounties_claimed, bounties_completed_as_hunter, total_earned, total_spent
-     ) VALUES ($1,$2,$3,$4,$5,$6,$7)
+        bounties_claimed, bounties_completed_as_hunter,
+        total_earned_cusd, total_spent_cusd, total_earned_celo, total_spent_celo
+     ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
      ON CONFLICT (wallet_address) DO UPDATE SET
         bounties_posted = EXCLUDED.bounties_posted,
         bounties_completed_as_poster = EXCLUDED.bounties_completed_as_poster,
         bounties_claimed = EXCLUDED.bounties_claimed,
         bounties_completed_as_hunter = EXCLUDED.bounties_completed_as_hunter,
-        total_earned = EXCLUDED.total_earned,
-        total_spent = EXCLUDED.total_spent`,
+        total_earned_cusd = EXCLUDED.total_earned_cusd,
+        total_spent_cusd = EXCLUDED.total_spent_cusd,
+        total_earned_celo = EXCLUDED.total_earned_celo,
+        total_spent_celo = EXCLUDED.total_spent_celo`,
     [
       r.walletAddress,
       r.bountiesPosted,
       r.bountiesCompletedAsPoster,
       r.bountiesClaimed,
       r.bountiesCompletedAsHunter,
-      r.totalEarned,
-      r.totalSpent,
+      r.totalEarnedCusd,
+      r.totalSpentCusd,
+      r.totalEarnedCelo,
+      r.totalSpentCelo,
     ],
   );
 }
