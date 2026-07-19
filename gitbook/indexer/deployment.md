@@ -1,8 +1,18 @@
 # Deployment
 
-The indexer is a **long-running worker**, not a serverless function — it needs a host that keeps a process alive continuously, not one that spins up per-request.
+The standalone indexer (`indexer/`) is a **long-running worker**, not a serverless function — it needs a host that keeps a process alive continuously, not one that spins up per-request. That costs money on every host that offers it (Render's free tier doesn't cover background workers).
 
-## Render (recommended)
+## Vercel Cron (recommended - free, no extra host)
+
+`frontend/src/app/api/cron/sync/route.ts` is a serverless port of the same sync logic (`processRange`/`syncBounty`/`syncReputation`), refactored to run once per invocation instead of looping. `frontend/vercel.json` schedules it every 5 minutes via [Vercel Cron Jobs](https://vercel.com/docs/cron-jobs) - no separate worker to host, it deploys as part of the normal frontend deploy.
+
+* Each run processes at most ~3000 new blocks (`MAX_BLOCK_RANGE` in `sync.ts`) to stay inside the serverless function's execution limit; a large catch-up gap resolves itself over a few ticks instead of one call.
+* Optionally set a `CRON_SECRET` env var in the Vercel project - the route then requires `Authorization: Bearer <CRON_SECRET>`, which Vercel's own cron invoker sends automatically when that env var is present.
+* Trade-off vs. the standalone worker: data lags by up to one cron interval (~5 min) instead of the worker's 15s poll - acceptable for a bounty marketplace, not for anything needing near-real-time reads.
+
+Use the standalone worker instead if you need faster propagation or you're already paying for an always-on host:
+
+## Render
 
 A blueprint is included at `indexer/render.yaml`. On [render.com](https://render.com):
 
