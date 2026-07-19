@@ -4,10 +4,10 @@ A complete bounty from posting to payout, with what happens on each side.
 
 ## 1. Post & lock
 
-A poster fills in the [Create](../frontend/overview.md) form (title, category, description, reward, deadline) and submits.
+A poster fills in the [Create](../frontend/overview.md) form (title, category, description, reward token, reward, deadline) and submits.
 
-* **Frontend:** if the connected wallet's cUSD allowance for the contract is below the reward, it first sends an `approve` transaction; then it packs `{title, category, description}` as JSON (see [Design Decisions](../architecture/design-decisions.md#metadata-packed-into-the-on-chain-description-field)) and calls `createBounty`.
-* **Contract:** pulls `reward` cUSD via `transferFrom`, opens the bounty (`Status.Open`), emits `BountyCreated`.
+* **Frontend:** if the connected wallet's allowance for the chosen reward token (cUSD or CELO) is below the reward, it first sends an `approve` transaction on that token's contract; then it packs `{title, category, description}` as JSON (see [Design Decisions](../architecture/design-decisions.md#metadata-packed-into-the-on-chain-description-field)) and calls `createBounty(token, description, reward, deadline)`.
+* **Contract:** reverts `TokenNotAllowed` if `token` isn't cUSD or CELO; otherwise pulls `reward` of `token` via `transferFrom`, opens the bounty (`Status.Open`), emits `BountyCreated`.
 * **Indexer:** sees the event, calls `getBounty`, upserts the row.
 * **Result:** the bounty appears in [Explore](../frontend/overview.md) once the indexer catches up (poll interval, default 15s).
 

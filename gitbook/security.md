@@ -2,8 +2,8 @@
 
 ## Contract
 
-* **Reentrancy** — every fund-moving function (`createBounty`, `approveBounty`, `cancelBounty`, `resolveDispute`) is `nonReentrant` and follows checks-effects-interactions: state is updated before the external `cUSD` transfer call.
-* **Escrow correctness** — proven by a Foundry invariant test, not just asserted: the contract's cUSD balance must always equal the sum of rewards for every bounty still in an escrow-holding status. See [Testing](smart-contract/testing.md).
+* **Reentrancy** — every fund-moving function (`createBounty`, `approveBounty`, `cancelBounty`, `resolveDispute`) is `nonReentrant` and follows checks-effects-interactions: state is updated before the external token `transfer`/`transferFrom` call.
+* **Escrow correctness** — proven by a Foundry invariant test, not just asserted: the contract's cUSD balance and CELO balance must each independently equal the sum of rewards for every bounty still in an escrow-holding status, checked per token. See [Testing](smart-contract/testing.md).
 * **Front-running** — `claimBounty` is first-claim-wins via a single status check; no auction mechanism, no MEV surface worth exploiting at this scale.
 * **Static analysis** — run through Slither; one informational finding (timestamp comparison, intentional), no high/medium issues. See [Testing → Static Analysis](smart-contract/testing.md#static-analysis).
 

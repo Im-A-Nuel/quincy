@@ -1,13 +1,13 @@
 # FAQ
 
-**Why cUSD and not native CELO?**
-CELO is volatile; the entire point of escrow is a *guaranteed* payment, which a price-moving reward undermines. cUSD is also what MiniPay users already hold by default. See [Design Decisions](architecture/design-decisions.md#cusd-only-no-multi-token-support).
+**Can I post a bounty in CELO instead of cUSD?**
+Yes — the contract accepts either cUSD or native CELO's ERC-20 wrapper as the reward token, picked per-bounty via a token selector in the create form. See [Design Decisions](architecture/design-decisions.md#cusd--celo-only-no-arbitrary-erc-20-support).
 
 **Can I use another ERC-20 as the reward token?**
-Not currently — the contract's token address is `immutable`, set once at deploy time. Multi-token support is explicitly out of scope for this version; see the non-goals in `docs/REQUIREMENTS.md`.
+Not currently — `createBounty` reverts `TokenNotAllowed` for anything besides cUSD and CELO, both fixed at deploy time. Arbitrary ERC-20 support is explicitly out of scope for this version; see the non-goals in `docs/REQUIREMENTS.md`.
 
 **Why does approving a bounty take two transactions sometimes?**
-`createBounty` needs an `approve` first only if your existing cUSD allowance for the contract is below the reward amount. The frontend checks this and skips the extra transaction when it's not needed. See [Lifecycle Walkthrough → Post & Lock](guides/lifecycle-walkthrough.md#1-post--lock).
+`createBounty` needs an `approve` first only if your existing allowance for the chosen reward token is below the reward amount. The frontend checks this per-token and skips the extra transaction when it's not needed. See [Lifecycle Walkthrough → Post & Lock](guides/lifecycle-walkthrough.md#1-post--lock).
 
 **Why isn't the bounty list updating instantly after I create one?**
 There's a small delay — the [indexer](indexer/overview.md) polls on an interval (default 15s) rather than reacting to events in real time. The contract state itself is instant; only the indexed read-copy lags briefly.

@@ -8,11 +8,13 @@ Create, claim, submit proof, approve, cancel, and dispute are each a **separate 
 
 **Why:** this is deliberate, not an oversight. It maximizes verifiable on-chain transaction volume per completed bounty (4–6 tx per full lifecycle) and gives a clean audit trail for disputes. Celo gas fees are sub-cent, so the UX cost of extra confirmations is small relative to the traceability benefit.
 
-## cUSD only, no multi-token support
+## cUSD + CELO only, no arbitrary ERC-20 support
 
-The contract's token address is `immutable`, set once at deploy time to cUSD's canonical address.
+The contract accepts exactly two reward tokens — cUSD and native CELO's canonical ERC-20 wrapper — both `immutable`, set once at deploy time. `createBounty` takes a `token` parameter and reverts `TokenNotAllowed` for anything else.
 
-**Why:** cUSD is a stablecoin — reward value doesn't move between posting and payout, which is the entire point of an escrow guarantee. MiniPay users already hold cUSD by default. Supporting arbitrary ERC-20s (or the native CELO token) would reintroduce the volatility problem the contract exists to remove, and was explicitly ruled out rather than just deferred — see `docs/REQUIREMENTS.md` in the repo for the original non-goals list.
+**Why:** cUSD's stability was the original reasoning for an escrow-friendly reward (see the superseded single-token version of this decision below), but MiniPay users and hunters commonly hold CELO too, and locking it in escrow for a short, day-scale bounty window doesn't meaningfully reintroduce volatility risk in practice. Rather than opening the door to arbitrary ERC-20s (which would need a price oracle or per-token trust decisions), the contract keeps an allowlist of exactly two known-good tokens. Reputation counters (`totalEarned`/`totalSpent`) are tracked **per token** rather than summed, since cUSD and CELO units aren't fungible with each other in USD terms — summing them would produce a meaningless number.
+
+**Superseded:** the original MVP only allowed cUSD, for the reasons above. That non-goal from `docs/REQUIREMENTS.md` was revisited and lifted once CELO's ERC20 wrapper was confirmed to use the same 18-decimal `transferFrom`/`transfer` interface as cUSD, making dual-token support a small, well-contained contract change rather than a redesign.
 
 ## No proxy / upgradeable contract pattern
 
