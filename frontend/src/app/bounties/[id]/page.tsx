@@ -16,8 +16,8 @@ import { BountyActions } from "@/components/bounty/BountyActions";
 import { ShareButton } from "@/components/bounty/ShareButton";
 import { BountyStatus } from "@/lib/types";
 import { useBounty } from "@/hooks/useBounty";
-import { formatCusd, timeUntil, isExpired, shortAddress } from "@/lib/format";
-import { txUrl } from "@/lib/chains";
+import { formatToken, timeUntil, isExpired, shortAddress } from "@/lib/format";
+import { txUrl, tokenSymbol } from "@/lib/chains";
 
 export default function BountyDetailPage() {
   const params = useParams<{ id: string }>();
@@ -49,7 +49,7 @@ export default function BountyDetailPage() {
 
             <p className="text-sm text-gray-400">Reward</p>
             <p className="mt-1 text-4xl font-extrabold tracking-tight text-gray-900">
-              {formatCusd(bounty.rewardAmount)}
+              {formatToken(bounty.rewardAmount, tokenSymbol(bounty.rewardToken))}
             </p>
 
             <div className="mt-4 flex justify-center">

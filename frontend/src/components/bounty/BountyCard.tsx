@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { BountyListItem } from "@/lib/types";
-import { formatCusd, timeUntil, isExpired, shortAddress } from "@/lib/format";
+import { formatToken, timeUntil, isExpired, shortAddress } from "@/lib/format";
+import { tokenSymbol } from "@/lib/chains";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { CategoryBadge } from "@/components/ui/CategoryBadge";
 import { Avatar } from "@/components/ui/Avatar";
@@ -28,7 +29,7 @@ export function BountyCard({ bounty }: { bounty: BountyListItem }) {
           <span className="text-xs text-gray-400">{shortAddress(bounty.posterAddress)}</span>
         </div>
         <span className="rounded-full bg-quincy-50 px-3 py-1 text-sm font-bold text-quincy-700">
-          {formatCusd(bounty.rewardAmount)}
+          {formatToken(bounty.rewardAmount, tokenSymbol(bounty.rewardToken))}
         </span>
       </div>
 

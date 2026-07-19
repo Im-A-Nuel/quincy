@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
     const total = totalRes.rows[0]?.n ?? 0;
 
     const rows = await pool.query(
-      `SELECT id, title, category, reward_amount, status, poster_address, deadline
+      `SELECT id, title, category, reward_token, reward_amount, status, poster_address, deadline
        FROM bounties ${whereSql}
        ORDER BY ${sort}
        LIMIT ${PAGE_SIZE} OFFSET ${(page - 1) * PAGE_SIZE}`,

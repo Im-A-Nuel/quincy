@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useAccount } from "wagmi";
 import { useCusdBalance } from "@/hooks/useCusd";
-import { fromCusdUnits } from "@/lib/units";
+import { fromTokenUnits } from "@/lib/units";
 import { shortAddress } from "@/lib/format";
 import { WalletButton } from "@/components/WalletButton";
 import { CopyButton } from "@/components/ui/CopyButton";
@@ -15,7 +15,7 @@ export function WalletSummary() {
   const { address, isConnected } = useAccount();
   const { data: balance } = useCusdBalance();
 
-  const balanceNum = isConnected && balance !== undefined ? Number(fromCusdUnits(balance)) : 0;
+  const balanceNum = isConnected && balance !== undefined ? Number(fromTokenUnits(balance)) : 0;
   const animatedBalance = useCountUp(balanceNum);
   const balanceText =
     isConnected && balance !== undefined

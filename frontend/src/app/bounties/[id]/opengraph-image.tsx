@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { getPool } from "@/lib/server/db";
-import { formatCusd } from "@/lib/format";
+import { formatToken } from "@/lib/format";
+import { tokenSymbol } from "@/lib/chains";
 
 export const runtime = "nodejs";
 export const alt = "Quincy bounty";
@@ -11,7 +12,7 @@ async function loadBounty(id: number) {
   try {
     const pool = getPool();
     const { rows } = await pool.query(
-      "SELECT title, reward_amount, status FROM bounties WHERE id = $1",
+      "SELECT title, reward_token, reward_amount, status FROM bounties WHERE id = $1",
       [id],
     );
     return rows[0] ?? null;
@@ -32,7 +33,9 @@ function toDataUri(buf: ArrayBuffer, mime: string): string {
 export default async function BountyOg({ params }: { params: { id: string } }) {
   const bounty = await loadBounty(Number(params.id));
   const title = bounty?.title ?? "A bounty on Quincy";
-  const reward = bounty ? formatCusd(String(bounty.reward_amount)) : "";
+  const reward = bounty
+    ? formatToken(String(bounty.reward_amount), tokenSymbol(bounty.reward_token))
+    : "";
   const status = (bounty?.status ?? "").replace("_", " ");
   const isCompleted = bounty?.status === "completed";
 
