@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useAccount } from "wagmi";
 import { CATEGORIES, MIN_REWARD_CUSD } from "@/lib/constants";
 import { Field, inputClass } from "@/components/ui/Field";
-import { useCusdBalance } from "@/hooks/useCusd";
-import { fromCusdUnits } from "@/lib/units";
+import { useTokenBalance } from "@/hooks/useToken";
+import { fromTokenUnits } from "@/lib/units";
+import { cusdAddress, celoTokenAddress } from "@/lib/chains";
 import {
   validateBounty,
   hasErrors,
@@ -17,9 +18,15 @@ const EMPTY: BountyFormValues = {
   title: "",
   category: "",
   description: "",
+  token: "cusd",
   reward: "",
   deadline: "",
 };
+
+const TOKEN_OPTIONS: { value: BountyFormValues["token"]; label: string; address: `0x${string}` }[] = [
+  { value: "cusd", label: "cUSD", address: cusdAddress },
+  { value: "celo", label: "CELO", address: celoTokenAddress },
+];
 
 const DEADLINE_PRESETS = [3, 7, 14, 30];
 
@@ -47,8 +54,9 @@ export function CreateBountyForm({
   const [errors, setErrors] = useState<BountyFormErrors>({});
 
   const { isConnected } = useAccount();
-  const { data: balance } = useCusdBalance();
-  const balanceNum = balance !== undefined ? Number(fromCusdUnits(balance)) : null;
+  const selectedToken = TOKEN_OPTIONS.find((t) => t.value === values.token) ?? TOKEN_OPTIONS[0];
+  const { data: balance } = useTokenBalance(selectedToken.address);
+  const balanceNum = balance !== undefined ? Number(fromTokenUnits(balance)) : null;
 
   const set = <K extends keyof BountyFormValues>(key: K, val: BountyFormValues[K]) =>
     setValues((v) => ({ ...v, [key]: val }));
@@ -99,12 +107,36 @@ export function CreateBountyForm({
         />
       </Field>
 
+      <Field label="Reward token" htmlFor="token">
+        <div className="flex gap-1.5" role="radiogroup" aria-label="Reward token">
+          {TOKEN_OPTIONS.map((t) => {
+            const active = values.token === t.value;
+            return (
+              <button
+                key={t.value}
+                type="button"
+                role="radio"
+                aria-checked={active}
+                onClick={() => set("token", t.value)}
+                className={`flex-1 rounded-2xl border py-2 text-sm font-semibold transition-colors ${
+                  active
+                    ? "border-quincy-600 bg-quincy-50 text-quincy-700"
+                    : "border-gray-200 text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                {t.label}
+              </button>
+            );
+          })}
+        </div>
+      </Field>
+
       <div className="grid grid-cols-2 gap-4">
         <Field
-          label="Reward (cUSD)"
+          label={`Reward (${selectedToken.label})`}
           htmlFor="reward"
           error={errors.reward}
-          hint={`Min ${MIN_REWARD_CUSD} cUSD`}
+          hint={`Min ${MIN_REWARD_CUSD} ${selectedToken.label}`}
         >
           <input
             id="reward"
@@ -119,7 +151,8 @@ export function CreateBountyForm({
           {isConnected && balanceNum !== null && (
             <div className="mt-1 flex items-center justify-between text-xs">
               <span className="text-gray-400">
-                Balance: {balanceNum.toLocaleString(undefined, { maximumFractionDigits: 2 })} cUSD
+                Balance: {balanceNum.toLocaleString(undefined, { maximumFractionDigits: 2 })}{" "}
+                {selectedToken.label}
               </span>
               <button
                 type="button"

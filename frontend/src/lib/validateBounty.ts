@@ -1,10 +1,13 @@
 import { MIN_REWARD_CUSD } from "./constants";
 import type { BountyCategory } from "./types";
 
+export type RewardTokenChoice = "cusd" | "celo";
+
 export interface BountyFormValues {
   title: string;
   category: BountyCategory | "";
   description: string;
+  token: RewardTokenChoice;
   reward: string;
   deadline: string; // yyyy-mm-dd
 }
@@ -28,7 +31,7 @@ export function validateBounty(v: BountyFormValues): BountyFormErrors {
   if (!v.reward) errors.reward = "Reward is required";
   else if (Number.isNaN(reward)) errors.reward = "Reward must be a number";
   else if (reward < MIN_REWARD_CUSD)
-    errors.reward = `Minimum reward is ${MIN_REWARD_CUSD} cUSD`;
+    errors.reward = `Minimum reward is ${MIN_REWARD_CUSD}`;
 
   if (!v.deadline) errors.deadline = "Set a deadline";
   else if (new Date(v.deadline).getTime() <= Date.now())
