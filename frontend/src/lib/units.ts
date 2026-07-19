@@ -1,14 +1,17 @@
 import { parseUnits, formatUnits } from "viem";
-import { CUSD_DECIMALS } from "./constants";
 
-/** Parse a human cUSD amount (e.g. "2.5") into base units (wei-scale). */
-export function toCusdUnits(amount: string | number): bigint {
-  return parseUnits(String(amount), CUSD_DECIMALS);
+// Both reward tokens (cUSD and CELO) use 18 decimals on Celo, so one pair of
+// helpers covers either.
+const TOKEN_DECIMALS = 18;
+
+/** Parse a human token amount (e.g. "2.5") into base units (wei-scale). */
+export function toTokenUnits(amount: string | number): bigint {
+  return parseUnits(String(amount), TOKEN_DECIMALS);
 }
 
-/** Format base-unit cUSD back into a decimal string. */
-export function fromCusdUnits(value: bigint): string {
-  return formatUnits(value, CUSD_DECIMALS);
+/** Format base-unit token amount back into a decimal string. */
+export function fromTokenUnits(value: bigint): string {
+  return formatUnits(value, TOKEN_DECIMALS);
 }
 
 /** Convert a JS Date (or ISO string) into a unix-seconds bigint for the chain. */
