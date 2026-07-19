@@ -2,7 +2,7 @@
 
 import { useWriteContract } from "wagmi";
 import { quincyBountyAbi } from "@/lib/abi/quincyBounty";
-import { quincyAddress } from "@/lib/chains";
+import { quincyAddress, activeChain } from "@/lib/chains";
 import { triggerSyncSoon } from "@/lib/triggerSync";
 
 /**
@@ -18,6 +18,10 @@ function useBountyWrite() {
       address: quincyAddress,
       functionName: functionName as never,
       args: args as never,
+      // Without this, wagmi sends the tx on whatever network the wallet is
+      // already active on (often Ethereum mainnet by default), not Celo -
+      // passing chainId makes wagmi prompt a network switch first if needed.
+      chainId: activeChain.id,
     }).then((hash) => {
       triggerSyncSoon();
       return hash;

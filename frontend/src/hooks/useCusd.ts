@@ -2,7 +2,7 @@
 
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import { erc20Abi } from "@/lib/abi/erc20";
-import { cusdAddress, quincyAddress } from "@/lib/chains";
+import { cusdAddress, quincyAddress, activeChain } from "@/lib/chains";
 import { maxUint256 } from "viem";
 
 /** Read the connected wallet's cUSD balance (base units). */
@@ -42,6 +42,7 @@ export function useApproveCusd() {
       address: cusdAddress,
       functionName: "approve",
       args: [quincyAddress, amount ?? maxUint256],
+      chainId: activeChain.id,
     });
 
   return { approve, ...rest };
