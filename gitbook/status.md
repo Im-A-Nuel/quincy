@@ -2,7 +2,7 @@
 
 ## Done
 
-* **Smart contract** — `QuincyBounty.sol` deployed and live on Celo Mainnet. Full lifecycle implemented, 100% line/function test coverage plus an escrow-balance invariant, Slither-clean.
+* **Smart contract** — `QuincyBounty.sol` deployed and live on Celo Mainnet, supporting both cUSD and CELO as reward tokens. Full lifecycle implemented, 100% line/function test coverage plus a per-token escrow-balance invariant, Slither-clean.
 * **Frontend** — every page listed in [Frontend → Overview](frontend/overview.md) built and deployed, including the full write-flow UI (create, claim, submit proof with real IPFS upload, approve, cancel, dispute), a complete soft/indigo design system with dark mode, and a marketing landing page.
 * **Indexer** — built and verified live against the deployed contract and a production Postgres database (Neon). Deploy tooling (Dockerfile, Render blueprint) is ready.
 * **API** — `/api/v1/bounties` and `/api/v1/profiles/:address` implemented and reading real indexed data.
@@ -18,7 +18,7 @@
 
 Carried over from the original requirements and still true:
 
-* Multi-token support (cUSD only — see [Design Decisions](architecture/design-decisions.md#cusd-only-no-multi-token-support))
+* Arbitrary ERC-20 reward tokens beyond cUSD and CELO (see [Design Decisions](architecture/design-decisions.md#cusd--celo-only-no-arbitrary-erc-20-support))
 * DAO/voting-based dispute resolution (admin-resolved — see [Security](security.md#known-centralization-tradeoff))
 * A proxy/upgradeable contract pattern
 * A native mobile app outside the MiniPay Mini App

@@ -18,8 +18,8 @@ docker build -t quincy-indexer .
 docker run \
   -e DATABASE_URL=postgresql://... \
   -e CELO_RPC_URL=https://forno.celo.org \
-  -e QUINCY_ADDRESS=0x4a81cf92d285a9b92fecb1ea187cd2466e048b21 \
-  -e START_BLOCK=72020154 \
+  -e QUINCY_ADDRESS=0x9af5fbb05054a4d072def7bb73978c48dfe6d3d5 \
+  -e START_BLOCK=72544655 \
   quincy-indexer
 ```
 
