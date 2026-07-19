@@ -3,6 +3,7 @@
 import { useWriteContract } from "wagmi";
 import { quincyBountyAbi } from "@/lib/abi/quincyBounty";
 import { quincyAddress } from "@/lib/chains";
+import { triggerSyncSoon } from "@/lib/triggerSync";
 
 /**
  * Write hooks for each bounty lifecycle step. Each action is its own on-chain
@@ -17,6 +18,9 @@ function useBountyWrite() {
       address: quincyAddress,
       functionName: functionName as never,
       args: args as never,
+    }).then((hash) => {
+      triggerSyncSoon();
+      return hash;
     });
   return { call, ...rest };
 }
