@@ -23,9 +23,10 @@ deployment below — the old contract still exists on-chain but is no longer the
 one the frontend/indexer point at, and never had any bounties created against
 it (nextBountyId was still 1 at the time of retirement).
 
-Source verification on Celoscan is pending (Etherscan V2 indexing lag at
-deploy time). The contract is live and its state is readable on-chain
-regardless.
+Source verified on Celoscan (`forge verify-contract` via the Etherscan V2
+unified API, `chainid=42220` — Celoscan's own V1 verify endpoint is
+deprecated and rejects submissions). See
+https://celoscan.io/address/0x9af5fbb05054a4d072def7bb73978c48dfe6d3d5#code.
 
 ## Celo Mainnet — superseded (cUSD-only)
 
