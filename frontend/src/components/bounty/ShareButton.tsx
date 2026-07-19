@@ -1,7 +1,8 @@
 "use client";
 
 import type { Bounty } from "@/lib/types";
-import { formatCusd } from "@/lib/format";
+import { formatToken } from "@/lib/format";
+import { tokenSymbol } from "@/lib/chains";
 
 /**
  * Share a completed bounty to Farcaster via a Warpcast compose intent. The
@@ -12,7 +13,7 @@ export function ShareButton({ bounty }: { bounty: Bounty }) {
     const origin = typeof window !== "undefined" ? window.location.origin : "";
     const url = `${origin}/bounties/${bounty.id}`;
     const text =
-      `Just completed a bounty on Quincy and got paid ${formatCusd(bounty.rewardAmount)}, ` +
+      `Just completed a bounty on Quincy and got paid ${formatToken(bounty.rewardAmount, tokenSymbol(bounty.rewardToken))}, ` +
       `released on-chain via escrow. No middleman. ✅`;
     const compose =
       `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}` +

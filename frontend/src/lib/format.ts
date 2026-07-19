@@ -6,11 +6,11 @@ export function shortAddress(addr?: string | null): string {
   return `${addr.slice(0, 6)}…${addr.slice(-4)}`;
 }
 
-/** Format a cUSD decimal string with a currency suffix. */
-export function formatCusd(amount: string | number): string {
+/** Format a decimal amount with a token symbol suffix (cUSD or CELO). */
+export function formatToken(amount: string | number, symbol = "cUSD"): string {
   const n = typeof amount === "string" ? Number(amount) : amount;
-  if (Number.isNaN(n)) return "0 cUSD";
-  return `${n.toLocaleString(undefined, { maximumFractionDigits: 2 })} cUSD`;
+  if (Number.isNaN(n)) return `0 ${symbol}`;
+  return `${n.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${symbol}`;
 }
 
 /** Relative-time string for a timestamp, e.g. "in 3 days" / "2 hours ago". */
