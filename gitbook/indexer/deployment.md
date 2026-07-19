@@ -4,11 +4,13 @@ The standalone indexer (`indexer/`) is a **long-running worker**, not a serverle
 
 ## Vercel Cron (recommended - free, no extra host)
 
-`frontend/src/app/api/cron/sync/route.ts` is a serverless port of the same sync logic (`processRange`/`syncBounty`/`syncReputation`), refactored to run once per invocation instead of looping. `frontend/vercel.json` schedules it every 5 minutes via [Vercel Cron Jobs](https://vercel.com/docs/cron-jobs) - no separate worker to host, it deploys as part of the normal frontend deploy.
+`frontend/src/app/api/cron/sync/route.ts` is a serverless port of the same sync logic (`processRange`/`syncBounty`/`syncReputation`), refactored to run once per invocation instead of looping. `frontend/vercel.json` schedules it daily via [Vercel Cron Jobs](https://vercel.com/docs/cron-jobs) - no separate worker to host, it deploys as part of the normal frontend deploy.
 
+* **Cron frequency is capped by plan.** Vercel's Hobby (free) tier only allows a cron job to fire once per day - a shorter schedule (e.g. every 5 min) fails deployment outright. `frontend/vercel.json` uses `0 3 * * *` to stay within that limit; bump it to something like `*/5 * * * *` if the project is on Pro.
+* To keep data fresh despite the once-daily cron on Hobby, every write hook in `frontend/src/hooks/useBountyActions.ts` also fires a best-effort nudge (`frontend/src/lib/triggerSync.ts`) at the same route a few seconds after its own transaction, so the acting user sees their own change without waiting for the cron. This is fire-and-forget and does not cover changes made by other users/wallets - the daily cron is the only thing guaranteed to catch those.
 * Each run processes at most ~3000 new blocks (`MAX_BLOCK_RANGE` in `sync.ts`) to stay inside the serverless function's execution limit; a large catch-up gap resolves itself over a few ticks instead of one call.
-* Optionally set a `CRON_SECRET` env var in the Vercel project - the route then requires `Authorization: Bearer <CRON_SECRET>`, which Vercel's own cron invoker sends automatically when that env var is present.
-* Trade-off vs. the standalone worker: data lags by up to one cron interval (~5 min) instead of the worker's 15s poll - acceptable for a bounty marketplace, not for anything needing near-real-time reads.
+* Optionally set a `CRON_SECRET` env var in the Vercel project - the route then requires `Authorization: Bearer <CRON_SECRET>`, which Vercel's own cron invoker sends automatically when that env var is present. Note this also blocks the client-side nudge above (it can't know the secret), leaving the daily cron as the only sync path until the next write from a session that predates the secret.
+* Trade-off vs. the standalone worker: without the write-triggered nudge, data could lag up to a day; with it, the acting user's own changes appear within seconds, other users' changes lag up to a day on Hobby.
 
 Use the standalone worker instead if you need faster propagation or you're already paying for an always-on host:
 
