@@ -168,6 +168,7 @@ export const en = {
     passed: "Passed",
     creationTx: "Creation tx ↗",
     completionTx: "Completion tx ↗",
+    shareToFarcaster: "Share to Farcaster",
   },
   create: {
     title: "Post a bounty",
@@ -184,6 +185,7 @@ export const en = {
     descriptionPlaceholder: "What needs doing, and what counts as done?",
     rewardTokenLabel: "Reward token",
     rewardLabel: "Reward",
+    min: "Min",
     balance: "Balance",
     max: "Max",
     deadlineLabel: "Deadline",

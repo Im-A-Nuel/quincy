@@ -170,6 +170,7 @@ export const id: Dictionary = {
     passed: "Terlewat",
     creationTx: "Tx pembuatan ↗",
     completionTx: "Tx penyelesaian ↗",
+    shareToFarcaster: "Bagikan ke Farcaster",
   },
   create: {
     title: "Posting bounty",
@@ -186,6 +187,7 @@ export const id: Dictionary = {
     descriptionPlaceholder: "Apa yang perlu dikerjakan, dan apa tandanya selesai?",
     rewardTokenLabel: "Token reward",
     rewardLabel: "Reward",
+    min: "Min",
     balance: "Saldo",
     max: "Maks",
     deadlineLabel: "Tenggat",
