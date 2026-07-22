@@ -5,8 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { NAV_ITEMS, isActive } from "./navItems";
 import { WalletButton } from "@/components/WalletButton";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { ExploreIcon } from "@/components/ui/icons";
+import { ExploreIcon, SettingsIcon } from "@/components/ui/icons";
 import { useScrolled } from "@/hooks/useScrolled";
 
 /** Desktop top navigation: logo, primary links, search, wallet, and a Create CTA. */
@@ -82,7 +81,13 @@ export function TopNav() {
         </form>
 
         <div className="ml-auto flex items-center gap-3 lg:ml-3">
-          <ThemeToggle />
+          <Link
+            href="/settings"
+            aria-label="Settings"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-gray-600 shadow-soft transition-all duration-200 ease-soft hover:-translate-y-px hover:text-quincy-600 hover:shadow-md active:scale-90"
+          >
+            <SettingsIcon className="h-5 w-5" />
+          </Link>
           <WalletButton />
           <Link href="/create" className="btn-primary">
             Post a bounty
