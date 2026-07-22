@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS, isActive } from "./navItems";
+import { useT } from "@/lib/i18n/LanguageContext";
 
 /** Fixed mobile bottom navigation with an elevated center Create action. */
 export function BottomNav() {
   const pathname = usePathname();
+  const t = useT();
 
   return (
     <nav
@@ -23,7 +25,7 @@ export function BottomNav() {
               <li key={item.key}>
                 <Link
                   href={item.href}
-                  aria-label={item.label}
+                  aria-label={t(`nav.${item.labelKey}`)}
                   className="-mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-primary text-white shadow-pill transition-transform duration-200 ease-spring hover:scale-105 active:scale-90"
                 >
                   <Icon className="h-6 w-6" />
@@ -42,7 +44,7 @@ export function BottomNav() {
                 }`}
               >
                 <Icon className={`h-6 w-6 transition-transform duration-200 ease-spring ${active ? "scale-110" : "scale-100"}`} />
-                {item.label}
+                {t(`nav.${item.labelKey}`)}
               </Link>
             </li>
           );

@@ -4,6 +4,7 @@ import { CATEGORIES } from "@/lib/constants";
 import type { BountyCategory } from "@/lib/types";
 import { CATEGORY_ICON } from "@/components/ui/categoryIcons";
 import { useSlidingIndicator } from "@/hooks/useSlidingIndicator";
+import { useT } from "@/lib/i18n/LanguageContext";
 
 /** Swipeable category filter chips (including an "All" reset), with a sliding
  *  background pill that glides to whichever chip is active. */
@@ -14,6 +15,7 @@ export function CategoryChips({
   value: BountyCategory | "";
   onChange: (next: BountyCategory | "") => void;
 }) {
+  const t = useT();
   const { containerRef, setItemRef, rect } = useSlidingIndicator(value || "all");
 
   return (
@@ -36,7 +38,7 @@ export function CategoryChips({
           value === "" ? "text-white" : "text-gray-600 hover:text-gray-900"
         }`}
       >
-        All
+        {t("explore.all")}
       </button>
 
       {CATEGORIES.map((c) => {
@@ -53,7 +55,7 @@ export function CategoryChips({
             }`}
           >
             <Icon className="h-4 w-4" />
-            {c.label}
+            {t(`category.${c.value}`)}
           </button>
         );
       })}

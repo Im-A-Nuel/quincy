@@ -7,25 +7,27 @@ import { BountyListSkeleton } from "@/components/bounty/BountyListSkeleton";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { EmptyBoxArt } from "@/components/illustrations/spot";
+import { useT } from "@/lib/i18n/LanguageContext";
 
 /** Top open bounties by reward for the home page. */
 export function FeaturedBounties() {
+  const t = useT();
   const { data, isLoading } = useBounties({ status: "open", sort: "reward_desc" });
   const featured = data?.bounties.slice(0, 4) ?? [];
 
   return (
     <section>
-      <SectionHeader title="Featured bounties" actionLabel="See all" actionHref="/bounties" />
+      <SectionHeader title={t("dashboard.featuredBounties")} actionLabel={t("dashboard.seeAll")} actionHref="/bounties" />
       {isLoading ? (
         <BountyListSkeleton count={2} />
       ) : featured.length === 0 ? (
         <EmptyState
           art={<EmptyBoxArt />}
-          title="No open bounties yet"
-          hint="Post the first one and get it in front of hunters."
+          title={t("dashboard.noOpenBounties")}
+          hint={t("dashboard.noOpenBountiesHint")}
           action={
             <Link href="/create" className="btn-primary">
-              Post a bounty
+              {t("common.postABounty")}
             </Link>
           }
         />

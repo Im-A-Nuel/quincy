@@ -10,14 +10,16 @@ import { CopyButton } from "@/components/ui/CopyButton";
 import { fromTokenUnits } from "@/lib/units";
 import { useTokenBalance } from "@/hooks/useToken";
 import { cusdAddress, celoTokenAddress } from "@/lib/chains";
+import { useT } from "@/lib/i18n/LanguageContext";
 
 /**
  * Connect button; once connected, opens a dropdown (balance, copy address,
- * view profile, disconnect) instead of disconnecting on a single click.
- * Inside MiniPay the wallet is already auto-connected (see useMiniPay), so
- * this mostly serves the fallback browser case.
+ * view profile, settings, disconnect) instead of disconnecting on a single
+ * click. Inside MiniPay the wallet is already auto-connected (see
+ * useMiniPay), so this mostly serves the fallback browser case.
  */
 export function WalletButton() {
+  const t = useT();
   const { address, isConnected } = useAccount();
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
@@ -45,7 +47,7 @@ export function WalletButton() {
   if (!isConnected || !address) {
     return (
       <button onClick={() => connect({ connector: injected() })} className="btn-primary">
-        Connect wallet
+        {t("common.connectWallet")}
       </button>
     );
   }
@@ -72,7 +74,7 @@ export function WalletButton() {
             <div className="min-w-0">
               <CopyButton
                 text={address}
-                label="Address copied"
+                label={t("common.addressCopied")}
                 className="text-sm font-semibold text-gray-900"
               >
                 {shortAddress(address)}
@@ -97,7 +99,15 @@ export function WalletButton() {
             onClick={() => setOpen(false)}
             className="block rounded-2xl px-3 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-quincy-50 hover:text-quincy-700"
           >
-            View profile
+            {t("wallet.viewProfile")}
+          </Link>
+          <Link
+            href="/settings"
+            role="menuitem"
+            onClick={() => setOpen(false)}
+            className="block rounded-2xl px-3 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-quincy-50 hover:text-quincy-700"
+          >
+            {t("wallet.settings")}
           </Link>
           <button
             role="menuitem"
@@ -107,7 +117,7 @@ export function WalletButton() {
             }}
             className="block w-full rounded-2xl px-3 py-2.5 text-left text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
           >
-            Disconnect
+            {t("wallet.disconnect")}
           </button>
         </div>
       )}

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import type { BountyListItem } from "@/lib/types";
 import { formatToken, timeUntil, isExpired, shortAddress } from "@/lib/format";
@@ -6,8 +8,11 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { CategoryBadge } from "@/components/ui/CategoryBadge";
 import { Avatar } from "@/components/ui/Avatar";
 import { ClockIcon } from "@/components/ui/icons";
+import { useT, useLanguage } from "@/lib/i18n/LanguageContext";
 
 export function BountyCard({ bounty }: { bounty: BountyListItem }) {
+  const t = useT();
+  const { locale } = useLanguage();
   const expired = isExpired(bounty.deadline);
   return (
     <Link
@@ -35,7 +40,7 @@ export function BountyCard({ bounty }: { bounty: BountyListItem }) {
 
       <div className="mt-3 flex items-center gap-1.5 text-xs text-gray-400">
         <ClockIcon className="h-4 w-4" />
-        {expired ? "Deadline passed" : `Due ${timeUntil(bounty.deadline)}`}
+        {expired ? t("bounty.deadlinePassed") : `${t("bounty.due")} ${timeUntil(bounty.deadline, locale)}`}
       </div>
     </Link>
   );

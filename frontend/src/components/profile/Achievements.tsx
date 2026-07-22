@@ -1,27 +1,31 @@
+"use client";
+
 import type { Reputation } from "@/lib/types";
 import { IconTile } from "@/components/ui/IconTile";
 import { StarIcon, CheckIcon, LockIcon } from "@/components/ui/icons";
+import { useT } from "@/lib/i18n/LanguageContext";
 
 /** Unlockable badges derived from on-chain reputation counters. */
 export function Achievements({ rep }: { rep: Reputation }) {
+  const t = useT();
   const badges = [
     {
       unlocked: rep.bountiesPosted >= 1,
       tint: "green" as const,
       Icon: LockIcon,
-      label: "First post",
+      label: t("profile.firstPost"),
     },
     {
       unlocked: rep.bountiesCompletedAsHunter >= 1,
       tint: "blue" as const,
       Icon: CheckIcon,
-      label: "First win",
+      label: t("profile.firstWin"),
     },
     {
       unlocked: rep.bountiesCompletedAsHunter >= 10,
       tint: "yellow" as const,
       Icon: StarIcon,
-      label: "10 completed",
+      label: t("profile.tenCompleted"),
     },
   ];
 

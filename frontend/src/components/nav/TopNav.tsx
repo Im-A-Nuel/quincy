@@ -5,12 +5,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { NAV_ITEMS, isActive } from "./navItems";
 import { WalletButton } from "@/components/WalletButton";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { ExploreIcon } from "@/components/ui/icons";
+import { ExploreIcon, SettingsIcon } from "@/components/ui/icons";
 import { useScrolled } from "@/hooks/useScrolled";
+import { useT } from "@/lib/i18n/LanguageContext";
 
 /** Desktop top navigation: logo, primary links, search, wallet, and a Create CTA. */
 export function TopNav() {
+  const t = useT();
   const pathname = usePathname();
   const router = useRouter();
   const [q, setQ] = useState("");
@@ -62,14 +63,14 @@ export function TopNav() {
                   : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
               }`}
             >
-              {item.label}
+              {t(`nav.${item.labelKey}`)}
             </Link>
           ))}
         </nav>
 
         <form onSubmit={submitSearch} role="search" className="relative ml-auto hidden lg:block">
           <label htmlFor="nav-search" className="sr-only">
-            Search bounties
+            {t("explore.searchPlaceholder")}
           </label>
           <ExploreIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <input
@@ -82,10 +83,16 @@ export function TopNav() {
         </form>
 
         <div className="ml-auto flex items-center gap-3 lg:ml-3">
-          <ThemeToggle />
+          <Link
+            href="/settings"
+            aria-label="Settings"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-gray-600 shadow-soft transition-all duration-200 ease-soft hover:-translate-y-px hover:text-quincy-600 hover:shadow-md active:scale-90"
+          >
+            <SettingsIcon className="h-5 w-5" />
+          </Link>
           <WalletButton />
           <Link href="/create" className="btn-primary">
-            Post a bounty
+            {t("common.postABounty")}
           </Link>
         </div>
       </div>

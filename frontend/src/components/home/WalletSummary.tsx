@@ -10,6 +10,7 @@ import { WalletButton } from "@/components/WalletButton";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { PlusIcon, ExploreIcon, WalletIcon } from "@/components/ui/icons";
 import { useCountUp } from "@/hooks/useCountUp";
+import { useT } from "@/lib/i18n/LanguageContext";
 
 function formatBalance(value?: bigint): string {
   return value !== undefined
@@ -19,6 +20,7 @@ function formatBalance(value?: bigint): string {
 
 /** Gradient hero card summarizing the connected wallet + quick actions. */
 export function WalletSummary() {
+  const t = useT();
   const { address, isConnected } = useAccount();
   const { data: cusdBalance } = useTokenBalance(cusdAddress);
   const { data: celoBalance } = useTokenBalance(celoTokenAddress);
@@ -36,18 +38,18 @@ export function WalletSummary() {
         <div className="flex items-center gap-2 text-sm font-medium text-white/80">
           <WalletIcon className="h-5 w-5" />
           {isConnected && address ? (
-            <CopyButton text={address} label="Address copied" className="text-white/80 hover:text-white">
+            <CopyButton text={address} label={t("common.addressCopied")} className="text-white/80 hover:text-white">
               {shortAddress(address)}
             </CopyButton>
           ) : (
-            "Not connected"
+            t("wallet.notConnected")
           )}
         </div>
         {!isConnected && <WalletButton />}
       </div>
 
       <div className="mt-5">
-        <p className="text-sm text-white/70">cUSD balance</p>
+        <p className="text-sm text-white/70">{t("wallet.cusdBalance")}</p>
         <p className="mt-1 text-4xl font-extrabold tracking-tight">
           {cusdText} <span className="text-xl font-bold text-white/80">cUSD</span>
         </p>

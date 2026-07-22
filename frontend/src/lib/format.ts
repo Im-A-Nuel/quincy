@@ -13,21 +13,18 @@ export function formatToken(amount: string | number, symbol = "cUSD"): string {
   return `${n.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${symbol}`;
 }
 
-/** Relative-time string for a timestamp, e.g. "in 3 days" / "2 hours ago". */
-export function timeUntil(iso: string): string {
+/** Relative-time string for a timestamp, e.g. "in 3 days" / "2 hours ago" -
+ *  localized via Intl.RelativeTimeFormat (both "en" and "id" are natively
+ *  supported, including Indonesian's own pluralization/phrasing). */
+export function timeUntil(iso: string, locale: string = "en"): string {
   const target = new Date(iso).getTime();
   const diffMs = target - Date.now();
   const abs = Math.abs(diffMs);
-  const mins = Math.round(abs / 60000);
-  const hours = Math.round(abs / 3600000);
-  const days = Math.round(abs / 86400000);
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
 
-  let value: string;
-  if (mins < 60) value = `${mins} min`;
-  else if (hours < 24) value = `${hours} hour${hours === 1 ? "" : "s"}`;
-  else value = `${days} day${days === 1 ? "" : "s"}`;
-
-  return diffMs >= 0 ? `in ${value}` : `${value} ago`;
+  if (abs < 3_600_000) return rtf.format(Math.round(diffMs / 60_000), "minute");
+  if (abs < 86_400_000) return rtf.format(Math.round(diffMs / 3_600_000), "hour");
+  return rtf.format(Math.round(diffMs / 86_400_000), "day");
 }
 
 /** True when a deadline has passed. */

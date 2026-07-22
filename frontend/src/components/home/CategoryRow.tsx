@@ -1,12 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/constants";
 import { IconTile } from "@/components/ui/IconTile";
 import { CATEGORY_ICON } from "@/components/ui/categoryIcons";
+import { useT } from "@/lib/i18n/LanguageContext";
 
 const TINTS = ["indigo", "blue", "purple", "pink", "orange", "yellow", "mint"] as const;
 
 /** Swipeable row of category shortcuts into the filtered explore page. */
 export function CategoryRow() {
+  const t = useT();
   return (
     <div className="-mx-4 flex gap-3 overflow-x-auto px-4 no-scrollbar md:mx-0 md:px-0">
       {CATEGORIES.map((c, i) => (
@@ -22,7 +26,7 @@ export function CategoryRow() {
             })()}
           </IconTile>
           <span className="text-center text-xs font-medium text-gray-600 transition-colors duration-200 group-hover:text-quincy-600">
-            {c.label}
+            {t(`category.${c.value}`)}
           </span>
         </Link>
       ))}

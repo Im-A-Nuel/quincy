@@ -11,14 +11,16 @@ import { BountyCard } from "@/components/bounty/BountyCard";
 import { BountyListSkeleton } from "@/components/bounty/BountyListSkeleton";
 import { useBounties } from "@/hooks/useBounties";
 import { EmptyBoxArt } from "@/components/illustrations/spot";
+import { useT } from "@/lib/i18n/LanguageContext";
 
 const TABS = [
-  { key: "open", label: "Open" },
-  { key: "in_progress", label: "In Progress" },
-  { key: "completed", label: "Completed" },
+  { key: "open", labelKey: "tabOpen" },
+  { key: "in_progress", labelKey: "tabInProgress" },
+  { key: "completed", labelKey: "tabCompleted" },
 ] as const;
 
 function MyList({ address }: { address: string }) {
+  const t = useT();
   const [tab, setTab] = useState<(typeof TABS)[number]["key"]>("open");
   const { data, isLoading } = useBounties({ involves: address, status: tab });
   const { containerRef, setItemRef, rect } = useSlidingIndicator(tab);
@@ -32,19 +34,19 @@ function MyList({ address }: { address: string }) {
             style={{ left: rect.left, width: rect.width }}
           />
         )}
-        {TABS.map((t) => {
-          const active = tab === t.key;
+        {TABS.map((tItem) => {
+          const active = tab === tItem.key;
           return (
             <button
-              key={t.key}
-              ref={setItemRef(t.key)}
+              key={tItem.key}
+              ref={setItemRef(tItem.key)}
               type="button"
-              onClick={() => setTab(t.key)}
+              onClick={() => setTab(tItem.key)}
               className={`relative z-10 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
                 active ? "text-white" : "text-gray-600 hover:text-gray-900"
               }`}
             >
-              {t.label}
+              {t(`my.${tItem.labelKey}`)}
             </button>
           );
         })}
@@ -62,11 +64,11 @@ function MyList({ address }: { address: string }) {
         ) : (
           <EmptyState
             art={<EmptyBoxArt />}
-            title="Nothing here yet"
-            hint="Bounties you post or claim will show up in these tabs."
+            title={t("my.empty")}
+            hint={t("my.emptyHint")}
             action={
               <Link href="/bounties" className="btn-primary">
-                Explore bounties
+                {t("common.exploreBounties")}
               </Link>
             }
           />
@@ -77,18 +79,19 @@ function MyList({ address }: { address: string }) {
 }
 
 export default function MyBountiesPage() {
+  const t = useT();
   const { address, isConnected } = useAccount();
 
   return (
     <AppShell>
-      <h1 className="text-2xl font-extrabold text-gray-900">My Bounties</h1>
-      <p className="mt-1 text-sm text-gray-500">Everything you&apos;ve posted or claimed.</p>
+      <h1 className="text-2xl font-extrabold text-gray-900">{t("my.title")}</h1>
+      <p className="mt-1 text-sm text-gray-500">{t("my.subtitle")}</p>
 
       {isConnected && address ? (
         <MyList address={address} />
       ) : (
         <div className="mt-6">
-          <ConnectGate message="Connect your wallet to see your bounties.">
+          <ConnectGate message={t("my.connectMessage")}>
             <div />
           </ConnectGate>
         </div>

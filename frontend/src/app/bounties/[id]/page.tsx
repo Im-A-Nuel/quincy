@@ -18,8 +18,11 @@ import { BountyStatus } from "@/lib/types";
 import { useBounty } from "@/hooks/useBounty";
 import { formatToken, timeUntil, isExpired, shortAddress } from "@/lib/format";
 import { txUrl, tokenSymbol } from "@/lib/chains";
+import { useT, useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function BountyDetailPage() {
+  const t = useT();
+  const { locale } = useLanguage();
   const params = useParams<{ id: string }>();
   const id = Number(params.id);
   const { data: bounty, isLoading, isError, refetch } = useBounty(id);
@@ -27,14 +30,14 @@ export default function BountyDetailPage() {
   return (
     <AppShell>
       <Link href="/bounties" className="text-sm font-semibold text-quincy-600 hover:text-quincy-700">
-        ← Back
+        {t("common.back")}
       </Link>
 
       {isLoading && <BountyDetailSkeleton />}
 
       {isError && (
         <div className="mt-6">
-          <EmptyState art={<SearchArt />} title="Bounty not found" hint="It may have been removed or never existed." />
+          <EmptyState art={<SearchArt />} title={t("bounty.notFound")} hint={t("bounty.notFoundHint")} />
         </div>
       )}
 
@@ -47,7 +50,7 @@ export default function BountyDetailPage() {
               <StatusBadge status={bounty.status} />
             </div>
 
-            <p className="text-sm text-gray-400">Reward</p>
+            <p className="text-sm text-gray-400">{t("bounty.reward")}</p>
             <p className="mt-1 text-4xl font-extrabold tracking-tight text-gray-900">
               {formatToken(bounty.rewardAmount, tokenSymbol(bounty.rewardToken))}
             </p>
@@ -57,24 +60,24 @@ export default function BountyDetailPage() {
             </div>
 
             <div className="mt-5 text-left">
-              <InfoRow label="Poster">
+              <InfoRow label={t("bounty.poster")}>
                 <Link href={`/profile/${bounty.posterAddress}`} className="group flex items-center gap-2 text-quincy-700 transition-colors hover:text-quincy-800">
                   <Avatar address={bounty.posterAddress} size="sm" />
                   {shortAddress(bounty.posterAddress)}
                 </Link>
               </InfoRow>
               {bounty.hunterAddress && (
-                <InfoRow label="Hunter">
+                <InfoRow label={t("bounty.hunter")}>
                   <Link href={`/profile/${bounty.hunterAddress}`} className="group flex items-center gap-2 text-quincy-700 transition-colors hover:text-quincy-800">
                     <Avatar address={bounty.hunterAddress} size="sm" />
                     {shortAddress(bounty.hunterAddress)}
                   </Link>
                 </InfoRow>
               )}
-              <InfoRow label="Deadline">
-                {isExpired(bounty.deadline) ? "Passed" : timeUntil(bounty.deadline)}
+              <InfoRow label={t("bounty.deadline")}>
+                {isExpired(bounty.deadline) ? t("bounty.passed") : timeUntil(bounty.deadline, locale)}
               </InfoRow>
-              <InfoRow label="Proof" divider={false}>
+              <InfoRow label={t("bounty.proof")} divider={false}>
                 {bounty.proofUri ? (
                   <ProofLink proofUri={bounty.proofUri} />
                 ) : (
@@ -101,11 +104,11 @@ export default function BountyDetailPage() {
           {/* On-chain trail */}
           <div className="flex flex-wrap justify-center gap-4 text-xs">
             <a href={txUrl(bounty.txHashCreated)} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:underline">
-              Creation tx ↗
+              {t("bounty.creationTx")}
             </a>
             {bounty.txHashCompleted && (
               <a href={txUrl(bounty.txHashCompleted)} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:underline">
-                Completion tx ↗
+                {t("bounty.completionTx")}
               </a>
             )}
           </div>
