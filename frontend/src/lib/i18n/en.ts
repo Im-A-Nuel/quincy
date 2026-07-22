@@ -16,6 +16,23 @@ export const en = {
     myBounties: "My Bounties",
     profile: "Profile",
   },
+  category: {
+    errand: "Errand",
+    design: "Design",
+    research: "Research",
+    translation: "Translation",
+    development: "Development",
+    writing: "Writing",
+    other: "Other",
+  },
+  status: {
+    open: "Open",
+    in_progress: "In Progress",
+    pending_review: "Pending Review",
+    completed: "Completed",
+    cancelled: "Cancelled",
+    disputed: "Disputed",
+  },
   settings: {
     title: "Settings",
     subtitle: "Appearance and language preferences for this device.",

@@ -18,6 +18,23 @@ export const id: Dictionary = {
     myBounties: "Bounty Saya",
     profile: "Profil",
   },
+  category: {
+    errand: "Kurir",
+    design: "Desain",
+    research: "Riset",
+    translation: "Terjemahan",
+    development: "Pengembangan",
+    writing: "Tulisan",
+    other: "Lainnya",
+  },
+  status: {
+    open: "Terbuka",
+    in_progress: "Dikerjakan",
+    pending_review: "Menunggu Tinjauan",
+    completed: "Selesai",
+    cancelled: "Dibatalkan",
+    disputed: "Sengketa",
+  },
   settings: {
     title: "Pengaturan",
     subtitle: "Preferensi tampilan dan bahasa untuk perangkat ini.",
