@@ -93,6 +93,11 @@ export const id: Dictionary = {
     noOpenBounties: "Belum ada bounty terbuka",
     noOpenBountiesHint: "Posting yang pertama dan tampilkan ke hunter.",
     recentActivity: "Aktivitas terbaru",
+    activityFeed: {
+      newBountyPosted: "Bounty baru diposting",
+      bountyCompleted: "Bounty selesai",
+      reputationEarned: "Reputasi didapat",
+    },
   },
   footer: {
     builtOnCelo: "Dibangun di Celo",

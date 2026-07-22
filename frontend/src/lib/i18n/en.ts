@@ -91,6 +91,11 @@ export const en = {
     noOpenBounties: "No open bounties yet",
     noOpenBountiesHint: "Post the first one and get it in front of hunters.",
     recentActivity: "Recent activity",
+    activityFeed: {
+      newBountyPosted: "New bounty posted",
+      bountyCompleted: "Bounty completed",
+      reputationEarned: "Reputation earned",
+    },
   },
   footer: {
     builtOnCelo: "Built on Celo",
