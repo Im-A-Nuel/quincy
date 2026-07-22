@@ -8,6 +8,7 @@ export const en = {
     viewTransaction: "View transaction ↗",
     viewOnExplorer: "View on explorer ↗",
     addressCopied: "Address copied",
+    back: "← Back",
   },
   nav: {
     home: "Home",
@@ -162,6 +163,11 @@ export const en = {
     openingDispute: "Opening dispute…",
     disputeOpened: "Dispute opened - an admin will review",
     transactionFailed: "Transaction failed",
+    notFound: "Bounty not found",
+    notFoundHint: "It may have been removed or never existed.",
+    passed: "Passed",
+    creationTx: "Creation tx ↗",
+    completionTx: "Completion tx ↗",
   },
   create: {
     title: "Post a bounty",

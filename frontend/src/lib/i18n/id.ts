@@ -10,6 +10,7 @@ export const id: Dictionary = {
     viewTransaction: "Lihat transaksi ↗",
     viewOnExplorer: "Lihat di explorer ↗",
     addressCopied: "Alamat disalin",
+    back: "← Kembali",
   },
   nav: {
     home: "Beranda",
@@ -164,6 +165,11 @@ export const id: Dictionary = {
     openingDispute: "Membuka sengketa…",
     disputeOpened: "Sengketa dibuka - admin akan meninjau",
     transactionFailed: "Transaksi gagal",
+    notFound: "Bounty tidak ditemukan",
+    notFoundHint: "Mungkin sudah dihapus atau memang tidak pernah ada.",
+    passed: "Terlewat",
+    creationTx: "Tx pembuatan ↗",
+    completionTx: "Tx penyelesaian ↗",
   },
   create: {
     title: "Posting bounty",
