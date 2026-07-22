@@ -12,10 +12,12 @@ import { SearchBar } from "@/components/bounty/SearchBar";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { EmptyBoxArt, ErrorArt } from "@/components/illustrations/spot";
 import { useBounties } from "@/hooks/useBounties";
+import { useT } from "@/lib/i18n/LanguageContext";
 import type { BountyCategory } from "@/lib/types";
 import type { SortOption } from "@/lib/constants";
 
 function ExploreContent() {
+  const t = useT();
   const params = useSearchParams();
   const initialCategory = (params.get("category") ?? "") as BountyCategory | "";
 
@@ -33,17 +35,17 @@ function ExploreContent() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-extrabold text-gray-900">Explore bounties</h1>
-        <p className="mt-1 text-sm text-gray-500">Find a task and start earning cUSD.</p>
+        <h1 className="text-2xl font-extrabold text-gray-900">{t("explore.title")}</h1>
+        <p className="mt-1 text-sm text-gray-500">{t("explore.subtitle")}</p>
       </div>
 
-      <SearchBar value={q} onChange={setQ} />
+      <SearchBar value={q} onChange={setQ} placeholder={t("explore.searchPlaceholder")} />
 
       <CategoryChips value={category} onChange={setCategory} />
 
       <div className="flex items-center justify-between">
         <span className="text-sm text-gray-400">
-          {data ? `${data.total} open` : " "}
+          {data ? `${data.total} ${t("explore.open")}` : " "}
         </span>
         <SortChips value={sort} onChange={setSort} />
       </div>
@@ -53,11 +55,11 @@ function ExploreContent() {
       {isError && (
         <EmptyState
           art={<ErrorArt />}
-          title="Couldn't load bounties"
-          hint="The indexer may be syncing. Try again in a moment."
+          title={t("explore.couldNotLoad")}
+          hint={t("explore.couldNotLoadHint")}
           action={
             <button className="btn-primary" onClick={() => refetch()}>
-              Retry
+              {t("common.retry")}
             </button>
           }
         />
@@ -66,11 +68,11 @@ function ExploreContent() {
       {data && data.bounties.length === 0 && (
         <EmptyState
           art={<EmptyBoxArt />}
-          title="No bounties here"
-          hint="Try another category, or post the first one."
+          title={t("explore.noBounties")}
+          hint={t("explore.noBountiesHint")}
           action={
             <Link href="/create" className="btn-primary">
-              Post a bounty
+              {t("common.postABounty")}
             </Link>
           }
         />
