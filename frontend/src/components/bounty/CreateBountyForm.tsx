@@ -7,6 +7,7 @@ import { Field, inputClass } from "@/components/ui/Field";
 import { useTokenBalance } from "@/hooks/useToken";
 import { fromTokenUnits } from "@/lib/units";
 import { cusdAddress, celoTokenAddress } from "@/lib/chains";
+import { useT } from "@/lib/i18n/LanguageContext";
 import {
   validateBounty,
   hasErrors,
@@ -50,11 +51,12 @@ export function CreateBountyForm({
   submitting?: boolean;
   children?: React.ReactNode;
 }) {
+  const t = useT();
   const [values, setValues] = useState<BountyFormValues>(EMPTY);
   const [errors, setErrors] = useState<BountyFormErrors>({});
 
   const { isConnected } = useAccount();
-  const selectedToken = TOKEN_OPTIONS.find((t) => t.value === values.token) ?? TOKEN_OPTIONS[0];
+  const selectedToken = TOKEN_OPTIONS.find((opt) => opt.value === values.token) ?? TOKEN_OPTIONS[0];
   const { data: balance } = useTokenBalance(selectedToken.address);
   const balanceNum = balance !== undefined ? Number(fromTokenUnits(balance)) : null;
 
@@ -63,68 +65,68 @@ export function CreateBountyForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const next = validateBounty(values);
+    const next = validateBounty(values, t);
     setErrors(next);
     if (!hasErrors(next)) onSubmit(values);
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-      <Field label="Title" htmlFor="title" error={errors.title}>
+      <Field label={t("create.titleLabel")} htmlFor="title" error={errors.title}>
         <input
           id="title"
           className={inputClass}
           value={values.title}
           onChange={(e) => set("title", e.target.value)}
-          placeholder="e.g. Translate a one-page flyer EN → Swahili"
+          placeholder={t("create.titlePlaceholder")}
         />
       </Field>
 
-      <Field label="Category" htmlFor="category" error={errors.category}>
+      <Field label={t("create.categoryLabel")} htmlFor="category" error={errors.category}>
         <select
           id="category"
           className={inputClass}
           value={values.category}
           onChange={(e) => set("category", e.target.value as BountyFormValues["category"])}
         >
-          <option value="">Select a category…</option>
+          <option value="">{t("create.categoryPlaceholder")}</option>
           {CATEGORIES.map((c) => (
             <option key={c.value} value={c.value}>
-              {c.emoji} {c.label}
+              {c.emoji} {t(`category.${c.value}`)}
             </option>
           ))}
         </select>
       </Field>
 
-      <Field label="Description" htmlFor="description" error={errors.description}>
+      <Field label={t("create.descriptionLabel")} htmlFor="description" error={errors.description}>
         <textarea
           id="description"
           rows={5}
           className={inputClass}
           value={values.description}
           onChange={(e) => set("description", e.target.value)}
-          placeholder="What needs doing, and what counts as done?"
+          placeholder={t("create.descriptionPlaceholder")}
         />
       </Field>
 
-      <Field label="Reward token" htmlFor="token">
-        <div className="flex gap-1.5" role="radiogroup" aria-label="Reward token">
-          {TOKEN_OPTIONS.map((t) => {
-            const active = values.token === t.value;
+      <Field label={t("create.rewardTokenLabel")} htmlFor="token">
+        <div className="flex gap-1.5" role="radiogroup" aria-label={t("create.rewardTokenLabel")}>
+          {TOKEN_OPTIONS.map((opt) => {
+            const active = values.token === opt.value;
             return (
               <button
-                key={t.value}
+                key={opt.value}
                 type="button"
                 role="radio"
                 aria-checked={active}
-                onClick={() => set("token", t.value)}
+                onClick={() => set("token", opt.value)}
                 className={`flex-1 rounded-2xl border py-2 text-sm font-semibold transition-colors ${
                   active
                     ? "border-quincy-600 bg-quincy-50 text-quincy-700"
                     : "border-gray-200 text-gray-600 hover:bg-gray-50"
                 }`}
               >
-                {t.label}
+                {opt.label}
               </button>
             );
           })}
@@ -133,10 +135,10 @@ export function CreateBountyForm({
 
       <div className="grid grid-cols-2 gap-4">
         <Field
-          label={`Reward (${selectedToken.label})`}
+          label={`${t("create.rewardLabel")} (${selectedToken.label})`}
           htmlFor="reward"
           error={errors.reward}
-          hint={`Min ${MIN_REWARD_CUSD} ${selectedToken.label}`}
+          hint={`${t("create.min")} ${MIN_REWARD_CUSD} ${selectedToken.label}`}
         >
           <input
             id="reward"
@@ -151,7 +153,7 @@ export function CreateBountyForm({
           {isConnected && balanceNum !== null && (
             <div className="mt-1 flex items-center justify-between text-xs">
               <span className="text-gray-400">
-                Balance: {balanceNum.toLocaleString(undefined, { maximumFractionDigits: 2 })}{" "}
+                {t("create.balance")}: {balanceNum.toLocaleString(undefined, { maximumFractionDigits: 2 })}{" "}
                 {selectedToken.label}
               </span>
               <button
@@ -159,13 +161,13 @@ export function CreateBountyForm({
                 onClick={() => set("reward", String(Math.floor(balanceNum * 100) / 100))}
                 className="font-semibold text-quincy-600 hover:text-quincy-700"
               >
-                Max
+                {t("create.max")}
               </button>
             </div>
           )}
         </Field>
 
-        <Field label="Deadline" htmlFor="deadline" error={errors.deadline}>
+        <Field label={t("create.deadlineLabel")} htmlFor="deadline" error={errors.deadline}>
           <input
             id="deadline"
             type="date"
@@ -199,7 +201,7 @@ export function CreateBountyForm({
       {children}
 
       <button type="submit" className="btn-primary w-full" disabled={submitting}>
-        {submitting ? "Processing…" : "Lock reward & post bounty"}
+        {submitting ? t("create.processing") : t("create.submit")}
       </button>
     </form>
   );
