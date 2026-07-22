@@ -2,6 +2,12 @@
 
 import { SORT_OPTIONS, type SortOption } from "@/lib/constants";
 import { useSlidingIndicator } from "@/hooks/useSlidingIndicator";
+import { useT } from "@/lib/i18n/LanguageContext";
+
+const SORT_LABEL_KEY: Record<SortOption, "sortNewest" | "sortRewardDesc"> = {
+  newest: "sortNewest",
+  reward_desc: "sortRewardDesc",
+};
 
 /** Compact sort selector with a sliding background pill. */
 export function SortChips({
@@ -11,6 +17,7 @@ export function SortChips({
   value: SortOption;
   onChange: (next: SortOption) => void;
 }) {
+  const t = useT();
   const { containerRef, setItemRef, rect } = useSlidingIndicator(value);
 
   return (
@@ -33,7 +40,7 @@ export function SortChips({
               active ? "text-white" : "text-gray-600 hover:text-gray-900"
             }`}
           >
-            {s.label}
+            {t(`explore.${SORT_LABEL_KEY[s.value]}`)}
           </button>
         );
       })}
