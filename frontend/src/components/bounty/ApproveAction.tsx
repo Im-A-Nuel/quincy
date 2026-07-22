@@ -5,12 +5,14 @@ import { TxButton } from "@/components/ui/TxButton";
 import { useApproveBounty, useDisputeBounty } from "@/hooks/useBountyActions";
 import { useToast } from "@/components/toast/ToastContext";
 import { fireConfetti } from "@/lib/confetti";
+import { useT } from "@/lib/i18n/LanguageContext";
 
 /**
  * Shown to the poster while a bounty is in PendingReview: approve to release
  * the reward, or open a dispute if the proof is unsatisfactory.
  */
 export function ApproveAction({ bountyId, onDone }: { bountyId: number; onDone?: () => void }) {
+  const t = useT();
   const { approveBounty } = useApproveBounty();
   const { disputeBounty } = useDisputeBounty();
   const toast = useToast();
@@ -21,15 +23,15 @@ export function ApproveAction({ bountyId, onDone }: { bountyId: number; onDone?:
     try {
       if (kind === "approve") {
         await approveBounty(bountyId);
-        toast.success("Approved - reward released to hunter");
+        toast.success(t("bounty.approveSuccess"));
         fireConfetti();
       } else {
         await disputeBounty(bountyId);
-        toast.info("Dispute opened - an admin will review");
+        toast.info(t("bounty.disputeOpened"));
       }
       onDone?.();
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Transaction failed");
+      toast.error(e instanceof Error ? e.message : t("bounty.transactionFailed"));
     } finally {
       setPending(null);
     }
@@ -43,14 +45,14 @@ export function ApproveAction({ bountyId, onDone }: { bountyId: number; onDone?:
         onClick={() => act("approve")}
         className="w-full"
       >
-        Approve & release reward
+        {t("bounty.approveAndRelease")}
       </TxButton>
       <button
         onClick={() => act("dispute")}
         disabled={pending !== null}
         className="btn-ghost w-full border border-gray-200 disabled:opacity-50"
       >
-        {pending === "dispute" ? "Opening dispute…" : "Reject / dispute"}
+        {pending === "dispute" ? t("bounty.openingDispute") : t("bounty.rejectDispute")}
       </button>
     </div>
   );
