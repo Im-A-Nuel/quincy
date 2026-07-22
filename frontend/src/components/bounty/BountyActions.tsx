@@ -8,6 +8,7 @@ import { CancelAction } from "./CancelAction";
 import { SubmitProofAction } from "./SubmitProofAction";
 import { ApproveAction } from "./ApproveAction";
 import { WalletButton } from "@/components/WalletButton";
+import { useT } from "@/lib/i18n/LanguageContext";
 
 const sameAddr = (a?: string | null, b?: string | null) =>
   Boolean(a && b && a.toLowerCase() === b.toLowerCase());
@@ -18,12 +19,13 @@ const sameAddr = (a?: string | null, b?: string | null) =>
  * `onDone` lets the parent refetch after a successful tx.
  */
 export function BountyActions({ bounty, onDone }: { bounty: Bounty; onDone?: () => void }) {
+  const t = useT();
   const { address, isConnected } = useAccount();
 
   if (!isConnected) {
     return (
       <div className="card flex flex-col items-center gap-2 text-center">
-        <p className="text-sm text-gray-500">Connect your wallet to act on this bounty.</p>
+        <p className="text-sm text-gray-500">{t("bounty.connectToAct")}</p>
         <WalletButton />
       </div>
     );
@@ -44,18 +46,14 @@ export function BountyActions({ bounty, onDone }: { bounty: Bounty; onDone?: () 
       return isHunter ? (
         <SubmitProofAction bountyId={bounty.id} onDone={onDone} />
       ) : (
-        <p className="text-center text-sm text-gray-400">
-          This bounty is being worked on.
-        </p>
+        <p className="text-center text-sm text-gray-400">{t("bounty.beingWorkedOn")}</p>
       );
 
     case BountyStatus.PendingReview:
       return isPoster ? (
         <ApproveAction bountyId={bounty.id} onDone={onDone} />
       ) : (
-        <p className="text-center text-sm text-gray-400">
-          Waiting for the poster to review the proof.
-        </p>
+        <p className="text-center text-sm text-gray-400">{t("bounty.waitingForReview")}</p>
       );
 
     default:
