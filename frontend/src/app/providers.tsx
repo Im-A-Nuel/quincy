@@ -6,6 +6,7 @@ import { WagmiProvider } from "wagmi";
 import { wagmiConfig } from "@/lib/wagmi";
 import { ToastProvider } from "@/components/toast/ToastContext";
 import { Toaster } from "@/components/toast/Toaster";
+import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 
 /** Wraps the app in wagmi + react-query providers (client-side only). */
 export function Providers({ children }: { children: ReactNode }) {
@@ -24,10 +25,12 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <ToastProvider>
-          {children}
-          <Toaster />
-        </ToastProvider>
+        <LanguageProvider>
+          <ToastProvider>
+            {children}
+            <Toaster />
+          </ToastProvider>
+        </LanguageProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );
