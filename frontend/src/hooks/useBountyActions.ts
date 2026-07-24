@@ -70,3 +70,11 @@ export function useDisputeBounty() {
   const disputeBounty = (bountyId: number) => call("disputeBounty", [BigInt(bountyId)]);
   return { disputeBounty, ...rest };
 }
+
+/** Admin-only: resolves a disputed bounty, paying the hunter or refunding the poster. */
+export function useResolveDispute() {
+  const { call, ...rest } = useBountyWrite();
+  const resolveDispute = (bountyId: number, payHunter: boolean) =>
+    call("resolveDispute", [BigInt(bountyId), payHunter]);
+  return { resolveDispute, ...rest };
+}
