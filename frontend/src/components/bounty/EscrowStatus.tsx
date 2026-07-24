@@ -12,12 +12,15 @@ export function EscrowStatus({ status }: { status: BountyStatus }) {
   const t = useT();
   const released = status === BountyStatus.Completed;
   const refunded = status === BountyStatus.Cancelled;
+  const disputed = status === BountyStatus.Disputed;
 
   const meta = released
     ? { text: t("bounty.rewardReleased"), tone: "text-quincy-700 bg-soft-green", Icon: CheckIcon }
     : refunded
       ? { text: t("bounty.rewardRefunded"), tone: "text-gray-600 bg-soft-gray", Icon: CheckIcon }
-      : { text: t("bounty.lockedInEscrow"), tone: "text-quincy-700 bg-soft-green", Icon: LockIcon };
+      : disputed
+        ? { text: t("bounty.disputedEscrow"), tone: "text-amber-700 bg-amber-50", Icon: LockIcon }
+        : { text: t("bounty.lockedInEscrow"), tone: "text-quincy-700 bg-soft-green", Icon: LockIcon };
 
   const { text, tone, Icon } = meta;
 
