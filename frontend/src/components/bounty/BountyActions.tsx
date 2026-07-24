@@ -7,7 +7,9 @@ import { ClaimAction } from "./ClaimAction";
 import { CancelAction } from "./CancelAction";
 import { SubmitProofAction } from "./SubmitProofAction";
 import { ApproveAction } from "./ApproveAction";
+import { ResolveDisputeAction } from "./ResolveDisputeAction";
 import { WalletButton } from "@/components/WalletButton";
+import { useAdmin } from "@/hooks/useAdmin";
 import { useT } from "@/lib/i18n/LanguageContext";
 
 const sameAddr = (a?: string | null, b?: string | null) =>
@@ -21,6 +23,7 @@ const sameAddr = (a?: string | null, b?: string | null) =>
 export function BountyActions({ bounty, onDone }: { bounty: Bounty; onDone?: () => void }) {
   const t = useT();
   const { address, isConnected } = useAccount();
+  const { isAdmin } = useAdmin();
 
   if (!isConnected) {
     return (
@@ -54,6 +57,13 @@ export function BountyActions({ bounty, onDone }: { bounty: Bounty; onDone?: () 
         <ApproveAction bountyId={bounty.id} onDone={onDone} />
       ) : (
         <p className="text-center text-sm text-gray-400">{t("bounty.waitingForReview")}</p>
+      );
+
+    case BountyStatus.Disputed:
+      return isAdmin ? (
+        <ResolveDisputeAction bountyId={bounty.id} onDone={onDone} />
+      ) : (
+        <p className="text-center text-sm text-gray-400">{t("bounty.disputedWaitingAdmin")}</p>
       );
 
     default:
