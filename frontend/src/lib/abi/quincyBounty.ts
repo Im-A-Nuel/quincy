@@ -23,6 +23,13 @@ export const quincyBountyAbi = [
   },
   {
     type: "function",
+    name: "admin",
+    stateMutability: "view",
+    inputs: [],
+    outputs: [{ name: "", type: "address" }],
+  },
+  {
+    type: "function",
     name: "claimBounty",
     stateMutability: "nonpayable",
     inputs: [{ name: "bountyId", type: "uint256" }],
